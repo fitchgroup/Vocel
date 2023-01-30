@@ -1,0 +1,6 @@
+{
+  "signin": "Sign In - Localized!",
+  "@signin": {
+    "description": "Label of the button to sign in the user."
+  }
+}
