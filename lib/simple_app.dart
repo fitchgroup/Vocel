@@ -4,6 +4,9 @@ import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:vocel/LocalizedButtonResolver.dart';
+import 'package:vocel/LocalizedInputResolver.dart';
+import 'package:vocel/LocalizedMessageResolver.dart';
+import 'package:vocel/LocalizedTitleResolver.dart';
 import 'package:vocel/features/announcement/ui/announcements_list/announcements_list_page.dart';
 
 import 'amplifyconfiguration.dart';
@@ -36,8 +39,10 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     const stringResolver = AuthStringResolver(
-      buttons: LocalizedButtonResolver(),
-    );
+        buttons: LocalizedButtonResolver(),
+        inputs: LocalizedInputResolver(),
+        titles: LocalizedTitleResolver(),
+        messages: LocalizedMessageResolver());
 
     return Authenticator(
       stringResolver: stringResolver,
