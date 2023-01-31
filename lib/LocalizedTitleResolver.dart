@@ -10,4 +10,9 @@ class LocalizedTitleResolver extends TitleResolver {
   String signIn(BuildContext context) {
     return AppLocalizations.of(context)!.signIn;
   }
+
+  @override
+  String signUp(BuildContext context) {
+    return AppLocalizations.of(context)!.signUp;
+  }
 }
