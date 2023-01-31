@@ -12,6 +12,11 @@ class LocalizedButtonResolver extends ButtonResolver {
   }
 
   @override
+  String signUp(BuildContext context) {
+    return AppLocalizations.of(context)!.signUp;
+  }
+
+  @override
   String forgotPassword(BuildContext context) {
     return AppLocalizations.of(context)!.forgotPassword;
   }
