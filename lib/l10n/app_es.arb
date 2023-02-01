@@ -29,7 +29,7 @@
   "nickname": "Nickname",
   "or": "{a} or {b}",
   "preferredUsername": "Preferred Username",
-  "warnEmpty": "{attribute} field must not be blank.",
+  "warnEmpty": "El campo de {attribute} no debe estar en blanco",
   "warnInvalidFormat": "Invalid {attributeType} format.",
   "promptFill": "Enter your {attribute}",
   "promptRefill": "Re-enter your {attribute}",

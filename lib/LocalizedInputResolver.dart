@@ -5,11 +5,11 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 class LocalizedInputResolver extends InputResolver {
   const LocalizedInputResolver();
 
-  /// Label of sign in form button
-  /* @override
-  String email(BuildContext context) {
-    return AppLocalizations.of(context)!.email;
-  }*/
+  /// Returns the text displayed when a required field is left empty.
+  @override
+  String empty(BuildContext context, InputField field) {
+    return AppLocalizations.of(context)!.warnEmpty(title(context, field));
+  }
 
   @override
   String title(BuildContext context, InputField field) {
