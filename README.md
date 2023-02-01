@@ -12,3 +12,12 @@ COGNITO_USER_APP_CLIENT_ID
 COGNITO_USER_REGION
 
 #2 -- from the root directory, run "flutter gen-l10n"
+
+To build for deployment...
+
+flutter clean
+flutter build appbundle
+
+To administer users and groups, follow these instructions...
+
+https://docs.amplify.aws/console/auth/user-management/
