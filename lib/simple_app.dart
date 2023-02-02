@@ -56,7 +56,7 @@ class _MyAppState extends State<MyApp> {
           Locale('es'), // Spanish
         ],
         builder: Authenticator.builder(),
-        home: const AnnouncementsListPage(),
+        home: AnnouncementsListPage(),
       ),
     );
   }
