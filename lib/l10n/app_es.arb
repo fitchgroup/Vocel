@@ -47,7 +47,7 @@
   "@passwordRequirementsAtLeast" : {
     "description" : "The types of characters for passwords",
     "placeholders": {
-        "firstName": {}
+        "numCharacters": {}
     }
   },
   "passwordsDoNotMatch": "Passwords do not match.",
