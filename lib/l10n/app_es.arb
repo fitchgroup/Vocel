@@ -37,6 +37,12 @@
   "usernameRequirements": "Username must only contain alphanumeric characters and symbols.",
   "passwordRequirementsPreamble": "Password must include:",
   "passwordRequirementsCharacterType": " {characterType, select, requiresUppercase{uppercase} requiresLowercase{lowercase} requiresNumbers{number} requiresSymbols{symbol} other{}}",
+  "@passwordRequirementsCharacterType" : {
+    "description" : "The types of characters for passwords",
+    "placeholders": {
+        "firstName": {}
+    }
+  },
   "passwordRequirementsAtLeast": "at least {numCharacters, plural, =1{1{characterType} character} other{{numCharacters}{characterType} characters}}",
   "passwordsDoNotMatch": "Passwords do not match.",
   "rememberDevice": "Remember Device?",
