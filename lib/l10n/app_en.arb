@@ -44,6 +44,12 @@
     }
   },
   "passwordRequirementsAtLeast": "at least {numCharacters, plural, =1{1{characterType} character} other{{numCharacters}{characterType} characters}}",
+  "@passwordRequirementsAtLeast" : {
+    "description" : "The types of characters for passwords",
+    "placeholders": {
+        "firstName": {}
+    }
+  },
   "passwordsDoNotMatch": "Passwords do not match.",
   "rememberDevice": "Remember Device?",
   "usernameType": "Log in using:",
