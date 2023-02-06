@@ -19,6 +19,7 @@ jobs:
       - uses: actions/checkout@v2
       - run: |
           echo "${{ secrets.RELEASE_KEYSTORE }}" > release.keystore.asc
+          gpg -d --batch release.keystore.asc > app/upload-keystore.jks
   version:
     name: Create version number
     runs-on: ubuntu-latest
