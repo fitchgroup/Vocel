@@ -60,6 +60,7 @@ jobs:
         run: sed -i 's/#{KEYSTORE_KEY_PASS}#/${{ secrets.KEYSTORE_KEY_PASS }}/g' android/key.properties
       - uses: actions/setup-java@v2
         with:
+          distribution: 'zulu'
           java-version: '12.x'
       - uses: subosito/flutter-action@v2
         with:
