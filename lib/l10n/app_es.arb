@@ -31,7 +31,7 @@
   "preferredUsername": "Preferred Username",
   "warnEmpty": "El campo de {attribute} no debe estar en blanco",
   "warnInvalidFormat": "Invalid {attributeType} format.",
-  "promptFill": "Enter your {attribute}",
+  "promptFill": "Ingresa tu {attribute}",
   "promptRefill": "Re-enter your {attribute}",
   "confirmAttribute": "Confirmar {attribute}",    
   "usernameRequirements": "Username must only contain alphanumeric characters and symbols.",

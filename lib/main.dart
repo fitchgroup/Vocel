@@ -9,6 +9,7 @@ import 'amplifyconfiguration.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
+  // Might use later to override the translations based on a user's preferences
   List? languages = await Devicelocale.preferredLanguages;
   String? locale = await Devicelocale.currentLocale;
 
