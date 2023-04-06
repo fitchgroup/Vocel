@@ -62,5 +62,15 @@
   "confirmSignInCustomAuth": "Enter your sign in code",
   "confirmSignInNewPassword": "Change your password to sign in",
   "resetPassword": "Send Code",
-  "verifyUser": "Account recovery requires verified contact information"
+  "verifyUser": "Account recovery requires verified contact information",
+  "vocelMobileApp": "Vocel Mobile App",
+  "profile": "Profile",
+  "events": "Events",
+  "chats": "Chats",
+  "calendar": "Calendar",
+  "discussionForum": "Discussion Forum",
+  "support": "Support",
+  "settings": "Settings",
+  "notifications": "Notifications",
+  "helps": "Helps"
 }

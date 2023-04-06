@@ -3,6 +3,8 @@ import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:vocel/common/utils/colors.dart' as constants;
+import 'package:vocel/features/announcement/ui/announcements_list/navigation_drawer.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class AnnouncementsListPage extends StatelessWidget {
   AnnouncementsListPage({
@@ -30,15 +32,34 @@ class AnnouncementsListPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: const VocelNavigationDrawer(),
       appBar: AppBar(
+        leading: Builder(
+          builder: (BuildContext context) {
+            return IconButton(
+              icon: const Icon(Icons.menu),
+              onPressed: () { Scaffold.of(context).openDrawer(); },
+              tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
+            );
+          },
+        ),
         centerTitle: true,
-        title: const Text(
-          'Vocel Mobile App',
+        title: Text(
+          AppLocalizations.of(context)!.vocelMobileApp
         ),
         backgroundColor: const Color(constants.primaryColorDark),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () async {
+          print("set successfully");
+          FocusScope.of(context).requestFocus(FocusNode());
+          await showDatePicker(
+            context: context,
+            initialDate: DateTime.now(),
+            firstDate: DateTime(DateTime.now().year),
+            lastDate: DateTime(DateTime.now().year + 20),
+          );
+        },
         backgroundColor: const Color(constants.primaryColorDark),
         child: const Icon(Icons.add),
       ),

@@ -13,4 +13,8 @@ const Map<int, Color> primarySwatch = {
   900: Color.fromRGBO(255, 207, 68, 1),
 };
 const MaterialColor primaryColor = MaterialColor(0xFFFFCF44, primarySwatch);
-const int primaryColorDark = 0xFFFD9725;
+const int primaryColorDark = 0xFF2798A5;
+const int primaryLightTeal = 0xFF8CC3CC;
+
+
+// npm intall aws@amplify;
