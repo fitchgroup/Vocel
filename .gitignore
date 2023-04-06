@@ -55,6 +55,8 @@ migrate_working_dir/
 .pub-cache/
 .pub/
 /build/
+/lib/amplifyconfiguration.dart
+ 
 
 # Symbolication related
 app.*.symbols

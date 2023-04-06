@@ -17,9 +17,22 @@ class MyApp extends StatefulWidget {
 
   @override
   State<MyApp> createState() => _MyAppState();
+
+  static void setLocale(BuildContext context, Locale changedLocale){
+    _MyAppState? state = context.findAncestorStateOfType<_MyAppState>();
+    state?.changeLocale(changedLocale);
+  }
 }
 
 class _MyAppState extends State<MyApp> {
+  Locale? _local;
+
+  changeLocale(Locale currentLocale){
+    setState(() {
+      _local = currentLocale;
+    });
+  }
+
   @override
   void initState() {
     super.initState();
@@ -55,6 +68,7 @@ class _MyAppState extends State<MyApp> {
           Locale('en'), // English
           Locale('es'), // Spanish
         ],
+        locale: _local,
         builder: Authenticator.builder(),
         home: AnnouncementsListPage(),
       ),

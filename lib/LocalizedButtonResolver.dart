@@ -20,4 +20,54 @@ class LocalizedButtonResolver extends ButtonResolver {
   String forgotPassword(BuildContext context) {
     return AppLocalizations.of(context)!.forgotPassword;
   }
+
+  @override
+  String email(BuildContext context){
+    return AppLocalizations.of(context)!.email;
+  }
+
+  @override
+  String profile(BuildContext context){
+    return AppLocalizations.of(context)!.profile;
+  }
+
+  @override
+  String events(BuildContext context){
+    return AppLocalizations.of(context)!.events;
+  }
+
+  @override
+  String chats(BuildContext context){
+    return AppLocalizations.of(context)!.chats;
+  }
+
+  @override
+  String calendar(BuildContext context){
+    return AppLocalizations.of(context)!.calendar;
+  }
+
+  @override
+  String discussionForum(BuildContext context){
+    return AppLocalizations.of(context)!.discussionForum;
+  }
+
+  @override
+  String settings(BuildContext context){
+    return AppLocalizations.of(context)!.settings;
+  }
+
+  @override
+  String support(BuildContext context){
+    return AppLocalizations.of(context)!.support;
+  }
+
+  @override
+  String notifications(BuildContext context){
+    return AppLocalizations.of(context)!.notifications;
+  }
+
+  @override
+  String helps(BuildContext context){
+    return AppLocalizations.of(context)!.helps;
+  }
 }
