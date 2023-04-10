@@ -1,7 +1,7 @@
 {
   "signIn": "Registrarse",
   "signUp": "Crear una cuenta",
-  "confirm": "Confirm",
+  "confirm": "Confirmar",
   "submit": "Submit",
   "changePassword": "Change Password",
   "sendCode": "Send Code", 
@@ -16,7 +16,7 @@
   "username": "Username",
   "password": "Contraseña",
   "newPassword": "New Password",
-  "email": "Email",
+  "email": "correo electrónico",
   "phoneNumber": "Phone Number",
   "verificationCode": "Verification Code",
   "address": "Address",
@@ -62,5 +62,18 @@
   "confirmSignInCustomAuth": "Enter your sign in code",
   "confirmSignInNewPassword": "Change your password to sign in",
   "resetPassword": "Send Code",
-  "verifyUser": "Account recovery requires verified contact information"
+  "verifyUser": "Account recovery requires verified contact information",
+  "vocelMobileApp": "Vocel Aplicación movil",
+  "profile": "Perfil",
+  "events": "Eventos",
+  "chats": "charlas",
+  "calendar": "Calendario",
+  "discussion Forum": "Foro de discusion",
+  "support": "Apoyo",
+  "settings": "Ajustes",
+  "notifications": "Notificaciones",
+  "helps": "Ayuda",
+  "vocelAppLanguageChanges": "Vocel App Cambios de idioma",
+  "notice": "Aviso",
+  "people": "Gente"
 }
