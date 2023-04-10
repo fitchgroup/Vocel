@@ -55,7 +55,6 @@ migrate_working_dir/
 .pub-cache/
 .pub/
 /build/
-/lib/amplifyconfiguration.dart
  
 
 # Symbolication related
@@ -68,3 +67,6 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+# amplify resources from the app
+amplifyconfiguration.dart

@@ -9,7 +9,7 @@ import 'package:vocel/LocalizedMessageResolver.dart';
 import 'package:vocel/LocalizedTitleResolver.dart';
 import 'package:vocel/features/announcement/ui/announcements_list/announcements_list_page.dart';
 
-import 'amplifyconfiguration.dart';
+// import 'amplifyconfiguration.dart';
 
 class MyApp extends StatefulWidget {
   const MyApp({Key? key, required bool isAmplifySuccessfullyConfigured})
@@ -42,7 +42,7 @@ class _MyAppState extends State<MyApp> {
   void _configureAmplify() async {
     try {
       await Amplify.addPlugin(AmplifyAuthCognito());
-      await Amplify.configure(amplifyconfig);
+      // await Amplify.configure(amplifyconfig);
       print('Successfully configured');
     } on Exception catch (e) {
       print('Error configuring Amplify: $e');
