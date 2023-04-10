@@ -9,7 +9,7 @@ import 'package:vocel/LocalizedMessageResolver.dart';
 import 'package:vocel/LocalizedTitleResolver.dart';
 import 'package:vocel/features/announcement/ui/announcements_list/announcements_list_page.dart';
 
-import 'amplifyconfiguration.dart';
+// import 'amplifyconfiguration.dart';
 
 class MyApp extends StatefulWidget {
   const MyApp({Key? key, required bool isAmplifySuccessfullyConfigured})
@@ -17,9 +17,22 @@ class MyApp extends StatefulWidget {
 
   @override
   State<MyApp> createState() => _MyAppState();
+
+  static void setLocale(BuildContext context, Locale changedLocale){
+    _MyAppState? state = context.findAncestorStateOfType<_MyAppState>();
+    state?.changeLocale(changedLocale);
+  }
 }
 
 class _MyAppState extends State<MyApp> {
+  Locale? _local;
+
+  changeLocale(Locale currentLocale){
+    setState(() {
+      _local = currentLocale;
+    });
+  }
+
   @override
   void initState() {
     super.initState();
@@ -29,7 +42,7 @@ class _MyAppState extends State<MyApp> {
   void _configureAmplify() async {
     try {
       await Amplify.addPlugin(AmplifyAuthCognito());
-      await Amplify.configure(amplifyconfig);
+      // await Amplify.configure(amplifyconfig);
       print('Successfully configured');
     } on Exception catch (e) {
       print('Error configuring Amplify: $e');
@@ -55,9 +68,13 @@ class _MyAppState extends State<MyApp> {
           Locale('en'), // English
           Locale('es'), // Spanish
         ],
+        locale: _local,
         builder: Authenticator.builder(),
         home: AnnouncementsListPage(),
       ),
     );
   }
 }
+
+// reference to change the language based on language on platform
+// https://stackoverflow.com/questions/50923906/how-to-get-timezone-language-and-county-id-in-flutter-by-the-location-of-device

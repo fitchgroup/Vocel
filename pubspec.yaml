@@ -45,6 +45,17 @@ dependencies:
   image_picker: ^0.8.5+3
   intl: any
   devicelocale: ^0.5.5
+  shared_preferences: ^2.0.13
+  provider: ^6.0.5
+  flutter_spinkit: ^5.1.0
+  palette_generator: ^0.3.3+2
+  google_fonts: ^4.0.3
+  flutter_chat_ui: ^1.6.6
+  file_picker: ^5.2.7
+  mime: ^1.0.4
+  ffi: ^2.0.1
+  open_filex: ^4.3.2
+  table_calendar: 3.0.5
 
 
 
