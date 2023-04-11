@@ -10,4 +10,19 @@ class LocalizedMessageResolver extends MessageResolver {
   //String signIn(BuildContext context) {
   //  return AppLocalizations.of(context)!.signin;
   //}
+
+  @override
+  String vocelAppLanguageChanges(BuildContext context){
+    return AppLocalizations.of(context)!.vocelAppLanguageChanges;
+  }
+
+  @override
+  String confirm(BuildContext context){
+    return AppLocalizations.of(context)!.confirm;
+  }
+
+  @override
+  String notices(BuildContext context){
+    return AppLocalizations.of(context)!.notices;
+  }
 }
