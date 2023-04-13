@@ -4,6 +4,9 @@ import 'package:vocel/features/announcement/ui/announcements_list/navigation_ite
 import 'package:vocel/features/announcement/ui/announcements_list/profile.dart';
 import 'package:vocel/features/announcement/ui/announcements_list/setting_page.dart';
 import 'package:vocel/LocalizedButtonResolver.dart';
+import 'package:vocel/features/announcement/ui/discussion_forum/forum_page.dart';
+import 'package:vocel/features/announcement/ui/event_list/event_page.dart';
+import 'package:vocel/features/announcement/ui/help_page/help_list.dart';
 class VocelNavigationDrawer extends StatelessWidget {
   const VocelNavigationDrawer({Key? key}) : super(key: key);
 
@@ -40,12 +43,6 @@ class VocelNavigationDrawer extends StatelessWidget {
                       onPressedFunction: ()=> itemPressed(context, index:2)
                   ),
                   const SizedBox(height: 6,),
-                  NavigationItem(
-                      name: const LocalizedButtonResolver().support(context),
-                      leadingIcon: Icons.notification_add_rounded,
-                      onPressedFunction: ()=> itemPressed(context, index:3)
-                  ),
-                  const SizedBox(height: 6,),
                   Divider(
                     height: 20,
                     thickness: 2,
@@ -67,7 +64,7 @@ class VocelNavigationDrawer extends StatelessWidget {
                   const SizedBox(height: 6,),
                   NavigationItem(
                       name: const LocalizedButtonResolver().helps(context),
-                      leadingIcon: Icons.settings,
+                      leadingIcon: Icons.help_outline,
                       onPressedFunction: ()=> itemPressed(context, index:6)
                   ),
                   const SizedBox(height: 6,),
@@ -91,20 +88,13 @@ itemPressed(BuildContext context, {required int index}) {
       break;
     case 1:
     Navigator.push(context, MaterialPageRoute(
-        builder: (context) =>
-        const VocelProfile(),
+        builder: (context) => EventPage(),
         settings: const RouteSettings(arguments: "settings page")));
     break;
     case 2:
     Navigator.push(context, MaterialPageRoute(
         builder: (context) =>
-        const VocelProfile(),
-        settings: const RouteSettings(arguments: "settings page")));
-    break;
-    case 3:
-    Navigator.push(context, MaterialPageRoute(
-        builder: (context) =>
-        const VocelProfile(),
+        ForumPage(),
         settings: const RouteSettings(arguments: "settings page")));
     break;
     case 4:
@@ -121,8 +111,7 @@ itemPressed(BuildContext context, {required int index}) {
     break;
     case 6:
     Navigator.push(context, MaterialPageRoute(
-        builder: (context) =>
-        const VocelProfile(),
+        builder: (context) => ContactPage(),
         settings: const RouteSettings(arguments: "settings page")));
     break;
     default:
@@ -148,7 +137,7 @@ Widget VocelAvator(BuildContext context) {
               shape: BoxShape.circle
             ),
             // decoration: const Bo,
-            child: Image.asset("images/social-white-900x900.png")
+            child: Image.asset("images/vocel_logo.png")
           ),
         ),
         const SizedBox(

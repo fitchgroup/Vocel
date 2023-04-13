@@ -25,6 +25,7 @@ class _VocelProfileState extends State<VocelProfile> {
           height: 60,
           width: 60,
           child: FloatingActionButton(
+            heroTag: 0,
             backgroundColor: Colors.transparent, // Back Button Color
             elevation: 0,
             child: const Icon(
@@ -121,7 +122,7 @@ class _VocelProfileState extends State<VocelProfile> {
                                           //   'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTcZsL6PVn0SNiabAKz7js0QknS2ilJam19QQ&usqp=CAU',
                                           //   fit: BoxFit.fill,
                                           // ),
-                                          Image.asset('images/social-white-900x900.png')
+                                          Image.asset('images/vocel_logo.png')
                                       ),
                                     ),
                                     Align(
