@@ -8,7 +8,7 @@ import 'package:vocel/LocalizedButtonResolver.dart';
 import 'package:vocel/LocalizedInputResolver.dart';
 import 'package:vocel/LocalizedMessageResolver.dart';
 import 'package:vocel/LocalizedTitleResolver.dart';
-import 'package:vocel/amplifyconfiguration.dart';
+// import 'package:vocel/amplifyconfiguration.dart';
 import 'package:vocel/features/announcement/ui/announcements_list/announcements_list_page.dart';
 import 'package:vocel/common/repository/auth_inject.dart';
 
