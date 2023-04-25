@@ -1,6 +1,8 @@
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:vocel/LocalizedButtonResolver.dart';
+import 'package:vocel/LocalizedMessageResolver.dart';
 import 'package:vocel/features/announcement/ui/announcements_list/language_list.dart';
 import 'package:vocel/common/utils/colors.dart' as constants;
 
@@ -35,8 +37,8 @@ class _VocelSetting extends State<VocelSetting>{
             },
           ),
         ),
-        title: const Text(
-          "Settings",
+        title: Text(
+          const LocalizedButtonResolver().settings(context),
         ),
         actions: [],
         centerTitle: false,
@@ -70,14 +72,14 @@ class _VocelSetting extends State<VocelSetting>{
                 ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: const [
+                  children: [
                     Text(
-                      'Language',
-                      style: TextStyle(
+                      const LocalizedMessageResolver().languages(context),
+                      style: const TextStyle(
                         fontSize: 16,
                       ),
                     ),
-                    Icon(Icons.arrow_forward_ios, size: 16,),
+                    const Icon(Icons.arrow_forward_ios, size: 16,),
                   ],
                 ),
               ),
@@ -119,70 +121,6 @@ class _VocelSetting extends State<VocelSetting>{
               ),
             ),
             InkWell(
-              onTap: () {
-                // Add your custom logic here
-              },
-              child: Container(
-                margin: const EdgeInsets.fromLTRB(15, 15, 15, 0),
-                padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(8),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey.withOpacity(0.3),
-                      blurRadius: 10,
-                      offset: const Offset(0, 5),
-                    ),
-                  ],
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: const [
-                    Text(
-                      'Privacy Settings',
-                      style: TextStyle(
-                        fontSize: 16,
-                      ),
-                    ),
-                    Icon(Icons.arrow_forward_ios, size: 16,),
-                  ],
-                ),
-              ),
-            ),
-            InkWell(
-              onTap: () {
-                // Add your custom logic here
-              },
-              child: Container(
-                margin: const EdgeInsets.fromLTRB(15, 15, 15, 0),
-                padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(8),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey.withOpacity(0.3),
-                      blurRadius: 10,
-                      offset: const Offset(0, 5),
-                    ),
-                  ],
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: const [
-                    Text(
-                      'Help and Support',
-                      style: TextStyle(
-                        fontSize: 16,
-                      ),
-                    ),
-                    Icon(Icons.arrow_forward_ios, size: 16,),
-                  ],
-                ),
-              ),
-            ),
-            InkWell(
               onTap: () async {
                 // Add your custom logic here
                 // May enable apple account, facebook account... in the future
@@ -210,10 +148,10 @@ class _VocelSetting extends State<VocelSetting>{
                 ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: const [
+                  children: [
                     Text(
-                      'Log Out',
-                      style: TextStyle(
+                      const LocalizedButtonResolver().signOut(context),
+                      style: const TextStyle(
                         fontSize: 16,
                         color: Colors.red,
                       ),

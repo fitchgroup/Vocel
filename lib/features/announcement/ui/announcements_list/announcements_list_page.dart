@@ -83,20 +83,6 @@ class _AnnouncementsListPageState extends State<AnnouncementsListPage> {
         ),
         backgroundColor: const Color(constants.primaryColorDark),
       ),
-      // floatingActionButton: FloatingActionButton(
-      //   onPressed: () async {
-      //     print("set successfully");
-      //     FocusScope.of(context).requestFocus(FocusNode());
-      //     await showDatePicker(
-      //       context: context,
-      //       initialDate: DateTime.now(),
-      //       firstDate: DateTime(DateTime.now().year),
-      //       lastDate: DateTime(DateTime.now().year + 20),
-      //     );
-      //   },
-      //   backgroundColor: const Color(constants.primaryColorDark),
-      //   child: const Icon(Icons.add),
-      // ),
       body: selectPage(selectPageNumber),
       bottomNavigationBar: BottomNavigationBar(
           items: <BottomNavigationBarItem>[

@@ -12,7 +12,7 @@
   "confirmResetPassword": "Reset Password",
   "verify": "Verify",
   "skip": "Skip",
-  "signOut": "Sign Out",
+  "signOut": "desconectar",
   "username": "Username",
   "password": "Contraseña",
   "newPassword": "New Password",
@@ -73,10 +73,13 @@
   "settings": "Ajustes",
   "notifications": "Notificaciones",
   "helps": "Ayuda",
+  "language": "idioma",
   "vocelAppLanguageChanges": "Vocel App Cambios de idioma",
   "notice": "Aviso",
   "people": "Gente",
   "reminder": "Recordatorio",
   "announcement": "anuncio",
-  "home": "Hogar"
+  "home": "Hogar",
+  "shareOnSocialMedia": "Compartir en las redes sociales",
+  "registerForEvent": "Regístrese para el evento"
 }

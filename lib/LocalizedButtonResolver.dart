@@ -90,4 +90,9 @@ class LocalizedButtonResolver extends ButtonResolver {
   String home(BuildContext context){
     return AppLocalizations.of(context)!.home;
   }
+
+  @override
+  String signOut(BuildContext context){
+    return AppLocalizations.of(context)!.signOut;
+  }
 }

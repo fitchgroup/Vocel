@@ -25,4 +25,18 @@ class LocalizedMessageResolver extends MessageResolver {
   String notices(BuildContext context){
     return AppLocalizations.of(context)!.notices;
   }
+
+  @override
+  String languages(BuildContext context){
+    return AppLocalizations.of(context)!.language;
+  }
+
+  @override
+  String shareOnSocialMedia(BuildContext context){
+    return AppLocalizations.of(context)!.shareOnSocialMedia;
+  }
+  @override
+  String registerForEvent(BuildContext context){
+    return AppLocalizations.of(context)!.registerForEvent;
+  }
 }

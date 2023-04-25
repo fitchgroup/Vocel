@@ -73,10 +73,13 @@
   "settings": "Settings",
   "notifications": "Notifications",
   "helps": "Helps",
+  "language": "Language",
   "vocelAppLanguageChanges": "Vocel App Language Changes",
   "notices": "Notices",
   "people": "People",
   "reminder": "Reminder",
   "announcement": "announcement",
-  "home": "Home"
+  "home": "Home",
+  "shareOnSocialMedia": "Share on social media",
+  "registerForEvent": "Register for Event"
 }

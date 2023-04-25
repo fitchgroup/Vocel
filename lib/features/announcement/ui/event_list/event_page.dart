@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:vocel/LocalizedMessageResolver.dart';
 import 'package:vocel/common/utils/colors.dart' as constants;
 
 class EventPage extends StatelessWidget {
@@ -147,15 +148,15 @@ class EventPage extends StatelessWidget {
                         ),
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
-                          children: const [
-                            Icon(
+                          children: [
+                            const Icon(
                               Icons.event,
                               color: Colors.white,
                             ),
-                            SizedBox(width: 8),
+                            const SizedBox(width: 8),
                             Text(
-                              'Register for Event',
-                              style: TextStyle(
+                              const LocalizedMessageResolver().registerForEvent(context),
+                              style: const TextStyle(
                                 color: Colors.white,
                                 fontWeight: FontWeight.bold,
                                 fontSize: 16,
@@ -177,9 +178,9 @@ class EventPage extends StatelessWidget {
                               ),
                             ),
                             const SizedBox(width: 16),
-                            const Text(
-                              'Share on social media',
-                              style: TextStyle(
+                            Text(
+                              const LocalizedMessageResolver().shareOnSocialMedia(context),
+                              style: const TextStyle(
                                 color: Colors.grey,
                                 fontWeight: FontWeight.bold,
                                 fontSize: 16,
