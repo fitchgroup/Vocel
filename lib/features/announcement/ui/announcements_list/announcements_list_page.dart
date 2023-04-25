@@ -10,6 +10,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:vocel/features/announcement/ui/calendar_page/calendar_list_page.dart';
 import 'package:vocel/features/announcement/ui/chat_page/chat_list/chat_list.dart';
 import 'package:vocel/features/announcement/ui/chat_page/chat_screen/chat_screen.dart';
+import 'package:vocel/features/announcement/ui/home_page/announcement_page.dart';
 
 class AnnouncementsListPage extends StatefulWidget {
   AnnouncementsListPage({
@@ -45,16 +46,19 @@ class _AnnouncementsListPageState extends State<AnnouncementsListPage> {
   Widget selectPage(int pageNumber){
     switch(pageNumber){
       case 0: return const Center(
-        child: ChatScreen(),
+        child: AnnouncementHome(),
       );
       case 1: return const Center(
+        child: ChatScreen(),
+      );
+      case 2: return const Center(
         child: Text("People"),
       );
-      case 2: return Center(
+      case 3: return Center(
         child: CalendarListPage(),
       );
-      default: return Center(
-        child: CalendarListPage(),
+      default: return const Center(
+        child: AnnouncementHome(),
       );
     }
   }
@@ -97,6 +101,10 @@ class _AnnouncementsListPageState extends State<AnnouncementsListPage> {
       bottomNavigationBar: BottomNavigationBar(
           items: <BottomNavigationBarItem>[
             BottomNavigationBarItem(
+                icon: const Icon(Icons.announcement),
+                label: const LocalizedButtonResolver().home(context)
+            ),
+            BottomNavigationBarItem(
               icon: const Icon(Icons.chat),
               label: const LocalizedButtonResolver().chats(context)
             ),
@@ -110,6 +118,7 @@ class _AnnouncementsListPageState extends State<AnnouncementsListPage> {
             )
           ],
         currentIndex: selectPageNumber,
+        unselectedItemColor: Colors.grey.shade400,
         selectedItemColor: const Color(constants.primaryLightTeal),
         onTap: (index) {
             setState(() {

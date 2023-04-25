@@ -75,4 +75,19 @@ class LocalizedButtonResolver extends ButtonResolver {
   String people(BuildContext context){
     return AppLocalizations.of(context)!.people;
   }
+
+  @override
+  String reminder(BuildContext context){
+    return AppLocalizations.of(context)!.reminder;
+  }
+
+  @override
+  String announcement(BuildContext context){
+    return AppLocalizations.of(context)!.announcement;
+  }
+
+  @override
+  String home(BuildContext context){
+    return AppLocalizations.of(context)!.home;
+  }
 }

@@ -1,15 +1,10 @@
-// import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
-// import 'package:amplify_flutter/amplify_flutter.dart';
 // import 'package:cached_network_image/cached_network_image.dart';
 // import 'package:flutter/material.dart';
 // import 'package:go_router/go_router.dart';
-// import 'package:hooks_riverpod/hooks_riverpod.dart';
 // import 'package:intl/intl.dart';
-// import 'package:jwt_decoder/jwt_decoder.dart';
 // import 'package:vocel/common/navigation/router/routes.dart';
+//
 // import 'package:vocel/common/utils/colors.dart' as constants;
-// import 'package:vocel/features/announcement/ui/announcements_list/navigation_drawer.dart';
-// import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 // import 'package:vocel/model/Trip.dart';
 //
 // class TripCard extends StatelessWidget {
