@@ -75,5 +75,8 @@
   "helps": "Helps",
   "vocelAppLanguageChanges": "Vocel App Language Changes",
   "notices": "Notices",
-  "people": "People"
+  "people": "People",
+  "reminder": "Reminder",
+  "announcement": "announcement",
+  "home": "Home"
 }

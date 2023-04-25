@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+
+// these colors need to change the match the theme color
 const Map<int, Color> primarySwatch = {
   50: Color.fromRGBO(255, 207, 68, .1),
   100: Color.fromRGBO(255, 207, 68, .2),
@@ -16,5 +18,6 @@ const MaterialColor primaryColor = MaterialColor(0xFFFFCF44, primarySwatch);
 const int primaryColorDark = 0xFF2798A5;
 const int primaryLightTeal = 0xFF8CC3CC;
 const int primaryDarkTeal = 0xFF007182;
+const int primaryRegularTeal = 0x44ebb9;
 
 // npm intall aws@amplify;

@@ -29,6 +29,9 @@ Future<void> main() async {
   /// Use the global `getIt` instance to register `AuthRepository`
   getIt.registerSingleton<AuthRepository>(configureAmplifySuccess());
   AuthRepository conf = configureAmplifySuccess();
+  /// pass the conf to App() widget, creating
+  /// loose coupling between App() and configureAmplifySuccess,
+  /// which contains the amplifyconfiguration.dart
   conf.configureApp();
 
   runApp(

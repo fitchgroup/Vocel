@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:vocel/common/utils/colors.dart' as constants;
 import 'package:vocel/features/announcement/ui/announcements_list/navigation_item.dart';
+import 'package:vocel/features/announcement/ui/announcements_list/notification_page.dart';
 import 'package:vocel/features/announcement/ui/announcements_list/profile.dart';
 import 'package:vocel/features/announcement/ui/announcements_list/setting_page.dart';
 import 'package:vocel/LocalizedButtonResolver.dart';
@@ -57,15 +58,9 @@ class VocelNavigationDrawer extends StatelessWidget {
                   ),
                   const SizedBox(height: 6,),
                   NavigationItem(
-                      name: const LocalizedButtonResolver().notifications(context),
-                      leadingIcon: Icons.notification_add_rounded,
-                      onPressedFunction: ()=> itemPressed(context, index:5)
-                  ),
-                  const SizedBox(height: 6,),
-                  NavigationItem(
                       name: const LocalizedButtonResolver().helps(context),
                       leadingIcon: Icons.help_outline,
-                      onPressedFunction: ()=> itemPressed(context, index:6)
+                      onPressedFunction: ()=> itemPressed(context, index:5)
                   ),
                   const SizedBox(height: 6,),
                 ],
@@ -104,12 +99,6 @@ itemPressed(BuildContext context, {required int index}) {
         settings: const RouteSettings(arguments: "settings page")));
     break;
     case 5:
-    Navigator.push(context, MaterialPageRoute(
-        builder: (context) =>
-        const VocelProfile(),
-        settings: const RouteSettings(arguments: "settings page")));
-    break;
-    case 6:
     Navigator.push(context, MaterialPageRoute(
         builder: (context) => ContactPage(),
         settings: const RouteSettings(arguments: "settings page")));

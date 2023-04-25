@@ -19,6 +19,8 @@
 
 // ignore_for_file: public_member_api_docs, annotate_overrides, dead_code, dead_codepublic_member_api_docs, depend_on_referenced_packages, file_names, library_private_types_in_public_api, no_leading_underscores_for_library_prefixes, no_leading_underscores_for_local_identifiers, non_constant_identifier_names, null_check_on_nullable_type_parameter, prefer_adjacent_string_concatenation, prefer_const_constructors, prefer_if_null_operators, prefer_interpolation_to_compose_strings, slash_for_doc_comments, sort_child_properties_last, unnecessary_const, unnecessary_constructor_name, unnecessary_late, unnecessary_new, unnecessary_null_aware_assignments, unnecessary_nullable_for_final_variable_declarations, unnecessary_string_interpolations, use_build_context_synchronously
 
+import 'dart:ffi';
+
 import 'package:amplify_core/amplify_core.dart';
 import 'package:flutter/foundation.dart';
 
@@ -29,11 +31,11 @@ class Trip extends Model {
   static const classType = const _TripModelType();
   final String id;
   final String? _tripName;
-  final String? _destination;
+  final String? _description;
   final TemporalDate? _startDate;
   final TemporalDate? _endDate;
-  final String? _tripImageUrl;
-  final String? _tripImageKey;
+  final bool? _isCompleted;
+  final bool? _isPin;
   final TemporalDateTime? _createdAt;
   final TemporalDateTime? _updatedAt;
 
@@ -63,9 +65,9 @@ class Trip extends Model {
     }
   }
 
-  String get destination {
+  String get description {
     try {
-      return _destination!;
+      return _description!;
     } catch(e) {
       throw new AmplifyCodeGenModelException(
           AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
@@ -102,14 +104,6 @@ class Trip extends Model {
     }
   }
 
-  String? get tripImageUrl {
-    return _tripImageUrl;
-  }
-
-  String? get tripImageKey {
-    return _tripImageKey;
-  }
-
   TemporalDateTime? get createdAt {
     return _createdAt;
   }
@@ -118,17 +112,44 @@ class Trip extends Model {
     return _updatedAt;
   }
 
-  const Trip._internal({required this.id, required tripName, required destination, required startDate, required endDate, tripImageUrl, tripImageKey, createdAt, updatedAt}): _tripName = tripName, _destination = destination, _startDate = startDate, _endDate = endDate, _tripImageUrl = tripImageUrl, _tripImageKey = tripImageKey, _createdAt = createdAt, _updatedAt = updatedAt;
+  bool? get isCompleted {
+    return _isCompleted;
+  }
 
-  factory Trip({String? id, required String tripName, required String destination, required TemporalDate startDate, required TemporalDate endDate, String? tripImageUrl, String? tripImageKey}) {
+  bool? get isPin {
+    return _isPin;
+  }
+
+
+  const Trip._internal({
+    required this.id,
+    required tripName,
+    required description,
+    required startDate,
+    required endDate,
+    createdAt,
+    updatedAt,
+    isCompleted,
+    isPin}):
+        _tripName = tripName,
+        _description = description,
+        _startDate = startDate,
+        _endDate = endDate,
+        _createdAt = createdAt,
+        _updatedAt = updatedAt,
+        _isCompleted = isCompleted,
+        _isPin = isPin;
+
+  factory Trip({String? id, required String tripName, required String description, required TemporalDate startDate, required TemporalDate endDate, bool? isCompleted, bool? isPin}) {
     return Trip._internal(
         id: id == null ? UUID.getUUID() : id,
         tripName: tripName,
-        destination: destination,
+        description: description,
         startDate: startDate,
         endDate: endDate,
-        tripImageUrl: tripImageUrl,
-        tripImageKey: tripImageKey);
+        isCompleted: isCompleted,
+        isPin: isPin
+    );
   }
 
   bool equals(Object other) {
@@ -141,11 +162,9 @@ class Trip extends Model {
     return other is Trip &&
         id == other.id &&
         _tripName == other._tripName &&
-        _destination == other._destination &&
+        _description == other._description &&
         _startDate == other._startDate &&
-        _endDate == other._endDate &&
-        _tripImageUrl == other._tripImageUrl &&
-        _tripImageKey == other._tripImageKey;
+        _endDate == other._endDate; // &&
   }
 
   @override
@@ -158,56 +177,71 @@ class Trip extends Model {
     buffer.write("Trip {");
     buffer.write("id=" + "$id" + ", ");
     buffer.write("tripName=" + "$_tripName" + ", ");
-    buffer.write("destination=" + "$_destination" + ", ");
+    buffer.write("description=" + "$_description" + ", ");
     buffer.write("startDate=" + (_startDate != null ? _startDate!.format() : "null") + ", ");
     buffer.write("endDate=" + (_endDate != null ? _endDate!.format() : "null") + ", ");
-    buffer.write("tripImageUrl=" + "$_tripImageUrl" + ", ");
-    buffer.write("tripImageKey=" + "$_tripImageKey" + ", ");
     buffer.write("createdAt=" + (_createdAt != null ? _createdAt!.format() : "null") + ", ");
     buffer.write("updatedAt=" + (_updatedAt != null ? _updatedAt!.format() : "null"));
+    buffer.write("isCompleted=" + (_isCompleted != null ? _isCompleted.toString() : "null"));
+    buffer.write("isPin=" + (_isPin != null ? _isPin.toString() : "null"));
     buffer.write("}");
 
     return buffer.toString();
   }
 
-  Trip copyWith({String? tripName, String? destination, TemporalDate? startDate, TemporalDate? endDate, String? tripImageUrl, String? tripImageKey}) {
+  Trip copyWith({String? tripName, String? description, TemporalDate? startDate, TemporalDate? endDate, bool? isCompleted, bool? isPin}) {
     return Trip._internal(
         id: id,
         tripName: tripName ?? this.tripName,
-        destination: destination ?? this.destination,
+        description: description ?? this.description,
         startDate: startDate ?? this.startDate,
         endDate: endDate ?? this.endDate,
-        tripImageUrl: tripImageUrl ?? this.tripImageUrl,
-        tripImageKey: tripImageKey ?? this.tripImageKey);
+        isCompleted: isCompleted ?? this.isCompleted,
+        isPin: isPin ?? this.isPin
+    );
   }
 
   Trip.fromJson(Map<String, dynamic> json)
       : id = json['id'],
         _tripName = json['tripName'],
-        _destination = json['destination'],
+        _description = json['description'],
         _startDate = json['startDate'] != null ? TemporalDate.fromString(json['startDate']) : null,
         _endDate = json['endDate'] != null ? TemporalDate.fromString(json['endDate']) : null,
-        _tripImageUrl = json['tripImageUrl'],
-        _tripImageKey = json['tripImageKey'],
         _createdAt = json['createdAt'] != null ? TemporalDateTime.fromString(json['createdAt']) : null,
-        _updatedAt = json['updatedAt'] != null ? TemporalDateTime.fromString(json['updatedAt']) : null;
+        _updatedAt = json['updatedAt'] != null ? TemporalDateTime.fromString(json['updatedAt']) : null,
+        _isCompleted = json['isCompleted'] != null ? json['isCompleted'] : null,
+        _isPin = json['isPin'] != null ? json['isPin'] : null;
 
   Map<String, dynamic> toJson() => {
-    'id': id, 'tripName': _tripName, 'destination': _destination, 'startDate': _startDate?.format(), 'endDate': _endDate?.format(), 'tripImageUrl': _tripImageUrl, 'tripImageKey': _tripImageKey, 'createdAt': _createdAt?.format(), 'updatedAt': _updatedAt?.format()
+    'id': id,
+    'tripName': _tripName,
+    'description': _description,
+    'startDate': _startDate?.format(),
+    'endDate': _endDate?.format(),
+    'createdAt': _createdAt?.format(),
+    'updatedAt': _updatedAt?.format(),
+    'isCompleted': _isCompleted.toString(),
+    'isPin': _isPin.toString()
   };
 
   Map<String, Object?> toMap() => {
-    'id': id, 'tripName': _tripName, 'destination': _destination, 'startDate': _startDate, 'endDate': _endDate, 'tripImageUrl': _tripImageUrl, 'tripImageKey': _tripImageKey, 'createdAt': _createdAt, 'updatedAt': _updatedAt
+    'id': id,
+    'tripName': _tripName,
+    'description': _description,
+    'startDate': _startDate,
+    'endDate': _endDate,
+    'createdAt': _createdAt,
+    'updatedAt': _updatedAt,
+    'isCompleted': _isCompleted,
+    'isPin': _isPin
   };
 
   static final QueryModelIdentifier<TripModelIdentifier> MODEL_IDENTIFIER = QueryModelIdentifier<TripModelIdentifier>();
   static final QueryField ID = QueryField(fieldName: "id");
   static final QueryField TRIPNAME = QueryField(fieldName: "tripName");
-  static final QueryField DESTINATION = QueryField(fieldName: "destination");
+  static final QueryField DESCRIPTION = QueryField(fieldName: "description");
   static final QueryField STARTDATE = QueryField(fieldName: "startDate");
   static final QueryField ENDDATE = QueryField(fieldName: "endDate");
-  static final QueryField TRIPIMAGEURL = QueryField(fieldName: "tripImageUrl");
-  static final QueryField TRIPIMAGEKEY = QueryField(fieldName: "tripImageKey");
   static var schema = Model.defineSchema(define: (ModelSchemaDefinition modelSchemaDefinition) {
     modelSchemaDefinition.name = "Trip";
     modelSchemaDefinition.pluralName = "Trips";
@@ -235,7 +269,7 @@ class Trip extends Model {
     ));
 
     modelSchemaDefinition.addField(ModelFieldDefinition.field(
-        key: Trip.DESTINATION,
+        key: Trip.DESCRIPTION,
         isRequired: true,
         ofType: ModelFieldType(ModelFieldTypeEnum.string)
     ));
@@ -252,18 +286,6 @@ class Trip extends Model {
         ofType: ModelFieldType(ModelFieldTypeEnum.date)
     ));
 
-    modelSchemaDefinition.addField(ModelFieldDefinition.field(
-        key: Trip.TRIPIMAGEURL,
-        isRequired: false,
-        ofType: ModelFieldType(ModelFieldTypeEnum.string)
-    ));
-
-    modelSchemaDefinition.addField(ModelFieldDefinition.field(
-        key: Trip.TRIPIMAGEKEY,
-        isRequired: false,
-        ofType: ModelFieldType(ModelFieldTypeEnum.string)
-    ));
-
     modelSchemaDefinition.addField(ModelFieldDefinition.nonQueryField(
         fieldName: 'createdAt',
         isRequired: false,
@@ -276,6 +298,18 @@ class Trip extends Model {
         isRequired: false,
         isReadOnly: true,
         ofType: ModelFieldType(ModelFieldTypeEnum.dateTime)
+    ));
+
+    modelSchemaDefinition.addField(ModelFieldDefinition.nonQueryField(
+        fieldName: 'isCompleted',
+        isRequired: false,
+        ofType: ModelFieldType(ModelFieldTypeEnum.bool)
+    ));
+
+    modelSchemaDefinition.addField(ModelFieldDefinition.nonQueryField(
+        fieldName: 'isPin',
+        isRequired: false,
+        ofType: ModelFieldType(ModelFieldTypeEnum.bool)
     ));
   });
 }
