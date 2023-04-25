@@ -81,5 +81,14 @@
   "announcement": "announcement",
   "home": "Home",
   "shareOnSocialMedia": "Share on social media",
-  "registerForEvent": "Register for Event"
+  "registerForEvent": "Register for Event",
+  "accountSettings": "Account Settings",
+  "eventDetail" : "Event Detail",
+  "eventDescription": "Event Description",
+  "contactForm": "Contact Form",
+  "getInTouch": "Get InTouch",
+  "message": "Message",
+  "contactInfo": "Contact Info",
+  "editProfile": "Edit Profiles",
+  "myAccount": "My Account"
 }

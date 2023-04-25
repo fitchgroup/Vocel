@@ -25,8 +25,8 @@ class EventPage extends StatelessWidget {
             },
           ),
         ),
-        title: const Text(
-          "Event Details",
+        title: Text(
+          const LocalizedMessageResolver().eventDetail(context),
         ),
         actions: const [],
         centerTitle: false,
@@ -115,7 +115,7 @@ class EventPage extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Event Description',
+                        const LocalizedMessageResolver().eventDescription(context),
                         style: GoogleFonts.montserrat(
                           color: const Color(0xFF0A1931),
                           fontWeight: FontWeight.bold,

@@ -1,6 +1,7 @@
 // Importing required packages and files
 import 'package:flutter/material.dart';
 import 'package:vocel/LocalizedButtonResolver.dart';
+import 'package:vocel/LocalizedMessageResolver.dart';
 import 'package:vocel/common/utils/colors.dart' as constants;
 
 // Defining ContactPage as a stateless widget
@@ -58,10 +59,10 @@ class ContactPage extends StatelessWidget {
                 opacity: 0.7 // Sets the opacity of the image to 0.7
             ),
           ),
-          child: const Center(
+          child: Center(
             child: Text(
-              'Get In Touch', // Displays the text "Get In Touch" in the center of the container
-              style: TextStyle(
+              const LocalizedMessageResolver().getInTouch(context), // Displays the text "Get In Touch" in the center of the container
+              style: const TextStyle(
                 color: Color(constants.primaryDarkTeal), // Sets the color of the text to a constant value defined in the "colors.dart" file
                 fontSize: 28,
                 fontWeight: FontWeight.bold,
@@ -86,32 +87,32 @@ class ContactPage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-                  const Text(
-                    'Contact Form',
-                    style: TextStyle(
+                   Text(
+                    const LocalizedMessageResolver().contactForm(context),
+                    style: const TextStyle(
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                   const SizedBox(height: 20),
-                  const TextField(
+                   TextField(
                     decoration: InputDecoration(
-                      hintText: 'Name',
-                      border: OutlineInputBorder(),
+                      hintText: const LocalizedMessageResolver().name(context),
+                      border: const OutlineInputBorder(),
                     ),
                   ),
                   const SizedBox(height: 10),
-                  const TextField(
+                   TextField(
                     decoration: InputDecoration(
-                      hintText: 'Email',
-                      border: OutlineInputBorder(),
+                      hintText: const LocalizedButtonResolver().email(context),
+                      border: const OutlineInputBorder(),
                     ),
                   ),
                   const SizedBox(height: 10),
-                  const TextField(
+                   TextField(
                     decoration: InputDecoration(
-                      hintText: 'Message',
-                      border: OutlineInputBorder(),
+                      hintText: const LocalizedMessageResolver().message(context),
+                      border: const OutlineInputBorder(),
                     ),
                     maxLines: 5,
                   ),
@@ -120,7 +121,7 @@ class ContactPage extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       Container(
-                        width: 100,
+                        width: 120,
                         height: 50,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(30),
@@ -140,9 +141,9 @@ class ContactPage extends StatelessWidget {
                           shape: const RoundedRectangleBorder(
                             borderRadius: BorderRadius.all(Radius.circular(30)),
                           ),
-                          child: const Text(
-                            'Submit',
-                            style: TextStyle(
+                          child: Text(
+                            const LocalizedButtonResolver().submit(context),
+                            style: const TextStyle(
                               fontSize: 18,
                             ),
                           ),
@@ -159,32 +160,32 @@ class ContactPage extends StatelessWidget {
               padding: const EdgeInsets.symmetric(vertical: 30),
               child: Center(
                 child: Column(
-                  children: const <Widget>[
+                  children: <Widget>[
                     Text(
-                      'Contact Information',
-                      style: TextStyle(
+                      const LocalizedMessageResolver().contactForm(context),
+                      style: const TextStyle(
                         fontSize: 24,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    SizedBox(height: 20),
-                    Text(
-                      'Address: Chicago ... ',
-                      style: TextStyle(
+                    const SizedBox(height: 20),
+                     Text(
+                      '${const LocalizedMessageResolver().address(context)}: Chicago ... ',
+                      style: const TextStyle(
                         fontSize: 18,
                       ),
                     ),
-                    SizedBox(height: 10),
-                    Text(
-                      'Phone: 555-555-5555',
-                      style: TextStyle(
+                    const SizedBox(height: 10),
+                     Text(
+                      '${const LocalizedMessageResolver().phoneNumber(context)}: 555-555-5555',
+                      style: const TextStyle(
                         fontSize: 18,
                       ),
                     ),
-                    SizedBox(height: 10),
-                    Text(
-                      'Email: info@fitch....com',
-                      style: TextStyle(
+                    const SizedBox(height: 10),
+                     Text(
+                      '${const LocalizedButtonResolver().email(context)}: info@fitch....com',
+                      style: const TextStyle(
                         fontSize: 18,
                       ),
                     ),

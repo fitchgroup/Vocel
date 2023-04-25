@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:vocel/LocalizedButtonResolver.dart';
+import 'package:vocel/LocalizedMessageResolver.dart';
 import 'package:vocel/common/utils/colors.dart' as constants;
 import 'package:vocel/features/announcement/ui/discussion_forum/forum_post.dart';
 
@@ -25,8 +27,8 @@ class ForumPage extends StatelessWidget {
             },
           ),
         ),
-        title: const Text(
-          "Discussion Forum",
+        title: Text(
+          const LocalizedButtonResolver().discussionForum(context),
         ),
         actions: const [],
         centerTitle: false,
