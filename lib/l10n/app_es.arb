@@ -75,5 +75,8 @@
   "helps": "Ayuda",
   "vocelAppLanguageChanges": "Vocel App Cambios de idioma",
   "notice": "Aviso",
-  "people": "Gente"
+  "people": "Gente",
+  "reminder": "Recordatorio",
+  "announcement": "anuncio",
+  "home": "Hogar"
 }

@@ -56,6 +56,8 @@ dependencies:
   ffi: ^2.0.1
   open_filex: ^4.3.2
   table_calendar: 3.0.5
+  injectable: ^1.5.3
+  get_it: ^7.2.0
 
 
 
@@ -84,6 +86,8 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^2.0.0
+  build_runner: ^2.2.0
+  injectable_generator: ^1.5.4
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -99,7 +103,7 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-      - images/social-white-900x900.png 
+      - images/vocel_logo.png
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

@@ -94,12 +94,17 @@ class _SearchBarState extends State<SearchBar> {
                 })
               }
             },
-
             focusNode: FocusNode(skipTraversal: true),
-            child: Icon(
-              queryController!.text != "" ? Icons.cancel_outlined : Icons.search,
-              color: const Color(constants.primaryColorDark),
-              size: 20,
+            child: AnimatedContainer(
+              duration: const Duration(milliseconds: 200),
+              curve: Curves.easeInOut,
+              child: Icon(
+                queryController!.text.isNotEmpty
+                    ? Icons.cancel_outlined
+                    : Icons.search,
+                color: const Color(constants.primaryColorDark),
+                size: 20,
+              ),
             ),
           ),
         ),

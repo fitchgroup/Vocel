@@ -11,14 +11,14 @@ final tripsDataStoreServiceProvider = Provider<TripsDataStoreService>((ref) {
 class TripsDataStoreService {
   TripsDataStoreService();
 
-  Stream<List<Trip>> listenToAnnouncements() {
+  Stream<List<Trip>> listenToTrips() {
     return Amplify.DataStore.observeQuery(
       Trip.classType,
-      sortBy: [Trip.STARTDATE.ascending()],
+      sortBy: [Trip.ENDDATE.ascending()],
     )
         .map((event) => event.items
         .where((element) =>
-        element.endDate.getDateTime().isAfter(DateTime.now()))
+        element.startDate.getDateTime().isAfter(DateTime.now()))
         .toList())
         .handleError(
           (error) {
@@ -27,7 +27,7 @@ class TripsDataStoreService {
     );
   }
 
-  Stream<List<Trip>> listenToPastAnnouncements() {
+  Stream<List<Trip>> listenToPastTrips() {
     return Amplify.DataStore.observeQuery(
       Trip.classType,
       sortBy: [Trip.STARTDATE.ascending()],
@@ -43,7 +43,7 @@ class TripsDataStoreService {
     );
   }
 
-  Stream<Trip> getAnnouncementsStream(String id) {
+  Stream<Trip> getTripStream(String id) {
     final tripStream =
     Amplify.DataStore.observeQuery(Trip.classType, where: Trip.ID.eq(id))
         .map((event) => event.items.toList().single);
@@ -51,7 +51,7 @@ class TripsDataStoreService {
     return tripStream;
   }
 
-  Future<void> addAnnouncements(Trip trip) async {
+  Future<void> addTrip(Trip trip) async {
     try {
       await Amplify.DataStore.save(trip);
     } on Exception catch (error) {
@@ -59,7 +59,7 @@ class TripsDataStoreService {
     }
   }
 
-  Future<void> deleteAnnouncements(Trip trip) async {
+  Future<void> deleteTrip(Trip trip) async {
     try {
       await Amplify.DataStore.delete(trip);
     } on Exception catch (error) {
@@ -67,7 +67,7 @@ class TripsDataStoreService {
     }
   }
 
-  Future<void> updateAnnouncements(Trip updatedTrip) async {
+  Future<void> updateTrip(Trip updatedTrip) async {
     try {
       final tripsWithId = await Amplify.DataStore.query(
         Trip.classType,
@@ -82,50 +82,6 @@ class TripsDataStoreService {
         endDate: updatedTrip.endDate,
         // tripImageKey: updatedTrip.tripImageKey,
         // tripImageUrl: updatedTrip.tripImageUrl,
-      );
-
-      await Amplify.DataStore.save(newTrip);
-    } on Exception catch (error) {
-      debugPrint(error.toString());
-    }
-  }
-
-  Future<void> pinAnnouncements(Trip pinTrip) async {
-    try {
-      final tripsWithId = await Amplify.DataStore.query(
-        Trip.classType,
-        where: Trip.ID.eq(pinTrip.id),
-      );
-
-      final oldTrip = tripsWithId.first;
-
-      bool assign = oldTrip.isPin ?? false;
-      assign = !assign;
-
-      final newTrip = oldTrip.copyWith(
-        isPin: assign
-      );
-
-      await Amplify.DataStore.save(newTrip);
-    } on Exception catch (error) {
-      debugPrint(error.toString());
-    }
-  }
-
-  Future<void> completeAnnouncements(Trip completeTrip) async {
-    try {
-      final tripsWithId = await Amplify.DataStore.query(
-        Trip.classType,
-        where: Trip.ID.eq(completeTrip.id),
-      );
-
-      final oldTrip = tripsWithId.first;
-
-      bool assign = oldTrip.isCompleted ?? false;
-      assign = !assign;
-
-      final newTrip = oldTrip.copyWith(
-          isCompleted: assign
       );
 
       await Amplify.DataStore.save(newTrip);

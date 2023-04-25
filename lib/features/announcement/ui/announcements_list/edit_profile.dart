@@ -14,12 +14,8 @@ import 'package:vocel/common/utils/colors.dart' as constants;
 
 
 class EditProfileWidget extends StatefulWidget {
-// const EditProfiledget({
-//   Key? key,
-//   this.userProfile,
-// }) : super(key: key);
-//
-// final DocumentReference? userProfile;
+  const EditProfileWidget({super.key});
+
 
   @override
   _EditProfileWidgetState createState() => _EditProfileWidgetState();
@@ -281,7 +277,7 @@ class _EditProfileWidgetState extends State<EditProfileWidget> {
                                   height: profileHeight * 1.5,
                                   width: profileHeight * 1.5,
                                   image: AssetImage(
-                                      'images/social-white-900x900.png'
+                                      'images/vocel_logo.png'
 // 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTcZsL6PVn0SNiabAKz7js0QknS2ilJam19QQ&usqp=CAU'
 // 'https://www.computerhope.com/jargon/g/guest-user.png',
 //'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQIWzldjAy2NDfNAE8FAlKVMsoKIGU1B6CormNCp8RM1isll9a5x0fyXuhbejfdD2Lam4A&usqp=CAU',
