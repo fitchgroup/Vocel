@@ -2,6 +2,8 @@ import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
+import 'package:vocel/LocalizedButtonResolver.dart';
+import 'package:vocel/LocalizedMessageResolver.dart';
 import 'package:vocel/common/utils/colors.dart' as constants;
 import 'package:vocel/features/announcement/ui/announcements_list/edit_profile.dart';
 import 'package:vocel/features/announcement/ui/announcements_list/setting_page.dart';
@@ -38,8 +40,8 @@ class _VocelProfileState extends State<VocelProfile> {
             },
           ),
         ),
-        title: const Text(
-          "Profile && Account Settings",
+        title: Text(
+          "${const LocalizedMessageResolver().profile(context)} && ${const LocalizedButtonResolver().settings(context)}",
         ),
         actions: const [],
         centerTitle: false,
@@ -356,7 +358,7 @@ class _VocelProfileState extends State<VocelProfile> {
                         ),
                         const SizedBox(width: 12.0),
                         Text(
-                          'My Account',
+                          const LocalizedMessageResolver().myAccount(context),
                           style: TextStyle(
                             color: Colors.grey[800],
                             fontWeight: FontWeight.bold,
@@ -431,7 +433,7 @@ class _VocelProfileState extends State<VocelProfile> {
                                           ),
                                           Expanded(
                                             child: Text(
-                                              "Edit Profiles",
+                                              const LocalizedButtonResolver().editProfile(context),
                                               style: TextStyle(
                                                 color: Colors.grey[800],
                                               ),
