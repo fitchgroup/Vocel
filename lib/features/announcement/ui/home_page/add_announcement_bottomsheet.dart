@@ -16,8 +16,8 @@ class AddTripBottomSheet extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final tripNameController = useTextEditingController();
-    final destinationController = useTextEditingController();
+    final announcementNameController = useTextEditingController();
+    final descriptionController = useTextEditingController();
     final startDateController = useTextEditingController();
     final endDateController = useTextEditingController();
 
@@ -54,7 +54,7 @@ class AddTripBottomSheet extends HookConsumerWidget {
                   ),
                 ),
               ),
-              controller: tripNameController,
+              controller: announcementNameController,
               keyboardType: TextInputType.name,
               validator: (value) {
                 const validationError = 'Enter a valid Announcement title';
@@ -73,7 +73,7 @@ class AddTripBottomSheet extends HookConsumerWidget {
             ),
             TextFormField(
               keyboardType: TextInputType.name,
-              controller: destinationController,
+              controller: descriptionController,
               decoration: const InputDecoration(
                 hintText: "Announcement Description",
                 enabledBorder: UnderlineInputBorder(
@@ -220,8 +220,8 @@ class AddTripBottomSheet extends HookConsumerWidget {
                   }
                   if (currentState.validate()) {
                     ref.read(tripsListControllerProvider).add(
-                      name: tripNameController.text,
-                      description: destinationController.text,
+                      name: announcementNameController.text,
+                      description: descriptionController.text,
                       startDate: startDateController.text,
                       endDate: endDateController.text,
                     );

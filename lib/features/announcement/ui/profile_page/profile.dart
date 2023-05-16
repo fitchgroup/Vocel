@@ -5,8 +5,8 @@ import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:vocel/LocalizedButtonResolver.dart';
 import 'package:vocel/LocalizedMessageResolver.dart';
 import 'package:vocel/common/utils/colors.dart' as constants;
-import 'package:vocel/features/announcement/ui/announcements_list/edit_profile.dart';
-import 'package:vocel/features/announcement/ui/announcements_list/setting_page.dart';
+import 'package:vocel/features/announcement/ui/profile_page/edit_profile.dart';
+import 'package:vocel/features/announcement/ui/setting_page/setting_page.dart';
 
 class VocelProfile extends StatefulWidget {
   const VocelProfile({Key? key}) : super(key: key);

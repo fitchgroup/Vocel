@@ -5,6 +5,7 @@
 // import 'package:flutter/material.dart';
 // import 'package:intl/intl.dart';
 // import 'package:vocel/common/utils/colors.dart' as constants;
+// import 'package:vocel/features/announcement/ui/home_page/add_announcement_bottomsheet.dart';
 //
 // class Reminder {
 //   final String title;
@@ -110,6 +111,7 @@
 //           final reminder = reminders[index];
 //           return Container(
 //             margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+//             padding: const EdgeInsets.all(1),
 //             padding: const EdgeInsets.all(5),
 //             decoration: BoxDecoration(
 //               color: Colors.white,

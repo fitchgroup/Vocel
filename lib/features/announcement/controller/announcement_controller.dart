@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:vocel/common/services/storage_services.dart';
 import 'package:vocel/data/trip_repository.dart';
-import 'package:vocel/model/Trip.dart';
+import 'package:vocel/models/Trip.dart';
 
 final tripControllerProvider = Provider<TripController>((ref) {
   return TripController(ref);
@@ -13,6 +13,10 @@ final tripControllerProvider = Provider<TripController>((ref) {
 class TripController {
   TripController(this.ref);
   final Ref ref;
+
+  ValueNotifier<double> uploadProgress() {
+    return ref.read(storageServiceProvider).getUploadProgress();
+  }
 
 
   Future<void> edit(Trip updatedTrip) async {

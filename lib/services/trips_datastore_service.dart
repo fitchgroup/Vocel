@@ -1,7 +1,7 @@
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:vocel/model/Trip.dart';
+import 'package:vocel/models/Trip.dart';
 
 final tripsDataStoreServiceProvider = Provider<TripsDataStoreService>((ref) {
   final service = TripsDataStoreService();
@@ -103,7 +103,7 @@ class TripsDataStoreService {
       assign = !assign;
 
       final newTrip = oldTrip.copyWith(
-        isPin: assign
+          isPin: assign
       );
 
       await Amplify.DataStore.save(newTrip);

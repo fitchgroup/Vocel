@@ -1,5 +1,5 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:vocel/model/Trip.dart';
+import 'package:vocel/models/Trip.dart';
 import 'package:vocel/services/trips_datastore_service.dart';
 
 final tripsRepositoryProvider = Provider<TripsRepository>((ref) {

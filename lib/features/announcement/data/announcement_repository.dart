@@ -1,6 +1,6 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:vocel/features/announcement/services/announcement_datastore.dart';
-import 'package:vocel/model/Trip.dart';
+import 'package:vocel/models/Trip.dart';
 
 final tripsRepositoryProvider = Provider<TripsRepository>((ref) {
   TripsDataStoreService tripsDataStoreService =

@@ -1,7 +1,7 @@
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:vocel/model/Trip.dart';
+import 'package:vocel/models/Trip.dart';
 
 final tripsDataStoreServiceProvider = Provider<TripsDataStoreService>((ref) {
   final service = TripsDataStoreService();

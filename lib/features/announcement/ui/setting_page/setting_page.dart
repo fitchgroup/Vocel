@@ -3,8 +3,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:vocel/LocalizedButtonResolver.dart';
 import 'package:vocel/LocalizedMessageResolver.dart';
-import 'package:vocel/features/announcement/ui/announcements_list/language_list.dart';
 import 'package:vocel/common/utils/colors.dart' as constants;
+import 'package:vocel/features/announcement/ui/setting_page/language_list.dart';
 
 class VocelSetting extends StatefulWidget {
   const VocelSetting({Key? key}) : super(key: key);

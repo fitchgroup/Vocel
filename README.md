@@ -9,14 +9,18 @@ Configure amplify:
 https://catalog.us-east-1.prod.workshops.aws/workshops/8b6f6ff9-b7a5-41b2-a8fa-9918b5553553/en-US/03-setting-up-the-development-environment
 
 Add Amplify authentication category to the app:
-https://catalog.us-east-1.prod.workshops.aws/workshops/8b6f6ff9-b7a5-41b2-a8fa-9918b5553553/en-US/05-add-amplify-authentication 
+https://catalog.us-east-1.prod.workshops.aws/workshops/8b6f6ff9-b7a5-41b2-a8fa-9918b5553553/en-US/05-add-amplify-authentication
 
 ## 1 -- replace these constants in amplifyconfiguration.dart...
 
 COGNITO_CREDS_POOL_ID
+
 COGNITO_CREDS_REGION
+
 COGNITO_USER_POOL_ID
+
 COGNITO_USER_APP_CLIENT_ID
+
 COGNITO_USER_REGION
 
 ##### pass amplifyconfiguration.dart in command line:
@@ -25,6 +29,7 @@ COGNITO_USER_REGION
 ```
 --dart-define=VERSION="the const string in amplifyconfiguration.dart"
 ```
+- in this project, the amplifyConfig is stored in lib/common/repository/auth_inject.dart
 - pass the string to amplifyConfig, *VERSION* is just the variable name
 ```dart
 const String amplifyConfig = String.fromEnvironment('VERSION');
@@ -51,3 +56,16 @@ Create groups called ...
 
 * Educators
 * Staff
+
+## Notes:
+#### 1. backend logic:
+
+##### Home page (announcement):
+
+1. click the FloatingActionButton at the bottom right
+
+2. bottomsheet pop up, enter the information would create a new annoucement
+
+3. in the announcement widget, "**HookCunsumerWidget**" package that would allow you to build stateful widgets using hooks. Hooks are a way to manage state and perform side effects in a more concise and reusable manner compared to traditional Flutter StatefulWidget.
+
+4. 

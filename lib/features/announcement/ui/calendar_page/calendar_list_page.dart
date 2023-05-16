@@ -5,7 +5,11 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:vocel/common/utils/colors.dart' as constants;
 import 'package:vocel/data/trip_repository.dart';
+
+import 'package:vocel/features/announcement/ui/setting_page/setting_page.dart';
+
 import 'package:vocel/features/announcement/ui/announcements_list/setting_page.dart';
+
 import 'package:vocel/features/announcement/ui/calendar_page/calendar_util.dart';
 import 'package:vocel/features/announcement/ui/calendar_page/trip_card.dart';
 import 'package:table_calendar/table_calendar.dart';

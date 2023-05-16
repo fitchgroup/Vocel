@@ -17,14 +17,6 @@ Future<void> main() async {
   // List? languages = await Devicelocale.preferredLanguages;
   // String? locale = await Devicelocale.currentLocale;
 
-  // bool isAmplifySuccessfullyConfigured = false;
-  // try {
-  //   await _configureAmplify();
-  //   isAmplifySuccessfullyConfigured = true;
-  // } on AmplifyAlreadyConfiguredException {
-  //   debugPrint('Amplify configuration failed.');
-  // }
-
 
   /// Use the global `getIt` instance to register `AuthRepository`
   getIt.registerSingleton<AuthRepository>(configureAmplifySuccess());
