@@ -19,7 +19,6 @@ class _VocelSetting extends State<VocelSetting>{
     // TODO: implement build
     return Scaffold(
       appBar: AppBar(
-// backgroundColor: Colors.blue, // AppBar Color
         automaticallyImplyLeading: false,
         leading: SizedBox(
           height: 60,

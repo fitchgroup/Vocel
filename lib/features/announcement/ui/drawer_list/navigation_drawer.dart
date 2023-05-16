@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:vocel/common/utils/colors.dart' as constants;
 import 'package:vocel/features/announcement/ui/drawer_list/navigation_item.dart';
-import 'package:vocel/features/announcement/ui/setting_page/notification_page.dart';
 import 'package:vocel/features/announcement/ui/profile_page/profile.dart';
 import 'package:vocel/features/announcement/ui/setting_page/setting_page.dart';
 import 'package:vocel/LocalizedButtonResolver.dart';

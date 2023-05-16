@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:vocel/common/services/storage_services.dart';
-import 'package:vocel/data/trip_repository.dart';
+import 'package:vocel/features/announcement/data/announcement_repository.dart';
 import 'package:vocel/models/Trip.dart';
 
 final tripControllerProvider = Provider<TripController>((ref) {

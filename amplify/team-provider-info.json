@@ -1,0 +1,26 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-fitchvocel-dev-193108-authRole",
+      "UnauthRoleArn": "arn:aws:iam::528051559496:role/amplify-fitchvocel-dev-193108-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::528051559496:role/amplify-fitchvocel-dev-193108-authRole",
+      "Region": "us-east-2",
+      "DeploymentBucketName": "amplify-fitchvocel-dev-193108-deployment",
+      "UnauthRoleName": "amplify-fitchvocel-dev-193108-unauthRole",
+      "StackName": "amplify-fitchvocel-dev-193108",
+      "StackId": "arn:aws:cloudformation:us-east-2:528051559496:stack/amplify-fitchvocel-dev-193108/f136fe70-f380-11ed-93a9-06b637622445",
+      "AmplifyAppId": "d15ue9jqdjngj2"
+    },
+    "categories": {
+      "auth": {
+        "fitchvocel5266d294": {}
+      },
+      "api": {
+        "fitchvocel": {}
+      },
+      "storage": {
+        "s392ab7284": {}
+      }
+    }
+  }
+}

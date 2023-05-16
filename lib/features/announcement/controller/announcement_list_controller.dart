@@ -1,6 +1,6 @@
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:vocel/data/trip_repository.dart';
+import 'package:vocel/features/announcement/data/announcement_repository.dart';
 import 'package:vocel/models/Trip.dart';
 
 final tripsListControllerProvider = Provider<TripsListController>((ref) {
@@ -23,7 +23,7 @@ class TripsListController {
       startDate: TemporalDate(DateTime.parse(startDate)),
       endDate: TemporalDate(DateTime.parse(endDate)),
       isCompleted: false,
-      isPin: false
+      isPinned: false
     );
 
     final tripsRepository = ref.read(tripsRepositoryProvider);

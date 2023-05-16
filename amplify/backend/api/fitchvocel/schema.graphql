@@ -1,0 +1,9 @@
+type Trip @model @auth(rules: [{ allow: owner }]) {
+    id: ID!
+    tripName: String!
+    description: String!
+    startDate: AWSDate!
+    endDate: AWSDate!
+    isCompleted: Boolean!
+    isPinned: Boolean!
+}

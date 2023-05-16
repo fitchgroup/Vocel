@@ -1,10 +1,8 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:vocel/LocalizedMessageResolver.dart';
 import 'package:vocel/common/utils/colors.dart' as constants;
 import 'package:vocel/common/utils/language.dart';
-import 'package:vocel/common/utils/language_constants.dart';
 import 'package:vocel/simple_app.dart';
 
 class LanguageWidget extends StatelessWidget {
@@ -57,38 +55,6 @@ class LanguageWidget extends StatelessWidget {
               );
             }
         )
-
-
-        // DropdownButton<Language>(
-        //   underline: const SizedBox(),
-        //   icon: const Icon(
-        //     Icons.language,
-        //     color: Colors.white,
-        //   ),
-        //   onChanged: (Language? language) async {
-        //     if (language != null) {
-        //       Locale _locale = await setLocale(language.languageCode);
-        //       MyApp.setLocale(context, _locale);
-        //     }
-        //   },
-        //   items: Language.languageList()
-        //       .map<DropdownMenuItem<Language>>(
-        //         (e) => DropdownMenuItem<Language>(
-        //       value: e,
-        //       child: Row(
-        //         mainAxisAlignment: MainAxisAlignment.spaceAround,
-        //         children: <Widget>[
-        //           Text(
-        //             e.flag,
-        //             style: const TextStyle(fontSize: 30),
-        //           ),
-        //           Text(e.name)
-        //         ],
-        //       ),
-        //     ),
-        //   )
-        //       .toList(),
-        // ),
       ),
     );
   }

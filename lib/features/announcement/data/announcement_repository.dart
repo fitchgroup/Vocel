@@ -1,6 +1,6 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:vocel/features/announcement/services/announcement_datastore.dart';
 import 'package:vocel/models/Trip.dart';
+import 'package:vocel/services/trips_datastore_service.dart';
 
 final tripsRepositoryProvider = Provider<TripsRepository>((ref) {
   TripsDataStoreService tripsDataStoreService =
@@ -31,26 +31,34 @@ class TripsRepository {
   final TripsDataStoreService tripsDataStoreService;
 
   Stream<List<Trip>> getTrips() {
-    return tripsDataStoreService.listenToTrips();
+    return tripsDataStoreService.listenToAnnouncements();
   }
 
   Stream<List<Trip>> getPastTrips() {
-    return tripsDataStoreService.listenToPastTrips();
+    return tripsDataStoreService.listenToPastAnnouncements();
   }
 
   Future<void> add(Trip trip) async {
-    await tripsDataStoreService.addTrip(trip);
+    await tripsDataStoreService.addAnnouncements(trip);
   }
 
   Future<void> update(Trip updatedTrip) async {
-    await tripsDataStoreService.updateTrip(updatedTrip);
+    await tripsDataStoreService.updateAnnouncements(updatedTrip);
   }
 
   Future<void> delete(Trip deletedTrip) async {
-    await tripsDataStoreService.deleteTrip(deletedTrip);
+    await tripsDataStoreService.deleteAnnouncements(deletedTrip);
+  }
+
+  Future<void> pinMe(Trip pinTrip) async {
+    await tripsDataStoreService.pinAnnouncements(pinTrip);
+  }
+
+  Future<void> completeMe(Trip completeTrip) async {
+    await tripsDataStoreService.completeAnnouncements(completeTrip);
   }
 
   Stream<Trip> get(String id) {
-    return tripsDataStoreService.getTripStream(id);
+    return tripsDataStoreService.getAnnouncementsStream(id);
   }
 }

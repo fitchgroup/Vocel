@@ -99,11 +99,11 @@ class TripsDataStoreService {
 
       final oldTrip = tripsWithId.first;
 
-      bool assign = oldTrip.isPin ?? false;
+      bool assign = oldTrip.isPinned ?? false;
       assign = !assign;
 
       final newTrip = oldTrip.copyWith(
-          isPin: assign
+          isPinned: assign
       );
 
       await Amplify.DataStore.save(newTrip);

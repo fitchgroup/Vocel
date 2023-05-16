@@ -33,7 +33,7 @@ class Trip extends Model {
   final TemporalDate? _startDate;
   final TemporalDate? _endDate;
   final bool? _isCompleted;
-  final bool? _isPin;
+  final bool? _isPinned;
   final TemporalDateTime? _createdAt;
   final TemporalDateTime? _updatedAt;
 
@@ -115,9 +115,9 @@ class Trip extends Model {
     }
   }
   
-  bool get isPin {
+  bool get isPinned {
     try {
-      return _isPin!;
+      return _isPinned!;
     } catch(e) {
       throw new AmplifyCodeGenModelException(
           AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
@@ -136,9 +136,9 @@ class Trip extends Model {
     return _updatedAt;
   }
   
-  const Trip._internal({required this.id, required tripName, required description, required startDate, required endDate, required isCompleted, required isPin, createdAt, updatedAt}): _tripName = tripName, _description = description, _startDate = startDate, _endDate = endDate, _isCompleted = isCompleted, _isPin = isPin, _createdAt = createdAt, _updatedAt = updatedAt;
+  const Trip._internal({required this.id, required tripName, required description, required startDate, required endDate, required isCompleted, required isPinned, createdAt, updatedAt}): _tripName = tripName, _description = description, _startDate = startDate, _endDate = endDate, _isCompleted = isCompleted, _isPinned = isPinned, _createdAt = createdAt, _updatedAt = updatedAt;
   
-  factory Trip({String? id, required String tripName, required String description, required TemporalDate startDate, required TemporalDate endDate, required bool isCompleted, required bool isPin}) {
+  factory Trip({String? id, required String tripName, required String description, required TemporalDate startDate, required TemporalDate endDate, required bool isCompleted, required bool isPinned}) {
     return Trip._internal(
       id: id == null ? UUID.getUUID() : id,
       tripName: tripName,
@@ -146,7 +146,7 @@ class Trip extends Model {
       startDate: startDate,
       endDate: endDate,
       isCompleted: isCompleted,
-      isPin: isPin);
+      isPinned: isPinned);
   }
   
   bool equals(Object other) {
@@ -163,7 +163,7 @@ class Trip extends Model {
       _startDate == other._startDate &&
       _endDate == other._endDate &&
       _isCompleted == other._isCompleted &&
-      _isPin == other._isPin;
+      _isPinned == other._isPinned;
   }
   
   @override
@@ -180,7 +180,7 @@ class Trip extends Model {
     buffer.write("startDate=" + (_startDate != null ? _startDate!.format() : "null") + ", ");
     buffer.write("endDate=" + (_endDate != null ? _endDate!.format() : "null") + ", ");
     buffer.write("isCompleted=" + (_isCompleted != null ? _isCompleted!.toString() : "null") + ", ");
-    buffer.write("isPin=" + (_isPin != null ? _isPin!.toString() : "null") + ", ");
+    buffer.write("isPinned=" + (_isPinned != null ? _isPinned!.toString() : "null") + ", ");
     buffer.write("createdAt=" + (_createdAt != null ? _createdAt!.format() : "null") + ", ");
     buffer.write("updatedAt=" + (_updatedAt != null ? _updatedAt!.format() : "null"));
     buffer.write("}");
@@ -188,7 +188,7 @@ class Trip extends Model {
     return buffer.toString();
   }
   
-  Trip copyWith({String? tripName, String? description, TemporalDate? startDate, TemporalDate? endDate, bool? isCompleted, bool? isPin}) {
+  Trip copyWith({String? tripName, String? description, TemporalDate? startDate, TemporalDate? endDate, bool? isCompleted, bool? isPinned}) {
     return Trip._internal(
       id: id,
       tripName: tripName ?? this.tripName,
@@ -196,7 +196,7 @@ class Trip extends Model {
       startDate: startDate ?? this.startDate,
       endDate: endDate ?? this.endDate,
       isCompleted: isCompleted ?? this.isCompleted,
-      isPin: isPin ?? this.isPin);
+      isPinned: isPinned ?? this.isPinned);
   }
   
   Trip.fromJson(Map<String, dynamic> json)  
@@ -206,16 +206,16 @@ class Trip extends Model {
       _startDate = json['startDate'] != null ? TemporalDate.fromString(json['startDate']) : null,
       _endDate = json['endDate'] != null ? TemporalDate.fromString(json['endDate']) : null,
       _isCompleted = json['isCompleted'],
-      _isPin = json['isPin'],
+      _isPinned = json['isPinned'],
       _createdAt = json['createdAt'] != null ? TemporalDateTime.fromString(json['createdAt']) : null,
       _updatedAt = json['updatedAt'] != null ? TemporalDateTime.fromString(json['updatedAt']) : null;
   
   Map<String, dynamic> toJson() => {
-    'id': id, 'tripName': _tripName, 'description': _description, 'startDate': _startDate?.format(), 'endDate': _endDate?.format(), 'isCompleted': _isCompleted, 'isPin': _isPin, 'createdAt': _createdAt?.format(), 'updatedAt': _updatedAt?.format()
+    'id': id, 'tripName': _tripName, 'description': _description, 'startDate': _startDate?.format(), 'endDate': _endDate?.format(), 'isCompleted': _isCompleted, 'isPinned': _isPinned, 'createdAt': _createdAt?.format(), 'updatedAt': _updatedAt?.format()
   };
   
   Map<String, Object?> toMap() => {
-    'id': id, 'tripName': _tripName, 'description': _description, 'startDate': _startDate, 'endDate': _endDate, 'isCompleted': _isCompleted, 'isPin': _isPin, 'createdAt': _createdAt, 'updatedAt': _updatedAt
+    'id': id, 'tripName': _tripName, 'description': _description, 'startDate': _startDate, 'endDate': _endDate, 'isCompleted': _isCompleted, 'isPinned': _isPinned, 'createdAt': _createdAt, 'updatedAt': _updatedAt
   };
 
   static final QueryModelIdentifier<TripModelIdentifier> MODEL_IDENTIFIER = QueryModelIdentifier<TripModelIdentifier>();
@@ -225,7 +225,7 @@ class Trip extends Model {
   static final QueryField STARTDATE = QueryField(fieldName: "startDate");
   static final QueryField ENDDATE = QueryField(fieldName: "endDate");
   static final QueryField ISCOMPLETED = QueryField(fieldName: "isCompleted");
-  static final QueryField ISPIN = QueryField(fieldName: "isPin");
+  static final QueryField ISPINNED = QueryField(fieldName: "isPinned");
   static var schema = Model.defineSchema(define: (ModelSchemaDefinition modelSchemaDefinition) {
     modelSchemaDefinition.name = "Trip";
     modelSchemaDefinition.pluralName = "Trips";
@@ -277,7 +277,7 @@ class Trip extends Model {
     ));
     
     modelSchemaDefinition.addField(ModelFieldDefinition.field(
-      key: Trip.ISPIN,
+      key: Trip.ISPINNED,
       isRequired: true,
       ofType: ModelFieldType(ModelFieldTypeEnum.bool)
     ));
