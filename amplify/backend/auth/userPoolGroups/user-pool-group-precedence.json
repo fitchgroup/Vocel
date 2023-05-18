@@ -1,0 +1,18 @@
+[
+  {
+    "groupName": "admin",
+    "precedence": 1
+  },
+  {
+    "groupName": "principal",
+    "precedence": 2
+  },
+  {
+    "groupName": "staff",
+    "precedence": 3
+  },
+  {
+    "groupName": "parent",
+    "precedence": 4
+  }
+]

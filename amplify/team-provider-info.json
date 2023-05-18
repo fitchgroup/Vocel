@@ -13,13 +13,20 @@
     },
     "categories": {
       "auth": {
-        "fitchvocel5266d294": {}
+        "fitchvocel5266d294": {},
+        "userPoolGroups": {}
       },
       "api": {
         "fitchvocel": {}
       },
       "storage": {
         "s392ab7284": {}
+      },
+      "hosting": {
+        "amplifyhosting": {
+          "appId": "d15ue9jqdjngj2",
+          "type": "manual"
+        }
       }
     }
   }

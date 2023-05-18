@@ -72,7 +72,7 @@ jobs:
       - run: flutter gen-l10n
       - run: flutter pub get
       # testing running to build IOS app
-      - run: flutter build ios
+#      - run: flutter build ios
       # - run: flutter test
       - run: flutter build apk --release --split-per-abi
       - run: flutter build appbundle --release
