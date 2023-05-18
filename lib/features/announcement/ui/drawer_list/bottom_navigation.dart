@@ -5,6 +5,7 @@ import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:vocel/LocalizedButtonResolver.dart';
 import 'package:vocel/LocalizedMessageResolver.dart';
 import 'package:vocel/common/utils/colors.dart' as constants;
+import 'package:vocel/features/announcement/ui/calendar_page/calendar_hook.dart';
 import 'package:vocel/features/announcement/ui/drawer_list/navigation_drawer.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:vocel/features/announcement/ui/calendar_page/calendar_list_page.dart';
@@ -53,10 +54,10 @@ class _AnnouncementsListPageState extends State<AnnouncementsListPage> {
         child: ChatScreen(),
       );
       case 2: return const Center(
-        child: Text("People"),
+        child: Text("People (Need Modification)"),
       );
-      case 3: return Center(
-        child: CalendarListPage(),
+      case 3: return const Center(
+        child: CalendarHook(),
       );
       default: return const Center(
         child: AnnouncementHome(),

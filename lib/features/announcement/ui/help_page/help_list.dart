@@ -29,7 +29,7 @@ class ContactPage extends StatelessWidget {
           ),
         ),
         title: Text(
-            const LocalizedButtonResolver().settings(context), // Sets the title of the app bar to "Settings"
+            const LocalizedButtonResolver().helps(context), // Sets the title of the app bar to "Settings"
         ),
         actions: const [], // Removes any actions in the app bar
         centerTitle: false, // Aligns the title of the app bar to the left

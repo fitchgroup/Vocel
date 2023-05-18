@@ -58,6 +58,7 @@ dependencies:
   table_calendar: 3.0.5
   injectable: ^1.5.3
   get_it: ^7.2.0
+  mailer: ^4.0.0
 
 
 
