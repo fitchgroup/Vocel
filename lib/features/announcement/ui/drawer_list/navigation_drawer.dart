@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:vocel/common/utils/colors.dart' as constants;
 import 'package:vocel/features/announcement/ui/drawer_list/navigation_item.dart';
+import 'package:vocel/features/announcement/ui/notification_page/group_changing_list.dart';
 import 'package:vocel/features/announcement/ui/profile_page/profile.dart';
 import 'package:vocel/features/announcement/ui/setting_page/setting_page.dart';
 import 'package:vocel/LocalizedButtonResolver.dart';
@@ -41,6 +42,12 @@ class VocelNavigationDrawer extends StatelessWidget {
                       name: const LocalizedButtonResolver().discussionForum(context),
                       leadingIcon: Icons.post_add,
                       onPressedFunction: ()=> itemPressed(context, index:2)
+                  ),
+                  const SizedBox(height: 6,),
+                  NavigationItem(
+                      name: "Group Settings",
+                      leadingIcon: Icons.manage_accounts_sharp,
+                      onPressedFunction: ()=> itemPressed(context, index:3)
                   ),
                   const SizedBox(height: 6,),
                   Divider(
@@ -91,6 +98,12 @@ itemPressed(BuildContext context, {required int index}) {
         ForumPage(),
         settings: const RouteSettings(arguments: "settings page")));
     break;
+    case 3:
+      Navigator.push(context, MaterialPageRoute(
+          builder: (context) =>
+              ManageAccountList(),
+          settings: const RouteSettings(arguments: "settings page")));
+      break;
     case 4:
     Navigator.push(context, MaterialPageRoute(
         builder: (context) =>

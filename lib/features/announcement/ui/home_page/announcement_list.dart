@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:vocel/common/utils/colors.dart' as constants;
+import 'package:vocel/common/utils/manage_user.dart';
 import 'package:vocel/features/announcement/controller/announcement_controller.dart';
 import 'package:vocel/features/announcement/data/announcement_repository.dart';
 import 'package:vocel/features/announcement/ui/home_page/add_announcement_bottomsheet.dart';
@@ -31,15 +32,45 @@ class AnnouncementHome extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final Orientation orientation = MediaQuery.of(context).orientation;
     final AsyncValue<List<Trip?>> reminderValue = ref.watch(tripsListStreamProvider);
+    String keyString = key?.toString() ?? "null";
 
+    /// if use checkValidFuture
+    // floatingActionButton: FutureBuilder<bool>(
+    //   future: checkValid(keyString),
+    //   builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
+    //     if (snapshot.connectionState == ConnectionState.waiting) {
+    //       // While the future is still loading, you can show a progress indicator or any placeholder widget.
+    //       return CircularProgressIndicator();
+    //     } else if (snapshot.hasError) {
+    //       // If an error occurred during the future execution, you can handle it accordingly.
+    //       return Text('Error: ${snapshot.error}');
+    //     } else {
+    //       final bool shouldShowFloatingActionButton = snapshot.data ?? false;
+    //
+    //       return Visibility(
+    //         visible: shouldShowFloatingActionButton,
+    //         child: FloatingActionButton(
+    //           backgroundColor: const Color(constants.primaryColorDark),
+    //           onPressed: () async {
+    //             showAddAnnouncementDialog(context);
+    //           },
+    //           child: const Icon(Icons.add),
+    //         ),
+    //       );
+    //     }
+    //   },
+    // ),
 
     return Scaffold(
-        floatingActionButton: FloatingActionButton(
-          backgroundColor: const Color(constants.primaryColorDark),
-          onPressed: () async {
-            showAddAnnouncementDialog(context);
-          },
-          child: const Icon(Icons.add),
+        floatingActionButton: Visibility(
+          visible: checkValid(keyString.split("<'")[1].split("'>")[0].trim()),
+          child: FloatingActionButton(
+            backgroundColor: const Color(constants.primaryColorDark),
+            onPressed: () async {
+              showAddAnnouncementDialog(context);
+            },
+            child: const Icon(Icons.add),
+          ),
         ),
         body: reminderValue.when(
             data: (announcement) => announcement.isEmpty

@@ -1,54 +1,84 @@
+import 'dart:convert';
+
 import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
+import 'package:amplify_authenticator/amplify_authenticator.dart';
 import 'package:amplify_flutter/amplify_flutter.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:vocel/LocalizedButtonResolver.dart';
-import 'package:vocel/LocalizedMessageResolver.dart';
 import 'package:vocel/common/utils/colors.dart' as constants;
+import 'package:vocel/common/utils/manage_user.dart';
 import 'package:vocel/features/announcement/ui/calendar_page/calendar_hook.dart';
 import 'package:vocel/features/announcement/ui/drawer_list/navigation_drawer.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:vocel/features/announcement/ui/calendar_page/calendar_list_page.dart';
-import 'package:vocel/features/announcement/ui/chat_page/chat_list/chat_list.dart';
 import 'package:vocel/features/announcement/ui/chat_page/chat_screen/chat_screen.dart';
-import 'package:vocel/features/announcement/ui/drawer_list/navigation_drawer.dart';
 import 'package:vocel/features/announcement/ui/home_page/announcement_list.dart';
+
 
 class AnnouncementsListPage extends StatefulWidget {
   AnnouncementsListPage({
     super.key,
-  }) {
-    // fetchGroups();
-  }
-
-  // Future<List> fetchGroups() async {
-  //   List groups = List.filled(0, 0);
-  //   try {
-  //     final result = await Amplify.Auth.fetchAuthSession(
-  //       options: CognitoSessionOptions(getAWSCredentials: true),
-  //     );
-  //     String accessToken = ((result as CognitoAuthSession).userPoolTokens)!
-  //         .accessToken; //.idToken;
-  //     Map<String, dynamic> decodedToken = JwtDecoder.decode(accessToken);
-  //     groups = decodedToken["cognito:groups"];
-  //   } on AuthException catch (e) {
-  //     safePrint(e.message);
-  //   }
-  //   return groups;
-  // }
+  });
 
   @override
-  State<AnnouncementsListPage> createState() => _AnnouncementsListPageState();
+  State<AnnouncementsListPage> createState() => _AnnouncementsListPageState(fetchGroups, addUserGroup, removeUserGroup, getUserAttributes);
 }
 
 class _AnnouncementsListPageState extends State<AnnouncementsListPage> {
 
   int selectPageNumber = 0;
+  var currentGroup;
+  final myKey = GlobalKey();
+  String desireGroup = "staff";
+  final Future<List> Function() fetchGroups;
+  final Future<void> Function(String) addUserGroup;
+  final Future<void> Function(String) removeUserGroup;
+  final Future<Map<String, String>> Function() getUserAttributes;
+
+  _AnnouncementsListPageState(this.fetchGroups, this.addUserGroup, this.removeUserGroup, this.getUserAttributes);
+
+  Future<void> _fetchAttributes() async {
+    var userAttr = await getUserAttributes();
+  }
+
+  Future<void> _fetchAndPrintGroups() async {
+    List groups = await fetchGroups();
+  }
+
+  Future<void> _changeUserGroups() async {
+    Map<String, dynamic> bodyOfResponse = await listGroupsForUser();
+    currentGroup = bodyOfResponse['Groups'][0]['GroupName'];
+    debuggingPrint(bodyOfResponse.toString());
+    // await removeUserGroup(currentGroup.toString());
+    await addUserGroup(desireGroup);
+    Map<String, dynamic> listInGroup = await listUsersInGroup("staff");
+    debuggingPrint("user is ${listInGroup['Users']}");
+    print("*"*100);
+    for(var userDict in listInGroup['Users']){
+      String emailAddress = "";
+      for(var attributesDict in userDict['Attributes']){
+        if(attributesDict["Name"] == "email"){
+          emailAddress = attributesDict["Value"];
+        }
+      }
+      print(emailAddress);
+    }
+    print("*"*100);
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    // _fetchAttributes();
+    // _fetchAndPrintGroups();
+    // _changeUserGroups();
+  }
 
   Widget selectPage(int pageNumber){
     switch(pageNumber){
-      case 0: return const Center(
-        child: AnnouncementHome(),
+      case 0: return Center(
+        child: AnnouncementHome(key: Key(desireGroup.toString())),
       );
       case 1: return const Center(
         child: ChatScreen(),

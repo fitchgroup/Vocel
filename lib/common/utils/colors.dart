@@ -18,6 +18,6 @@ const MaterialColor primaryColor = MaterialColor(0xFFFFCF44, primarySwatch);
 const int primaryColorDark = 0xFF2798A5;
 const int primaryLightTeal = 0xFF8CC3CC;
 const int primaryDarkTeal = 0xFF007182;
-const int primaryRegularTeal = 0x44ebb9;
+const int primaryRegularTeal = 0xFF44ABB9;
 
 // npm intall aws@amplify;
