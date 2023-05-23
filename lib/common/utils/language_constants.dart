@@ -25,7 +25,7 @@ Locale _locale(String languageCode) {
     case ENGLISH:
       return const Locale(ENGLISH, '');
     case SPANISH:
-      return const Locale(SPANISH, "");
+      return const Locale(SPANISH, '');
     default:
       return const Locale(ENGLISH, '');
   }
