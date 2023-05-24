@@ -29,7 +29,9 @@ class _AnnouncementsListPageState extends State<AnnouncementsListPage> {
   int selectPageNumber = 0;
   var currentGroup;
   final myKey = GlobalKey();
-  String desireGroup = "staff";
+  bool showButton = false;
+
+  String? userEmail;
   final Future<List> Function() fetchGroups;
   final Future<void> Function(String) addUserGroup;
   final Future<void> Function(String) removeUserGroup;
@@ -45,40 +47,57 @@ class _AnnouncementsListPageState extends State<AnnouncementsListPage> {
     List groups = await fetchGroups();
   }
 
-  Future<void> _changeUserGroups() async {
-    Map<String, dynamic> bodyOfResponse = await listGroupsForUser();
-    currentGroup = bodyOfResponse['Groups'][0]['GroupName'];
-    debuggingPrint(bodyOfResponse.toString());
-    // await removeUserGroup(currentGroup.toString());
-    await addUserGroup(desireGroup);
-    Map<String, dynamic> listInGroup = await listUsersInGroup("staff");
-    debuggingPrint("user is ${listInGroup['Users']}");
-    print("*"*100);
-    for(var userDict in listInGroup['Users']){
-      String emailAddress = "";
-      for(var attributesDict in userDict['Attributes']){
-        if(attributesDict["Name"] == "email"){
-          emailAddress = attributesDict["Value"];
-        }
-      }
-      print(emailAddress);
+  Future<bool> calculateFinalTesting() async {
+    bool finalTesting = false;
+    Map<String, dynamic> jsonMap = await listGroupsForUser();
+    for (var element in jsonMap["Groups"]) {
+      finalTesting = finalTesting || checkValid(element['GroupName'].toString());
     }
-    print("*"*100);
+    return finalTesting;
   }
+
+  // Future<void> _changeUserGroups() async {
+  //   Map<String, dynamic> bodyOfResponse = await listGroupsForUser();
+  //   currentGroup = bodyOfResponse['Groups'][0]['GroupName'];
+  //   debuggingPrint(bodyOfResponse.toString());
+  //   // await removeUserGroup(currentGroup.toString());
+  //   await addUserGroup(desireGroup);
+  //   Map<String, dynamic> listInGroup = await listUsersInGroup("staff");
+  //   debuggingPrint("user is ${listInGroup['Users']}");
+  //   print("*"*100);
+  //   for(var userDict in listInGroup['Users']){
+  //     String emailAddress = "";
+  //     for(var attributesDict in userDict['Attributes']){
+  //       if(attributesDict["Name"] == "email"){
+  //         emailAddress = attributesDict["Value"];
+  //       }
+  //     }
+  //     print(emailAddress);
+  //   }
+  //   print("*"*100);
+  // }
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    // _fetchAttributes();
-    // _fetchAndPrintGroups();
-    // _changeUserGroups();
+    getUserAttributes().then((Map<String, String> stringMap) {
+      setState(() {
+        userEmail = stringMap["email"];
+      });
+    });
+    calculateFinalTesting().then((value) {
+      setState(() {
+        showButton = value;
+      });
+      debuggingPrint(showButton.toString());
+    });
   }
 
   Widget selectPage(int pageNumber){
     switch(pageNumber){
       case 0: return Center(
-        child: AnnouncementHome(key: Key(desireGroup.toString())),
+        child: AnnouncementHome(key: Key(showButton.toString())),
       );
       case 1: return const Center(
         child: ChatScreen(),
@@ -98,7 +117,7 @@ class _AnnouncementsListPageState extends State<AnnouncementsListPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: const VocelNavigationDrawer(),
+      drawer: VocelNavigationDrawer(userEmail: userEmail),
       appBar: AppBar(
         leading: Builder(
           builder: (BuildContext context) {

@@ -5,6 +5,7 @@ import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:vocel/LocalizedButtonResolver.dart';
 import 'package:vocel/LocalizedMessageResolver.dart';
 import 'package:vocel/common/utils/colors.dart' as constants;
+import 'package:vocel/common/utils/manage_user.dart';
 import 'package:vocel/features/announcement/ui/profile_page/edit_profile.dart';
 import 'package:vocel/features/announcement/ui/setting_page/setting_page.dart';
 
@@ -16,6 +17,28 @@ class VocelProfile extends StatefulWidget {
 }
 
 class _VocelProfileState extends State<VocelProfile> {
+
+  String? userEmail;
+
+  // @override
+  // void initState() {
+  //   // TODO: implement initState
+  //   super.initState();
+  //   getUserAttributes().then((Map<String, String> stringMap) {
+  //     setState(() {
+  //       userEmail = stringMap["email"];
+  //     });
+  //   });
+  // }
+
+  @override
+  void didChangeDependencies() {
+    // TODO: implement didChangeDependencies
+    super.didChangeDependencies();
+    final arguments = ModalRoute.of(context)?.settings.arguments as String?;
+    userEmail = arguments ?? ".....";
+  }
+
   @override
   Widget build(BuildContext context) {
 
@@ -168,20 +191,10 @@ class _VocelProfileState extends State<VocelProfile> {
                                                         size: 20,
                                                       ),
                                                       onPressed: () async {
-                                                        // await signOut();
-                                                        // await Navigator
-                                                        //     .pushAndRemoveUntil(
-                                                        //   context,
-                                                        //   MaterialPageRoute(
-                                                        //     builder: (context) =>
-                                                        //         LoginPagedget(),
-                                                        //   ),
-                                                        //       (r) => false,
-                                                        // );
                                                         await Navigator.push(
                                                           context,
                                                           MaterialPageRoute(
-                                                            builder: (context) => const VocelSetting(
+                                                            builder: (context) => const EditProfileWidget(
                                                             ),
                                                           ),
                                                         );
@@ -211,7 +224,7 @@ class _VocelProfileState extends State<VocelProfile> {
                                         // valueOrDefault<String>(
                                         //   mYProfilePageUsersRecord
                                         //       .displayName,
-                                        'testing',
+                                        'Here should be the name attributes',
                                         // ),
                                         style: TextStyle(
                                           color: Colors.black54,
@@ -227,22 +240,13 @@ class _VocelProfileState extends State<VocelProfile> {
                                   mainAxisSize: MainAxisSize.max,
                                   mainAxisAlignment: MainAxisAlignment.end,
                                   children: [
-                                    // user id
-                                    // Padding(
-                                    //   padding: const EdgeInsetsDirectional.fromSTEB(
-                                    //       0, 8, 0, 0),
-                                    //   child: Text(
-                                    //     'Id: ${authmodel.authInfo?.id}',
-                                    //   ),
-                                    // ),
-                                    // user email
                                     Padding(
                                       padding: const EdgeInsetsDirectional.fromSTEB(
                                           4, 8, 0, 0),
                                       child: Text(
-                                        "Email: testing",
+                                        "Email: ${userEmail ?? "..."}",
                                         style: TextStyle(
-                                            color: Colors.blueGrey[500],
+                                            color: Colors.blueGrey[100],
                                             fontStyle: FontStyle.italic,
                                             fontWeight: FontWeight.w500
                                         ),
@@ -342,7 +346,7 @@ class _VocelProfileState extends State<VocelProfile> {
                       color: Colors.white,
                       boxShadow: const [
                         BoxShadow(
-                          color: Color(constants.primaryLightTeal),
+                          color: Colors.white,
                           blurRadius: 2.0,
                           offset: Offset(0, 1.0),
                         ),
@@ -368,13 +372,13 @@ class _VocelProfileState extends State<VocelProfile> {
                         const Spacer(),
                         const Icon(
                           Icons.settings,
-                          color: Color(constants.primaryColorDark),
+                          color: Color(constants.primaryDarkTeal),
                         ),
                       ],
                     ),
                   ),// My account
                   Padding(
-                    padding: const EdgeInsetsDirectional.fromSTEB(0, 2, 0, 0),
+                    padding: const EdgeInsetsDirectional.fromSTEB(0, 10, 0, 0),
                     child: Row(
                       mainAxisSize: MainAxisSize.max,
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -385,7 +389,6 @@ class _VocelProfileState extends State<VocelProfile> {
                               context,
                               MaterialPageRoute(
                                 builder: (context) => const EditProfileWidget(
-                                  // userProfile:
                                   // mYProfilePageUsersRecord.reference,
                                 ),
                               ),
@@ -448,33 +451,32 @@ class _VocelProfileState extends State<VocelProfile> {
                                     child: SizedBox(
                                       height: 46,
                                       width: 46,
-                                      child: FloatingActionButton( // should change it to IconButton
-                                        heroTag: "btn4",
-                                        backgroundColor: Colors.transparent, // Back Button Color
-                                        // foregroundColor: Colors.transparent,
-                                        elevation: 0,
-                                        shape: StadiumBorder(
-                                            side: BorderSide(
-                                              color: Colors.grey.shade200,
-                                              width: 0,
-                                              strokeAlign: BorderSide.strokeAlignInside,
-                                            )
-                                        ),
-                                        child: Icon(
-                                          Icons.chevron_right_rounded,
-                                          color: Colors.grey.shade700,
-                                          size: 25,
-                                        ),
-                                        onPressed: () async {
-                                          await Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                              builder: (context) => const VocelSetting(
-                                              ),
-                                            ),
-                                          );
-                                        },
+                                      child: Icon(
+                                        Icons.chevron_right_rounded,
+                                        color: Colors.grey.shade700,
+                                        size: 25,
                                       ),
+                                      // child: FloatingActionButton( // should change it to IconButton
+                                      //   heroTag: "btn4",
+                                      //   backgroundColor: Colors.transparent, // Back Button Color
+                                      //   // foregroundColor: Colors.transparent,
+                                      //   elevation: 0,
+                                      //   shape: StadiumBorder(
+                                      //       side: BorderSide(
+                                      //         color: Colors.grey.shade200,
+                                      //         width: 0,
+                                      //         strokeAlign: BorderSide.strokeAlignInside,
+                                      //       )
+                                      //   ),
+                                      //   child: Icon(
+                                      //     Icons.chevron_right_rounded,
+                                      //     color: Colors.grey.shade700,
+                                      //     size: 25,
+                                      //   ),
+                                      //   onPressed: () async {
+                                      //
+                                      //   },
+                                      // ),
                                     ),
                                   ),
                                 ],
@@ -537,82 +539,47 @@ class _VocelProfileState extends State<VocelProfile> {
                           ),
                           initiallyExpanded: false,
                           children: signInTiles.map((signInTiles) =>
-                              Row(
-                                mainAxisSize: MainAxisSize.max,
-                                children: [
-                                  Expanded(
-                                    child: Padding(
-                                      padding: const EdgeInsetsDirectional.fromSTEB(
-                                          16, 0, 4, 0),
-                                      child: Row(
-                                        mainAxisSize: MainAxisSize.max,
-                                        mainAxisAlignment:
-                                        MainAxisAlignment.start,
-                                        children: [
-                                          const Padding(
-                                            padding: EdgeInsetsDirectional
-                                                .fromSTEB(0, 0, 6, 0),
-                                          ),
-                                          Expanded(
-                                            child: Text(
-                                              // FFLocalizations.of(context)
-                                              //     .getText(
-                                              //   '03k0vw86' /* Sign-in preferences */,
-                                              // ),
-                                              // style:
-                                              // FlutterFlowTheme.of(context)
-                                              //     .bodyText1,
-                                              signInTiles,
-                                              style: TextStyle(
-                                                color: Colors.grey[800],
-                                              ),
+                              InkWell(
+                                onTap: () {
+                                  debuggingPrint("we are in the $signInTiles");
+                                },
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.max,
+                                  children: [
+                                    Expanded(
+                                      child: Padding(
+                                        padding: const EdgeInsetsDirectional
+                                            .fromSTEB(26, 0, 10, 0),
+                                        child: Expanded(
+                                          child: Text(
+                                            signInTiles,
+                                            style: TextStyle(
+                                              color: Colors.grey[800],
                                             ),
                                           ),
-                                        ],
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(right: 5),
-                                    child: SizedBox(
-                                      height: 46,
-                                      width: 46,
-                                      child: FloatingActionButton(
-                                        heroTag: "btn5",
-                                        backgroundColor: Colors.transparent, // Back Button Color
-                                        // foregroundColor: Colors.transparent,
-                                        elevation: 0,
-                                        shape: StadiumBorder(
-                                            side: BorderSide(
-                                              color: Colors.grey.shade200,
-                                              width: 0,
-                                              strokeAlign: BorderSide.strokeAlignInside,
-                                            )
-                                        ),
+                                    Padding(
+                                      padding: const EdgeInsets.only(right: 5),
+                                      child: SizedBox(
+                                        height: 46,
+                                        width: 46,
                                         child: Icon(
                                           Icons.chevron_right_rounded,
                                           color: Colors.grey.shade700,
                                           size: 25,
                                         ),
-                                        onPressed: () async {
-                                          await Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                              builder: (context) => const VocelSetting(
-                                              ),
-                                            ),
-                                          );
-                                        },
                                       ),
                                     ),
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
                           ).toList(),
                         ),
                       ), //
                     ),
-                  ),//
+                  ),// sign in preferences
                 ],
               ),
             ),]

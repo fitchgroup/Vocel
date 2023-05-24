@@ -28,11 +28,40 @@ class AnnouncementHome extends HookConsumerWidget {
     );
   }
 
+  Future<bool> calculateFinalTesting() async {
+    bool finalTesting = false;
+    Map<String, dynamic> jsonMap = await listGroupsForUser();
+    for (var element in jsonMap["Groups"]) {
+      finalTesting = finalTesting || checkValid(element['GroupName'].toString());
+    }
+    return finalTesting;
+  }
+
+
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+
+    final visibilityButton = useState(false);
+
+    /// why using [key] in the useEffect method.
+    // The [key] in the useEffect hook's dependency list specifies that
+    // the effect should be triggered whenever the key property changes.
+    // It allows you to recalculate or update the visibility based on the
+    // new value of key. If you don't need to track changes in the key property,
+    // you can omit it from the dependency list to ensure the effect runs only
+    // once during the widget's initial build.
+
+    useEffect(() {
+      calculateFinalTesting().then((newVisibility) {
+        if (newVisibility != visibilityButton.value) {
+          visibilityButton.value = newVisibility;
+        }
+      });
+    }, [key]);
+
     final Orientation orientation = MediaQuery.of(context).orientation;
     final AsyncValue<List<Trip?>> reminderValue = ref.watch(tripsListStreamProvider);
-    String keyString = key?.toString() ?? "null";
 
     /// if use checkValidFuture
     // floatingActionButton: FutureBuilder<bool>(
@@ -63,7 +92,7 @@ class AnnouncementHome extends HookConsumerWidget {
 
     return Scaffold(
         floatingActionButton: Visibility(
-          visible: checkValid(keyString.split("<'")[1].split("'>")[0].trim()),
+          visible: visibilityButton.value,
           child: FloatingActionButton(
             backgroundColor: const Color(constants.primaryColorDark),
             onPressed: () async {

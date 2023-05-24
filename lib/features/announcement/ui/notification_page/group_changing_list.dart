@@ -83,9 +83,9 @@ class _ManageAccountListState extends State<ManageAccountList> {
           actions: [
             ElevatedButton(
               onPressed: () {
-                debuggingPrint(currentGroup);
-                debuggingPrint(currentUserEmail);
-                debuggingPrint(shouldChange!);
+                // debuggingPrint(currentGroup);
+                // debuggingPrint(currentUserEmail);
+                // debuggingPrint(shouldChange!);
                 if(shouldChange != null)
                 {
                   changeUsersGroups(selectedGroup, shouldChange!, currentUserEmail);

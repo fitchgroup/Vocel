@@ -16,13 +16,8 @@ Future<List> fetchGroups() async {
         .accessToken; //.idToken;
     Map<String, dynamic> decodedToken = JwtDecoder.decode(accessToken);
     groups = decodedToken["cognito:groups"];
-    // print("--"*100);
-    // print(groups);
-    // print("--"*100);
   } on AuthException catch (e) {
-    print("--"*100);
-    print("${"*"*20} fetchGroups Fail ${"="*20}");
-    print("--"*100);
+    debuggingPrint("$e \n ${"*"*20} fetchGroups Fail ${"="*20}");
   }
   return groups;
 }
@@ -115,7 +110,6 @@ Future<void> removeUserGroup(String originalGroup, {String? email}) async {
   if(email != null) {
     userName = email;
   }
-  debuggingPrint(email!);
   try {
     const pathRemove = '/removeUserFromGroup';
     final bodyRemove = {
@@ -151,10 +145,11 @@ Future<void> changeUsersGroups(String originalGroup, String desireGroup, String 
 }
 
 
-Future<dynamic> listGroupsForUser() async {
+Future<Map<String, dynamic>> listGroupsForUser() async {
   Map<String, String> stringMap = await getUserAttributes();
   String? userName = stringMap['email'];
   String nextToken = "";
+  Map<String, dynamic> jsonMap = {};
   try {
     const pathRemove = '/listGroupsForUser';
     final Map<String, String> bodyRemove = {
@@ -177,15 +172,14 @@ Future<dynamic> listGroupsForUser() async {
 
     /// sent get request
     RestResponse responseData = await Amplify.API.get(restOptions: myInit).response;
-    Map<String, dynamic> jsonMap = jsonDecode(responseData.body);
+    jsonMap = jsonDecode(responseData.body);
     // String nextToken = responseData['NextToken'] as String;
     return jsonMap;
   } catch (e) {
     // Attribute update failed
-    String printing = "$e \n ${"*"*20} listGroupsForUser Fail ${"="*20}";
-    debuggingPrint(printing);
+    debuggingPrint("$e \n ${"*"*20} listGroupsForUser Fail ${"="*20}");
   }
-  return null;
+  return jsonMap;
 }
 
 
@@ -234,8 +228,8 @@ Future<bool> checkValidFuture(String currentGroup) async {
 
 
 bool checkValid(String currentGroup) {
-  debuggingPrint(currentGroup);
-  if(currentGroup == 'admin' || currentGroup == 'leader' || currentGroup == 'staff') {
+  List<String> stringList = ['staff', 'parent', 'admin', 'default', 'leader'];
+  if(stringList.contains(currentGroup)) {
     return true;
   }
   return false;
