@@ -7,3 +7,22 @@ type Trip @model @auth(rules: [{ allow: owner }]) {
     isCompleted: Boolean!
     isPinned: Boolean!
 }
+
+#type Post @model {
+#    id: ID!
+#    postAuthor: String!
+#    content: String!
+#    upvoteNumber: Int!
+#    comments: String!
+##    comments: [Comment] @connection(keyName: "postComments")
+#    createdAt: AWSDateTime
+#    updatedAt: AWSDateTime
+#}
+
+#type Comment @model {
+#    id: ID!
+#    content: String!
+#    post: Post @connection(keyName: "postComments")
+#    createdAt: AWSDateTime
+#    updatedAt: AWSDateTime
+#}
