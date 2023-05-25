@@ -1,5 +1,5 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:vocel/models/Trip.dart';
+import 'package:vocel/models/Announcement.dart';
 import 'package:vocel/services/trips_datastore_service.dart';
 
 final tripsRepositoryProvider = Provider<TripsRepository>((ref) {
@@ -8,19 +8,19 @@ final tripsRepositoryProvider = Provider<TripsRepository>((ref) {
   return TripsRepository(tripsDataStoreService);
 });
 
-final tripsListStreamProvider = StreamProvider.autoDispose<List<Trip?>>((ref) {
+final tripsListStreamProvider = StreamProvider.autoDispose<List<Announcement?>>((ref) {
   final tripsRepository = ref.watch(tripsRepositoryProvider);
   return tripsRepository.getTrips();
 });
 
 final pastTripsListStreamProvider =
-StreamProvider.autoDispose<List<Trip?>>((ref) {
+StreamProvider.autoDispose<List<Announcement?>>((ref) {
   final tripsRepository = ref.watch(tripsRepositoryProvider);
   return tripsRepository.getPastTrips();
 });
 
 final tripProvider =
-StreamProvider.autoDispose.family<Trip?, String>((ref, id) {
+StreamProvider.autoDispose.family<Announcement?, String>((ref, id) {
   final tripsRepository = ref.watch(tripsRepositoryProvider);
   return tripsRepository.get(id);
 });
@@ -30,35 +30,35 @@ class TripsRepository {
 
   final TripsDataStoreService tripsDataStoreService;
 
-  Stream<List<Trip>> getTrips() {
+  Stream<List<Announcement>> getTrips() {
     return tripsDataStoreService.listenToAnnouncements();
   }
 
-  Stream<List<Trip>> getPastTrips() {
+  Stream<List<Announcement>> getPastTrips() {
     return tripsDataStoreService.listenToPastAnnouncements();
   }
 
-  Future<void> add(Trip trip) async {
+  Future<void> add(Announcement trip) async {
     await tripsDataStoreService.addAnnouncements(trip);
   }
 
-  Future<void> update(Trip updatedTrip) async {
+  Future<void> update(Announcement updatedTrip) async {
     await tripsDataStoreService.updateAnnouncements(updatedTrip);
   }
 
-  Future<void> delete(Trip deletedTrip) async {
+  Future<void> delete(Announcement deletedTrip) async {
     await tripsDataStoreService.deleteAnnouncements(deletedTrip);
   }
 
-  Future<void> pinMe(Trip pinTrip) async {
+  Future<void> pinMe(Announcement pinTrip) async {
     await tripsDataStoreService.pinAnnouncements(pinTrip);
   }
 
-  Future<void> completeMe(Trip completeTrip) async {
+  Future<void> completeMe(Announcement completeTrip) async {
     await tripsDataStoreService.completeAnnouncements(completeTrip);
   }
 
-  Stream<Trip> get(String id) {
+  Stream<Announcement> get(String id) {
     return tripsDataStoreService.getAnnouncementsStream(id);
   }
 }

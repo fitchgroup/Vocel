@@ -10,7 +10,7 @@ import 'package:vocel/features/announcement/controller/announcement_controller.d
 import 'package:vocel/features/announcement/data/announcement_repository.dart';
 import 'package:vocel/features/announcement/ui/home_page/add_announcement_bottomsheet.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:vocel/models/Trip.dart';
+import 'package:vocel/models/Announcement.dart';
 
 
 class AnnouncementHome extends HookConsumerWidget {
@@ -60,7 +60,7 @@ class AnnouncementHome extends HookConsumerWidget {
     }, [key]);
 
     final Orientation orientation = MediaQuery.of(context).orientation;
-    final AsyncValue<List<Trip?>> reminderValue = ref.watch(tripsListStreamProvider);
+    final AsyncValue<List<Announcement?>> reminderValue = ref.watch(tripsListStreamProvider);
 
     /// if use checkValidFuture
     // floatingActionButton: FutureBuilder<bool>(
@@ -110,7 +110,7 @@ class AnnouncementHome extends HookConsumerWidget {
             // We use the whereType method to filter out the null elements and only
             // keep the non-null Trip objects. Finally, we call toList() to convert
             // the filtered iterable into a List<Trip>.
-            buildReminders(announcement.whereType<Trip>().toList(), ref),
+            buildReminders(announcement.whereType<Announcement>().toList(), ref),
             error: (e, st) => const Center(
               child: Text('Error Here'),
             ),
@@ -121,7 +121,7 @@ class AnnouncementHome extends HookConsumerWidget {
     );
   }
 
-  Center buildReminders(List<Trip> reminders, WidgetRef ref) {
+  Center buildReminders(List<Announcement> reminders, WidgetRef ref) {
     reminders.sort((a, b) {
       if (a.isCompleted && !b.isCompleted) {
         return 1; // b should come before a

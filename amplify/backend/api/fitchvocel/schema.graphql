@@ -1,4 +1,4 @@
-type Trip @model @auth(rules: [{ allow: owner }]) {
+type Announcement @model @auth(rules: [{ allow: owner }]) {
     id: ID!
     tripName: String!
     description: String!

@@ -23,10 +23,10 @@ import 'package:amplify_core/amplify_core.dart';
 import 'package:flutter/foundation.dart';
 
 
-/** This is an auto generated class representing the Trip type in your schema. */
+/** This is an auto generated class representing the Announcement type in your schema. */
 @immutable
-class Trip extends Model {
-  static const classType = const _TripModelType();
+class Announcement extends Model {
+  static const classType = const _AnnouncementModelType();
   final String id;
   final String? _tripName;
   final String? _description;
@@ -44,8 +44,8 @@ class Trip extends Model {
   @override
   String getId() => id;
   
-  TripModelIdentifier get modelIdentifier {
-      return TripModelIdentifier(
+  AnnouncementModelIdentifier get modelIdentifier {
+      return AnnouncementModelIdentifier(
         id: id
       );
   }
@@ -136,10 +136,10 @@ class Trip extends Model {
     return _updatedAt;
   }
   
-  const Trip._internal({required this.id, required tripName, required description, required startDate, required endDate, required isCompleted, required isPinned, createdAt, updatedAt}): _tripName = tripName, _description = description, _startDate = startDate, _endDate = endDate, _isCompleted = isCompleted, _isPinned = isPinned, _createdAt = createdAt, _updatedAt = updatedAt;
+  const Announcement._internal({required this.id, required tripName, required description, required startDate, required endDate, required isCompleted, required isPinned, createdAt, updatedAt}): _tripName = tripName, _description = description, _startDate = startDate, _endDate = endDate, _isCompleted = isCompleted, _isPinned = isPinned, _createdAt = createdAt, _updatedAt = updatedAt;
   
-  factory Trip({String? id, required String tripName, required String description, required TemporalDate startDate, required TemporalDate endDate, required bool isCompleted, required bool isPinned}) {
-    return Trip._internal(
+  factory Announcement({String? id, required String tripName, required String description, required TemporalDate startDate, required TemporalDate endDate, required bool isCompleted, required bool isPinned}) {
+    return Announcement._internal(
       id: id == null ? UUID.getUUID() : id,
       tripName: tripName,
       description: description,
@@ -156,7 +156,7 @@ class Trip extends Model {
   @override
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
-    return other is Trip &&
+    return other is Announcement &&
       id == other.id &&
       _tripName == other._tripName &&
       _description == other._description &&
@@ -173,7 +173,7 @@ class Trip extends Model {
   String toString() {
     var buffer = new StringBuffer();
     
-    buffer.write("Trip {");
+    buffer.write("Announcement {");
     buffer.write("id=" + "$id" + ", ");
     buffer.write("tripName=" + "$_tripName" + ", ");
     buffer.write("description=" + "$_description" + ", ");
@@ -188,8 +188,8 @@ class Trip extends Model {
     return buffer.toString();
   }
   
-  Trip copyWith({String? tripName, String? description, TemporalDate? startDate, TemporalDate? endDate, bool? isCompleted, bool? isPinned}) {
-    return Trip._internal(
+  Announcement copyWith({String? tripName, String? description, TemporalDate? startDate, TemporalDate? endDate, bool? isCompleted, bool? isPinned}) {
+    return Announcement._internal(
       id: id,
       tripName: tripName ?? this.tripName,
       description: description ?? this.description,
@@ -199,7 +199,7 @@ class Trip extends Model {
       isPinned: isPinned ?? this.isPinned);
   }
   
-  Trip.fromJson(Map<String, dynamic> json)  
+  Announcement.fromJson(Map<String, dynamic> json)  
     : id = json['id'],
       _tripName = json['tripName'],
       _description = json['description'],
@@ -218,7 +218,7 @@ class Trip extends Model {
     'id': id, 'tripName': _tripName, 'description': _description, 'startDate': _startDate, 'endDate': _endDate, 'isCompleted': _isCompleted, 'isPinned': _isPinned, 'createdAt': _createdAt, 'updatedAt': _updatedAt
   };
 
-  static final QueryModelIdentifier<TripModelIdentifier> MODEL_IDENTIFIER = QueryModelIdentifier<TripModelIdentifier>();
+  static final QueryModelIdentifier<AnnouncementModelIdentifier> MODEL_IDENTIFIER = QueryModelIdentifier<AnnouncementModelIdentifier>();
   static final QueryField ID = QueryField(fieldName: "id");
   static final QueryField TRIPNAME = QueryField(fieldName: "tripName");
   static final QueryField DESCRIPTION = QueryField(fieldName: "description");
@@ -227,8 +227,8 @@ class Trip extends Model {
   static final QueryField ISCOMPLETED = QueryField(fieldName: "isCompleted");
   static final QueryField ISPINNED = QueryField(fieldName: "isPinned");
   static var schema = Model.defineSchema(define: (ModelSchemaDefinition modelSchemaDefinition) {
-    modelSchemaDefinition.name = "Trip";
-    modelSchemaDefinition.pluralName = "Trips";
+    modelSchemaDefinition.name = "Announcement";
+    modelSchemaDefinition.pluralName = "Announcements";
     
     modelSchemaDefinition.authRules = [
       AuthRule(
@@ -247,37 +247,37 @@ class Trip extends Model {
     modelSchemaDefinition.addField(ModelFieldDefinition.id());
     
     modelSchemaDefinition.addField(ModelFieldDefinition.field(
-      key: Trip.TRIPNAME,
+      key: Announcement.TRIPNAME,
       isRequired: true,
       ofType: ModelFieldType(ModelFieldTypeEnum.string)
     ));
     
     modelSchemaDefinition.addField(ModelFieldDefinition.field(
-      key: Trip.DESCRIPTION,
+      key: Announcement.DESCRIPTION,
       isRequired: true,
       ofType: ModelFieldType(ModelFieldTypeEnum.string)
     ));
     
     modelSchemaDefinition.addField(ModelFieldDefinition.field(
-      key: Trip.STARTDATE,
+      key: Announcement.STARTDATE,
       isRequired: true,
       ofType: ModelFieldType(ModelFieldTypeEnum.date)
     ));
     
     modelSchemaDefinition.addField(ModelFieldDefinition.field(
-      key: Trip.ENDDATE,
+      key: Announcement.ENDDATE,
       isRequired: true,
       ofType: ModelFieldType(ModelFieldTypeEnum.date)
     ));
     
     modelSchemaDefinition.addField(ModelFieldDefinition.field(
-      key: Trip.ISCOMPLETED,
+      key: Announcement.ISCOMPLETED,
       isRequired: true,
       ofType: ModelFieldType(ModelFieldTypeEnum.bool)
     ));
     
     modelSchemaDefinition.addField(ModelFieldDefinition.field(
-      key: Trip.ISPINNED,
+      key: Announcement.ISPINNED,
       isRequired: true,
       ofType: ModelFieldType(ModelFieldTypeEnum.bool)
     ));
@@ -298,30 +298,30 @@ class Trip extends Model {
   });
 }
 
-class _TripModelType extends ModelType<Trip> {
-  const _TripModelType();
+class _AnnouncementModelType extends ModelType<Announcement> {
+  const _AnnouncementModelType();
   
   @override
-  Trip fromJson(Map<String, dynamic> jsonData) {
-    return Trip.fromJson(jsonData);
+  Announcement fromJson(Map<String, dynamic> jsonData) {
+    return Announcement.fromJson(jsonData);
   }
   
   @override
   String modelName() {
-    return 'Trip';
+    return 'Announcement';
   }
 }
 
 /**
  * This is an auto generated class representing the model identifier
- * of [Trip] in your schema.
+ * of [Announcement] in your schema.
  */
 @immutable
-class TripModelIdentifier implements ModelIdentifier<Trip> {
+class AnnouncementModelIdentifier implements ModelIdentifier<Announcement> {
   final String id;
 
-  /** Create an instance of TripModelIdentifier using [id] the primary key. */
-  const TripModelIdentifier({
+  /** Create an instance of AnnouncementModelIdentifier using [id] the primary key. */
+  const AnnouncementModelIdentifier({
     required this.id});
   
   @override
@@ -339,7 +339,7 @@ class TripModelIdentifier implements ModelIdentifier<Trip> {
   String serializeAsString() => serializeAsMap().values.join('#');
   
   @override
-  String toString() => 'TripModelIdentifier(id: $id)';
+  String toString() => 'AnnouncementModelIdentifier(id: $id)';
   
   @override
   bool operator ==(Object other) {
@@ -347,7 +347,7 @@ class TripModelIdentifier implements ModelIdentifier<Trip> {
       return true;
     }
     
-    return other is TripModelIdentifier &&
+    return other is AnnouncementModelIdentifier &&
       id == other.id;
   }
   

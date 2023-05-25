@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:vocel/common/services/storage_services.dart';
 import 'package:vocel/features/announcement/data/announcement_repository.dart';
-import 'package:vocel/models/Trip.dart';
+import 'package:vocel/models/Announcement.dart';
 
 final tripControllerProvider = Provider<TripController>((ref) {
   return TripController(ref);
@@ -19,22 +19,22 @@ class TripController {
   }
 
 
-  Future<void> edit(Trip updatedTrip) async {
+  Future<void> edit(Announcement updatedTrip) async {
     final tripsRepository = ref.read(tripsRepositoryProvider);
     await tripsRepository.update(updatedTrip);
   }
 
-  Future<void> delete(Trip deletedTrip) async {
+  Future<void> delete(Announcement deletedTrip) async {
     final tripsRepository = ref.read(tripsRepositoryProvider);
     await tripsRepository.delete(deletedTrip);
   }
 
-  Future<void> pinMe(Trip pinTrip) async {
+  Future<void> pinMe(Announcement pinTrip) async {
     final tripsRepository = ref.read(tripsRepositoryProvider);
     await tripsRepository.pinMe(pinTrip);
   }
 
-  Future<void> completeMe(Trip completeTrip) async {
+  Future<void> completeMe(Announcement completeTrip) async {
     final tripsRepository = ref.read(tripsRepositoryProvider);
     await tripsRepository.completeMe(completeTrip);
   }

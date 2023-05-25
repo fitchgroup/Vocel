@@ -13,7 +13,7 @@ class CalendarHook extends HookConsumerWidget{
     // TODO: implement build
     // TODO: get the announcement, events references
     // get the calendarElement by getting the announcement values
-    final AsyncValue<List<Trip?>> calendarElement = ref.watch(tripsListStreamProvider);
+    final AsyncValue<List<Announcement?>> calendarElement = ref.watch(tripsListStreamProvider);
 
     return Scaffold(
         body: calendarElement.when(
@@ -21,7 +21,7 @@ class CalendarHook extends HookConsumerWidget{
             calendarItem.isEmpty ?
             CalendarListPage(calendarItem: const [], refFromHook: ref)
                 :
-            CalendarListPage(calendarItem: calendarItem.whereType<Trip>().toList(), refFromHook: ref),
+            CalendarListPage(calendarItem: calendarItem.whereType<Announcement>().toList(), refFromHook: ref),
             error: (e, st) => const Center(
               child: Text('Error Here'),
             ),

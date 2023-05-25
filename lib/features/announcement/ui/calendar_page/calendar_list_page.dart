@@ -7,7 +7,7 @@ import 'package:vocel/features/announcement/ui/calendar_page/calendar_util.dart'
 import 'package:table_calendar/table_calendar.dart';
 import 'dart:collection';
 import 'package:vocel/features/announcement/ui/calendar_page/calendar_header.dart';
-import 'package:vocel/models/Trip.dart';
+import 'package:vocel/models/Announcement.dart';
 
 // from flutter doc: this file is purely for testing right now
 // Copyright 2019 Aleksander Woźniak
@@ -15,7 +15,7 @@ import 'package:vocel/models/Trip.dart';
 
 
 class CalendarListPage extends StatefulWidget {
-  final List<Trip> calendarItem;
+  final List<Announcement> calendarItem;
   final WidgetRef refFromHook;
   const CalendarListPage({super.key, required this.calendarItem, required this.refFromHook});
 
@@ -24,7 +24,7 @@ class CalendarListPage extends StatefulWidget {
 }
 
 class _CalendarListPageState extends State<CalendarListPage> {
-  late final ValueNotifier<List<Trip>> _selectedEvents;
+  late final ValueNotifier<List<Announcement>> _selectedEvents;
   final ValueNotifier<DateTime> _currentDateTime = ValueNotifier(DateTime.now());  // get the current datetime
   final Set<DateTime> _selectedDays = LinkedHashSet<DateTime>(
     equals: isSameDay,
@@ -66,17 +66,17 @@ class _CalendarListPageState extends State<CalendarListPage> {
     super.dispose();
   }
 
-  late LinkedHashMap<DateTime, List<Trip>> calendarRenderMap = LinkedHashMap<DateTime, List<Trip>>(
+  late LinkedHashMap<DateTime, List<Announcement>> calendarRenderMap = LinkedHashMap<DateTime, List<Announcement>>(
     equals: isSameDay,
     hashCode: getHashCode,
   )..addAll(change());
 
 
 
-  late LinkedHashMap<DateTime, List<Trip>> calendarRenderSource;
+  late LinkedHashMap<DateTime, List<Announcement>> calendarRenderSource;
 
-  LinkedHashMap<DateTime, List<Trip>> change() {
-    calendarRenderSource = LinkedHashMap<DateTime, List<Trip>>(); // Initialize the variable with the correct type
+  LinkedHashMap<DateTime, List<Announcement>> change() {
+    calendarRenderSource = LinkedHashMap<DateTime, List<Announcement>>(); // Initialize the variable with the correct type
     for (var item in widget.calendarItem) {
       final key = item.endDate.getDateTime();
       if (calendarRenderSource.containsKey(key)) {
@@ -98,17 +98,17 @@ class _CalendarListPageState extends State<CalendarListPage> {
   bool get canClearSelection =>
       _selectedDays.isNotEmpty || _rangeStart != null || _rangeEnd != null;  // decide whether the clearButton should be displayed
 
-  List<Trip> _getEventsForDay(DateTime day) {
+  List<Announcement> _getEventsForDay(DateTime day) {
     return calendarRenderMap[day] ?? [];
   }
 
-  List<Trip> _getEventsForDays(Iterable<DateTime> days) {
+  List<Announcement> _getEventsForDays(Iterable<DateTime> days) {
     return [
       for (final d in days) ..._getEventsForDay(d),
     ];
   }
 
-  List<Trip> _getEventsForRange(DateTime start, DateTime end) {
+  List<Announcement> _getEventsForRange(DateTime start, DateTime end) {
     final days = daysInRange(start, end);
     return _getEventsForDays(days);
   }
@@ -185,7 +185,7 @@ class _CalendarListPageState extends State<CalendarListPage> {
               );
             },
           ),
-          TableCalendar<Trip>(
+          TableCalendar<Announcement>(
               locale: Localizations.localeOf(context).toString(),
               firstDay: utilFirstDay,
               lastDay: utilLateDay,
@@ -214,7 +214,7 @@ class _CalendarListPageState extends State<CalendarListPage> {
           const SizedBox(height: 8.0),
           // Text('${widget.calendarItem}'),
           Expanded(
-            child: ValueListenableBuilder<List<Trip>>(
+            child: ValueListenableBuilder<List<Announcement>>(
               valueListenable: _selectedEvents,
               builder: (context, value, _) {
                 return ListView.builder(
