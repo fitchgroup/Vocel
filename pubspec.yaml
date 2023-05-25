@@ -44,7 +44,7 @@ dependencies:
   go_router: ^4.1.0
   hooks_riverpod: ^1.0.4
   image_picker: ^0.8.5+3
-  intl: ^0.18.0
+  intl: any
   devicelocale: ^0.5.5
   shared_preferences: ^2.0.13
   provider: ^6.0.5
@@ -56,9 +56,15 @@ dependencies:
   mime: ^1.0.4
   ffi: ^2.0.1
   open_filex: ^4.3.2
-  table_calendar: ^3.0.9
+  table_calendar: 3.0.5
   injectable: ^1.5.3
   get_it: ^7.2.0
+  mailer: ^4.0.0
+  tinycolor2: ^3.0.1
+
+
+
+
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -66,9 +72,6 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   jwt_decoder: ^2.0.1
-
-#  mailer: ^4.0.0
-
 
 flutter_icons:
   android: true

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import 'package:tinycolor2/tinycolor2.dart';
 
 // these colors need to change the match the theme color
 const Map<int, Color> primarySwatch = {
@@ -19,5 +19,13 @@ const int primaryColorDark = 0xFF2798A5;
 const int primaryLightTeal = 0xFF8CC3CC;
 const int primaryDarkTeal = 0xFF007182;
 const int primaryRegularTeal = 0xFF44ABB9;
+
+Color baseColor = const Color(primaryDarkTeal);
+Color blueGreyColor = const Color(0xFF607D8B); // Example blue-grey color
+double mixAmount = 0.2; // Adjust the mix amount as desired (0.0 to 1.0)
+
+TinyColor tc = TinyColor.fromColor(Colors.black54);
+int darkerThanPrimaryDarkTealColor = tc.mix(const Color(primaryDarkTeal), 40).color.value;
+
 
 // npm intall aws@amplify;
