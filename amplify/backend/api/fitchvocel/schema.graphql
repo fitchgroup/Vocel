@@ -8,6 +8,15 @@ type Announcement @model @auth(rules: [{ allow: owner }]) {
     isPinned: Boolean!
 }
 
+type Event @model @auth(rules: [{ allow: owner }]) {
+    id: ID!
+    eventTitle: String!
+    eventLocation: String!
+    eventDescription: String!
+    startTime: AWSDateTime!
+    duration: Int!  # would be the minutes of the event
+}
+
 #type Post @model {
 #    id: ID!
 #    postAuthor: String!
