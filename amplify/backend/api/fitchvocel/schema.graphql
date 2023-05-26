@@ -1,0 +1,37 @@
+type Announcement @model @auth(rules: [{ allow: owner }]) {
+    id: ID!
+    tripName: String!
+    description: String!
+    startDate: AWSDate!
+    endDate: AWSDate!
+    isCompleted: Boolean!
+    isPinned: Boolean!
+}
+
+type Event @model @auth(rules: [{ allow: owner }]) {
+    id: ID!
+    eventTitle: String!
+    eventLocation: String!
+    eventDescription: String!
+    startTime: AWSDateTime!
+    duration: Int!  # would be the minutes of the event
+}
+
+#type Post @model {
+#    id: ID!
+#    postAuthor: String!
+#    content: String!
+#    upvoteNumber: Int!
+#    comments: String!
+##    comments: [Comment] @connection(keyName: "postComments")
+#    createdAt: AWSDateTime
+#    updatedAt: AWSDateTime
+#}
+
+#type Comment @model {
+#    id: ID!
+#    content: String!
+#    post: Post @connection(keyName: "postComments")
+#    createdAt: AWSDateTime
+#    updatedAt: AWSDateTime
+#}

@@ -29,7 +29,7 @@ class _ChatScreenState extends State<ChatScreen> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        SearchBar(onClickController: onClickController),
+        ChatSearchBar(onClickController: onClickController),
         const Center(
           heightFactor: 3,
           // child: SpinKitCircle(

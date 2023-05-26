@@ -50,7 +50,7 @@ android {
 
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-        applicationId "org.vocel.mobileapp"
+        applicationId "com.fitchandvocel.vocel"
         // You can update the following values to match your application needs.
         // For more information, see: https://docs.flutter.dev/deployment/android#reviewing-the-gradle-build-configuration.
         minSdkVersion 21
@@ -67,12 +67,12 @@ android {
             storePassword keystoreProperties['storePassword']
         }
     }
-    
     buildTypes {
         release {
             signingConfig signingConfigs.release
         }
     }
+
 
 }
 
@@ -82,4 +82,5 @@ flutter {
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+//    implementation 'com.google.android.material:material:<version>'
 }

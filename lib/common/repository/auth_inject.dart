@@ -4,7 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:vocel/common/repository/auth_repository.dart';
 import 'package:amplify_api/amplify_api.dart';
 import 'package:amplify_datastore/amplify_datastore.dart';
-import 'package:vocel/model/ModelProvider.dart';
+import 'package:vocel/models/ModelProvider.dart';
 
 class configureAmplifySuccess extends AuthRepository {
   @override
@@ -13,8 +13,8 @@ class configureAmplifySuccess extends AuthRepository {
     try {
       await Amplify.addPlugins([
         AmplifyAuthCognito(),
-        // AmplifyDataStore(modelProvider: ModelProvider.instance),
-        // AmplifyAPI(),
+        AmplifyDataStore(modelProvider: ModelProvider.instance),
+        AmplifyAPI(),
       ]);
       const String amplifyConfig = String.fromEnvironment('VERSION');
       await Amplify.configure(amplifyConfig);
