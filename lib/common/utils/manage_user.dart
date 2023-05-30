@@ -243,3 +243,12 @@ void debuggingPrint(String shouldPrint) {
   }
 }
 
+Future<bool> calculateFinalTesting() async {
+  bool finalTesting = false;
+  Map<String, dynamic> jsonMap = await listGroupsForUser();
+  for (var element in jsonMap["Groups"]) {
+    finalTesting = finalTesting || checkValid(element['GroupName'].toString());
+  }
+  return finalTesting;
+}
+
