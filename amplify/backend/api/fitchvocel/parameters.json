@@ -1,0 +1,11 @@
+{
+  "AppSyncApiName": "fitchvocel",
+  "DynamoDBBillingMode": "PAY_PER_REQUEST",
+  "DynamoDBEnableServerSideEncryption": false,
+  "AuthCognitoUserPoolId": {
+    "Fn::GetAtt": [
+      "authfitchvocel5266d294",
+      "Outputs.UserPoolId"
+    ]
+  }
+}

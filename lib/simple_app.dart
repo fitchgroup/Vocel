@@ -7,8 +7,7 @@ import 'package:vocel/LocalizedInputResolver.dart';
 import 'package:vocel/LocalizedMessageResolver.dart';
 import 'package:vocel/LocalizedTitleResolver.dart';
 import 'package:vocel/common/utils/language_constants.dart';
-import 'package:vocel/features/announcement/ui/announcements_list/announcements_list_page.dart';
-
+import 'package:vocel/features/announcement/ui/drawer_list/bottom_navigation.dart';
 class MyApp extends StatefulWidget {
   const MyApp({Key? key})
       : super(key: key);

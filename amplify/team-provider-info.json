@@ -1,0 +1,201 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-fitchvocel-dev-193108-authRole",
+      "UnauthRoleArn": "arn:aws:iam::528051559496:role/amplify-fitchvocel-dev-193108-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::528051559496:role/amplify-fitchvocel-dev-193108-authRole",
+      "Region": "us-east-2",
+      "DeploymentBucketName": "amplify-fitchvocel-dev-193108-deployment",
+      "UnauthRoleName": "amplify-fitchvocel-dev-193108-unauthRole",
+      "StackName": "amplify-fitchvocel-dev-193108",
+      "StackId": "arn:aws:cloudformation:us-east-2:528051559496:stack/amplify-fitchvocel-dev-193108/f136fe70-f380-11ed-93a9-06b637622445",
+      "AmplifyAppId": "d15ue9jqdjngj2",
+      "AuthTriggerTemplateURL": "https://s3.amazonaws.com/amplify-fitchvocel-dev-193108-deployment/amplify-cfn-templates/auth/auth-trigger-cloudformation-template.json"
+    },
+    "categories": {
+      "auth": {
+        "fitchvocel5266d294": {},
+        "userPoolGroups": {}
+      },
+      "api": {
+        "fitchvocel": {},
+        "AdminQueries": {}
+      },
+      "storage": {
+        "s392ab7284": {}
+      },
+      "hosting": {
+        "amplifyhosting": {
+          "appId": "d15ue9jqdjngj2",
+          "type": "manual"
+        }
+      },
+      "function": {
+        "fitchvocel5266d294PostConfirmation": {
+          "GROUP": "admin",
+          "deploymentBucketName": "amplify-fitchvocel-dev-193108-deployment",
+          "s3Key": "amplify-builds/fitchvocel5266d294PostConfirmation-384531423576484c7244-build.zip"
+        },
+        "AdminQueriesfd66d56a": {
+          "deploymentBucketName": "amplify-fitchvocel-dev-193108-deployment",
+          "s3Key": "amplify-builds/AdminQueriesfd66d56a-6d507931565346454170-build.zip"
+        }
+      }
+    }
+  },
+  "fitchvocel": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-fitchvocel-fitchvocel-155322-authRole",
+      "UnauthRoleArn": "arn:aws:iam::528051559496:role/amplify-fitchvocel-fitchvocel-155322-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::528051559496:role/amplify-fitchvocel-fitchvocel-155322-authRole",
+      "Region": "us-east-2",
+      "DeploymentBucketName": "amplify-fitchvocel-fitchvocel-155322-deployment",
+      "UnauthRoleName": "amplify-fitchvocel-fitchvocel-155322-unauthRole",
+      "StackName": "amplify-fitchvocel-fitchvocel-155322",
+      "StackId": "arn:aws:cloudformation:us-east-2:528051559496:stack/amplify-fitchvocel-fitchvocel-155322/06f8e680-f5be-11ed-b207-02784dddf5c3",
+      "AmplifyAppId": "d15ue9jqdjngj2",
+      "AuthTriggerTemplateURL": "https://s3.amazonaws.com/amplify-fitchvocel-fitchvocel-155322-deployment/amplify-cfn-templates/auth/auth-trigger-cloudformation-template.json"
+    },
+    "categories": {
+      "auth": {
+        "fitchvocel5266d294": {},
+        "userPoolGroups": {}
+      },
+      "function": {
+        "fitchvocel5266d294PostConfirmation": {
+          "GROUP": "admin",
+          "deploymentBucketName": "amplify-fitchvocel-fitchvocel-155322-deployment",
+          "s3Key": "amplify-builds/fitchvocel5266d294PostConfirmation-384531423576484c7244-build.zip"
+        },
+        "AdminQueriesfd66d56a": {
+          "deploymentBucketName": "amplify-fitchvocel-fitchvocel-155322-deployment",
+          "s3Key": "amplify-builds/AdminQueriesfd66d56a-6d507931565346454170-build.zip"
+        },
+        "fitchvocel5266d294": {}
+      },
+      "hosting": {
+        "amplifyhosting": {
+          "appId": "d15ue9jqdjngj2",
+          "type": "manual"
+        }
+      },
+      "api": {
+        "AdminQueries": {},
+        "fitchvocel": {}
+      },
+      "storage": {
+        "s392ab7284": {}
+      }
+    }
+  },
+  "vocelfitch": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-fitchvocel-vocelfitch-213015-authRole",
+      "UnauthRoleArn": "arn:aws:iam::528051559496:role/amplify-fitchvocel-vocelfitch-213015-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::528051559496:role/amplify-fitchvocel-vocelfitch-213015-authRole",
+      "Region": "us-east-2",
+      "DeploymentBucketName": "amplify-fitchvocel-vocelfitch-213015-deployment",
+      "UnauthRoleName": "amplify-fitchvocel-vocelfitch-213015-unauthRole",
+      "StackName": "amplify-fitchvocel-vocelfitch-213015",
+      "StackId": "arn:aws:cloudformation:us-east-2:528051559496:stack/amplify-fitchvocel-vocelfitch-213015/41861360-f6b6-11ed-a1cc-0a3870fdad21",
+      "AmplifyAppId": "d15ue9jqdjngj2",
+      "AuthTriggerTemplateURL": "https://s3.amazonaws.com/amplify-fitchvocel-vocelfitch-213015-deployment/amplify-cfn-templates/auth/auth-trigger-cloudformation-template.json"
+    },
+    "categories": {
+      "auth": {
+        "fitchvocel5266d294": {},
+        "userPoolGroups": {}
+      },
+      "function": {
+        "AdminQueriesfd66d56a": {},
+        "fitchvocel5266d294PostConfirmation": {
+          "GROUP": "admin"
+        },
+        "fitchvocel5266d294": {}
+      },
+      "hosting": {
+        "amplifyhosting": {
+          "appId": "d15ue9jqdjngj2",
+          "type": "manual"
+        }
+      }
+    }
+  },
+  "fitchnew": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-fitchvocel-fitchnew-214945-authRole",
+      "UnauthRoleArn": "arn:aws:iam::528051559496:role/amplify-fitchvocel-fitchnew-214945-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::528051559496:role/amplify-fitchvocel-fitchnew-214945-authRole",
+      "Region": "us-east-2",
+      "DeploymentBucketName": "amplify-fitchvocel-fitchnew-214945-deployment",
+      "UnauthRoleName": "amplify-fitchvocel-fitchnew-214945-unauthRole",
+      "StackName": "amplify-fitchvocel-fitchnew-214945",
+      "StackId": "arn:aws:cloudformation:us-east-2:528051559496:stack/amplify-fitchvocel-fitchnew-214945/fa8b4540-f6b8-11ed-bb95-0a31a0fd8169",
+      "AmplifyAppId": "d15ue9jqdjngj2"
+    },
+    "categories": {
+      "auth": {
+        "fitchvocel5266d294": {},
+        "userPoolGroups": {}
+      },
+      "function": {
+        "AdminQueriesfd66d56a": {},
+        "fitchvocel5266d294PostConfirmation": {
+          "GROUP": "admin"
+        },
+        "fitchvocel5266d294": {}
+      },
+      "hosting": {
+        "amplifyhosting": {
+          "appId": "d15ue9jqdjngj2",
+          "type": "manual"
+        }
+      }
+    }
+  },
+  "vocelnew": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-fitchvocel-vocelnew-215326-authRole",
+      "UnauthRoleArn": "arn:aws:iam::528051559496:role/amplify-fitchvocel-vocelnew-215326-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::528051559496:role/amplify-fitchvocel-vocelnew-215326-authRole",
+      "Region": "us-east-2",
+      "DeploymentBucketName": "amplify-fitchvocel-vocelnew-215326-deployment",
+      "UnauthRoleName": "amplify-fitchvocel-vocelnew-215326-unauthRole",
+      "StackName": "amplify-fitchvocel-vocelnew-215326",
+      "StackId": "arn:aws:cloudformation:us-east-2:528051559496:stack/amplify-fitchvocel-vocelnew-215326/7eccb140-f6b9-11ed-82a8-0a4de64ca0d3",
+      "AmplifyAppId": "d15ue9jqdjngj2",
+      "AuthTriggerTemplateURL": "https://s3.amazonaws.com/amplify-fitchvocel-vocelnew-215326-deployment/amplify-cfn-templates/auth/auth-trigger-cloudformation-template.json"
+    },
+    "categories": {
+      "auth": {
+        "fitchvocel5266d294": {},
+        "userPoolGroups": {}
+      },
+      "function": {
+        "AdminQueriesfd66d56a": {
+          "deploymentBucketName": "amplify-fitchvocel-vocelnew-215326-deployment",
+          "s3Key": "amplify-builds/AdminQueriesfd66d56a-6d507931565346454170-build.zip"
+        },
+        "fitchvocel5266d294PostConfirmation": {
+          "GROUP": "admin",
+          "deploymentBucketName": "amplify-fitchvocel-vocelnew-215326-deployment",
+          "s3Key": "amplify-builds/fitchvocel5266d294PostConfirmation-384531423576484c7244-build.zip"
+        },
+        "fitchvocel5266d294": {}
+      },
+      "hosting": {
+        "amplifyhosting": {
+          "appId": "d15ue9jqdjngj2",
+          "type": "manual"
+        }
+      },
+      "api": {
+        "AdminQueries": {},
+        "fitchvocel": {}
+      },
+      "storage": {
+        "s392ab7284": {}
+      }
+    }
+  }
+}

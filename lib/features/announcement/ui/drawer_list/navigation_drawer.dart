@@ -1,0 +1,196 @@
+import 'package:flutter/material.dart';
+import 'package:vocel/common/utils/colors.dart' as constants;
+import 'package:vocel/common/utils/manage_user.dart';
+import 'package:vocel/features/announcement/ui/drawer_list/navigation_item.dart';
+import 'package:vocel/features/announcement/ui/notification_page/group_changing_list.dart';
+import 'package:vocel/features/announcement/ui/profile_page/profile.dart';
+import 'package:vocel/features/announcement/ui/setting_page/setting_page.dart';
+import 'package:vocel/LocalizedButtonResolver.dart';
+import 'package:vocel/features/announcement/ui/discussion_forum/forum_page.dart';
+import 'package:vocel/features/announcement/ui/event_list/event_page.dart';
+import 'package:vocel/features/announcement/ui/help_page/help_list.dart';
+class VocelNavigationDrawer extends StatefulWidget {
+  final String? userEmail;
+  const VocelNavigationDrawer({super.key, this.userEmail});
+
+  @override
+  State<VocelNavigationDrawer> createState() => _VocelNavigationDrawerState();
+}
+
+class _VocelNavigationDrawerState extends State<VocelNavigationDrawer> {
+
+  bool change = false;
+  Future<bool> calculateFinalTesting() async {
+    bool finalTesting = false;
+    Map<String, dynamic> jsonMap = await listGroupsForUser();
+    for (var element in jsonMap["Groups"]) {
+      finalTesting = finalTesting || checkValid(element['GroupName'].toString());
+    }
+    return finalTesting;
+  }
+
+
+  @override
+  void initState() {
+    super.initState();
+    calculateFinalTesting().then((value) {
+      setState(() {
+        change = value;
+      });
+      debuggingPrint(change.toString());
+    });
+  }
+
+
+  // Map<String, String> stringMap = await getUserAttributes();
+  // String? userName = stringMap['email'];
+
+  @override
+  Widget build(BuildContext context) {
+    return Drawer(
+      child: Material(
+        color: const Color(constants.primaryColorDark),
+        child: Container(
+          color: Colors.white,
+          child: SingleChildScrollView(
+            child: Column(
+                children: [
+                  Container(
+                      color: const Color(constants.primaryColorDark),
+                      child: VocelAvator(context, widget.userEmail)
+                  ),
+                  const SizedBox(height: 6,),
+                  NavigationItem(
+                      name: const LocalizedButtonResolver().profile(context),
+                      leadingIcon: Icons.account_circle,
+                      onPressedFunction: ()=> itemPressed(context, index:0, userEmail: widget.userEmail)
+                  ),
+                  const SizedBox(height: 6,),
+                  NavigationItem(
+                      name: const LocalizedButtonResolver().events(context),
+                      leadingIcon: Icons.event,
+                      onPressedFunction: ()=> itemPressed(context, index:1)
+                  ),
+                  const SizedBox(height: 6,),
+                  NavigationItem(
+                      name: const LocalizedButtonResolver().discussionForum(context),
+                      leadingIcon: Icons.post_add,
+                      onPressedFunction: ()=> itemPressed(context, index:2)
+                  ),
+                  const SizedBox(height: 6,),
+                  Visibility(
+                    visible: change,
+                    child: NavigationItem(
+                        name: "Group Settings",
+                        leadingIcon: Icons.manage_accounts_sharp,
+                        onPressedFunction: ()=> itemPressed(context, index:3)
+                    ),
+                  ),
+                  const SizedBox(height: 6,),
+                  Divider(
+                    height: 20,
+                    thickness: 2,
+                    indent: 20,
+                    endIndent: 10,
+                    color: Color(( constants.primaryColorDark.toInt() % 0xFF000000 + 0x66000000)),
+                  ),
+                  NavigationItem(
+                      name: const LocalizedButtonResolver().settings(context),
+                      leadingIcon: Icons.settings,
+                      onPressedFunction: ()=> itemPressed(context, index:4)
+                  ),
+                  const SizedBox(height: 6,),
+                  NavigationItem(
+                      name: const LocalizedButtonResolver().helps(context),
+                      leadingIcon: Icons.help_outline,
+                      onPressedFunction: ()=> itemPressed(context, index:5)
+                  ),
+                  const SizedBox(height: 6,),
+                ],
+            ),
+          ),
+        ),
+      )
+    );
+  }
+}
+
+itemPressed(BuildContext context, {required int index, String? userEmail}) {
+  Navigator.pop(context);
+  switch(index){
+    case 0:
+      Navigator.push(context, MaterialPageRoute(
+          builder: (context) =>
+          const VocelProfile(),
+          settings: RouteSettings(arguments: userEmail)));
+      break;
+    case 1:
+    Navigator.push(context, MaterialPageRoute(
+        builder: (context) => EventPage(),
+        settings: const RouteSettings(arguments: "settings page")));
+    break;
+    case 2:
+    Navigator.push(context, MaterialPageRoute(
+        builder: (context) =>
+        ForumPage(),
+        settings: const RouteSettings(arguments: "settings page")));
+    break;
+    case 3:
+      Navigator.push(context, MaterialPageRoute(
+          builder: (context) =>
+              const ManageAccountList(),
+          settings: const RouteSettings(arguments: "settings page")));
+      break;
+    case 4:
+    Navigator.push(context, MaterialPageRoute(
+        builder: (context) =>
+        const VocelSetting(),
+        settings: const RouteSettings(arguments: "settings page")));
+    break;
+    case 5:
+    Navigator.push(context, MaterialPageRoute(
+        builder: (context) => ContactPage(),
+        settings: const RouteSettings(arguments: "settings page")));
+    break;
+    default:
+      Navigator.pop(context);
+      break;
+  }
+}
+
+Widget VocelAvator(BuildContext context, String? userEmail) {
+  return Padding(
+    padding: const EdgeInsetsDirectional.fromSTEB(20, 50, 0, 10),
+    child: Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsetsDirectional.fromSTEB(5, 0, 0, 0),
+          child: Align(
+            alignment: Alignment.centerLeft,
+            child: Container(
+              width: 100,
+              height: 100,
+              clipBehavior: Clip.antiAlias,
+              decoration: const BoxDecoration(
+                shape: BoxShape.circle
+              ),
+              // decoration: const Bo,
+              child: Image.asset("images/vocel_logo.png")
+            ),
+          ),
+        ),
+        const SizedBox(
+          height: 20,
+        ),
+        Row(
+          children: [
+            Text(userEmail ?? const LocalizedButtonResolver().email(context), style: const TextStyle(fontSize: 20, color: Colors.white)),
+            ],
+        )
+      ],
+    ),
+  );
+
+}

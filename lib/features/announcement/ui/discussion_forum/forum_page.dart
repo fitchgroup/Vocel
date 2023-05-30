@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:vocel/LocalizedButtonResolver.dart';
-import 'package:vocel/LocalizedMessageResolver.dart';
 import 'package:vocel/common/utils/colors.dart' as constants;
+import 'package:vocel/common/utils/manage_user.dart';
 import 'package:vocel/features/announcement/ui/discussion_forum/forum_post.dart';
 
-class ForumPage extends StatelessWidget {
+class ForumPage extends HookConsumerWidget {
+
+
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
@@ -42,12 +45,13 @@ class ForumPage extends StatelessWidget {
         },
       ),
       floatingActionButton: FloatingActionButton(
+        backgroundColor: const Color(constants.primaryColorDark),
         onPressed: () {
-          // navigate to create new thread page
+          // showAddAnnouncementDialog(context);
+          debuggingPrint("adding post");
         },
         child: const Icon(Icons.add),
       ),
     );
   }
 }
-

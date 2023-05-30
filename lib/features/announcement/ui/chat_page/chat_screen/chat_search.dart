@@ -2,8 +2,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:vocel/common/utils/colors.dart' as constants;
 
-class SearchBar extends StatefulWidget {
-  const SearchBar({
+class ChatSearchBar extends StatefulWidget {
+  const ChatSearchBar({
     super.key,
     required this.onClickController,
   });
@@ -11,11 +11,11 @@ class SearchBar extends StatefulWidget {
   final ValueChanged<String> onClickController;
 
   @override
-  State<SearchBar> createState() => _SearchBarState(onClickController: onClickController);
+  State<ChatSearchBar> createState() => _ChatSearchBarState(onClickController: onClickController);
 }
 
-class _SearchBarState extends State<SearchBar> {
-  _SearchBarState({required this.onClickController});
+class _ChatSearchBarState extends State<ChatSearchBar> {
+  _ChatSearchBarState({required this.onClickController});
 
   TextEditingController? queryController;
   ValueChanged<String> onClickController;
