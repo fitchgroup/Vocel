@@ -225,4 +225,3 @@ jobs:
           releaseFiles: app-release.aab
           track: alpha
           status: completed
-          changesNotSentForReview: true
