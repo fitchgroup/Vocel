@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:vocel/common/utils/colors.dart' as constants;
 import 'package:vocel/common/utils/manage_user.dart';
 import 'package:vocel/features/announcement/ui/drawer_list/navigation_item.dart';
-import 'package:vocel/features/announcement/ui/notification_page/group_changing_list.dart';
 import 'package:vocel/features/announcement/ui/profile_page/profile.dart';
 import 'package:vocel/features/announcement/ui/setting_page/setting_page.dart';
 import 'package:vocel/LocalizedButtonResolver.dart';
 import 'package:vocel/features/announcement/ui/discussion_forum/forum_page.dart';
 import 'package:vocel/features/announcement/ui/event_list/event_page.dart';
 import 'package:vocel/features/announcement/ui/help_page/help_list.dart';
+import 'package:vocel/features/announcement/ui/user_management_page/group_changing_list.dart';
 class VocelNavigationDrawer extends StatefulWidget {
   final String? userEmail;
   const VocelNavigationDrawer({super.key, this.userEmail});
@@ -20,14 +20,6 @@ class VocelNavigationDrawer extends StatefulWidget {
 class _VocelNavigationDrawerState extends State<VocelNavigationDrawer> {
 
   bool change = false;
-  Future<bool> calculateFinalTesting() async {
-    bool finalTesting = false;
-    Map<String, dynamic> jsonMap = await listGroupsForUser();
-    for (var element in jsonMap["Groups"]) {
-      finalTesting = finalTesting || checkValid(element['GroupName'].toString());
-    }
-    return finalTesting;
-  }
 
 
   @override
@@ -37,10 +29,9 @@ class _VocelNavigationDrawerState extends State<VocelNavigationDrawer> {
       setState(() {
         change = value;
       });
-      debuggingPrint(change.toString());
+      // debuggingPrint(change.toString());
     });
   }
-
 
   // Map<String, String> stringMap = await getUserAttributes();
   // String? userName = stringMap['email'];
@@ -100,12 +91,12 @@ class _VocelNavigationDrawerState extends State<VocelNavigationDrawer> {
                       onPressedFunction: ()=> itemPressed(context, index:4)
                   ),
                   const SizedBox(height: 6,),
-                  NavigationItem(
-                      name: const LocalizedButtonResolver().helps(context),
-                      leadingIcon: Icons.help_outline,
-                      onPressedFunction: ()=> itemPressed(context, index:5)
-                  ),
-                  const SizedBox(height: 6,),
+                  // NavigationItem(
+                  //     name: const LocalizedButtonResolver().helps(context),
+                  //     leadingIcon: Icons.help_outline,
+                  //     onPressedFunction: ()=> itemPressed(context, index:5)
+                  // ),
+                  // const SizedBox(height: 6,),
                 ],
             ),
           ),
