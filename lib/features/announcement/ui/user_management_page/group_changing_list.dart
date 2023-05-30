@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:vocel/LocalizedButtonResolver.dart';
 import 'package:vocel/LocalizedMessageResolver.dart';
 import 'package:vocel/common/utils/colors.dart' as constants;
 import 'package:vocel/common/utils/manage_user.dart';
 import 'package:vocel/features/announcement/ui/discussion_forum/forum_post.dart';
+import 'package:vocel/features/announcement/ui/user_management_page/change_group_dialog.dart';
 
 class ManageAccountList extends StatefulWidget {
   const ManageAccountList({super.key});
@@ -14,6 +16,10 @@ class ManageAccountList extends StatefulWidget {
 
 class _ManageAccountListState extends State<ManageAccountList> {
   List<String> desireList = ["leader", "parent", "staff"];
+  late Future<List<String>> _futureResultLeader;
+  late Future<List<String>> _futureResultParent;
+  late Future<List<String>> _futureResultStaff;
+
 
   /// get users in a specific group
   Future<List<String>> _getUserInTheList(String element) async {
@@ -41,66 +47,23 @@ class _ManageAccountListState extends State<ManageAccountList> {
     // _getUserInTheList(desireList[0]).then((listElement) {
     //   print(listElement);
     // });
+    _futureResultLeader = _getUserInTheList(desireList[0]);
+    _futureResultParent = _getUserInTheList(desireList[1]);
+    _futureResultStaff = _getUserInTheList(desireList[2]);
   }
 
-  void _showChangeGroupDialog(BuildContext context, String currentGroup, String currentUserEmail) {
-    String selectedGroup = currentGroup;
-    String? shouldChange = "";
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Change Groups'),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              RadioListTile<String>(
-                title: const Text('Leader'),
-                value: 'leader',
-                groupValue: selectedGroup,
-                onChanged: (value) {
-                  shouldChange = value;
-                },
-              ),
-              RadioListTile<String>(
-                title: const Text('Staff'),
-                value: 'staff',
-                groupValue: selectedGroup,
-                onChanged: (value) {
-                  shouldChange = value;
-                },
-              ),
-              RadioListTile<String>(
-                title: const Text('Parent'),
-                value: 'parent',
-                groupValue: selectedGroup,
-                onChanged: (value) {
-                  shouldChange = value;
-                },
-              ),
-            ],
-          ),
-          actions: [
-            ElevatedButton(
-              onPressed: () {
-                // debuggingPrint(currentGroup);
-                // debuggingPrint(currentUserEmail);
-                // debuggingPrint(shouldChange!);
-                if(shouldChange != null)
-                {
-                  changeUsersGroups(selectedGroup, shouldChange!, currentUserEmail);
-                }
-                Navigator.of(context).pop(); // Close the dialog
-              },
-              child: const Text('OK'),
-            ),
-          ],
-        );
-      },
-    );
+  Future<void> settingGroupStates() async {
+    await Future.delayed(const Duration(seconds: 1));
+    List<String> leaderList = await _getUserInTheList(desireList[0]);
+    List<String> staffList = await _getUserInTheList(desireList[2]);
+    List<String> parentList = await _getUserInTheList(desireList[1]);
+
+    setState(() {
+      _futureResultLeader = Future<List<String>>.value(leaderList);
+      _futureResultStaff = Future<List<String>>.value(staffList);
+      _futureResultParent = Future<List<String>>.value(parentList);
+    });
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -134,24 +97,35 @@ class _ManageAccountListState extends State<ManageAccountList> {
       body: ListView(
         children: [
           ExpansionTile(
-            title: Text(
-              desireList[0],
-              style: const TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 20,
-                color: Colors.black87,
-                letterSpacing: 2,
-                fontFamily: "Ysabeau"
+            title: Container(
+              padding: EdgeInsetsDirectional.zero,
+              decoration: BoxDecoration(
+                color: Colors.grey[100],
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: Text(
+                desireList[0],
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 20,
+                  color: Colors.black87,
+                  letterSpacing: 2,
+                  fontFamily: "Ysabeau",
+                ),
               ),
             ),
             children: [
               SizedBox(
-                height: 200, // Replace 200 with your desired height
+                height: 200,
                 child: FutureBuilder<List<String>>(
-                  future: _getUserInTheList(desireList[0]),
+                  future: _futureResultLeader,
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
-                      return const CircularProgressIndicator();
+                      return const Center(
+                        child: CircularProgressIndicator(
+                          color: Colors.blueGrey,
+                        ),
+                      );
                     } else if (snapshot.hasError) {
                       return Text('Error: ${snapshot.error}');
                     } else {
@@ -164,21 +138,29 @@ class _ManageAccountListState extends State<ManageAccountList> {
                               title: Text(
                                 dataList[index],
                                 style: const TextStyle(
-                                    letterSpacing: 0.5
+                                  letterSpacing: 0.5,
                                 ),
                               ),
                               trailing: ElevatedButton(
                                 onPressed: () {
-                                  _showChangeGroupDialog(context, desireList[0], dataList[index]);
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return ChangeGroupDialog(
+                                        currentGroup: desireList[0],
+                                        currentUserEmail: dataList[index],
+                                        onGroupChanged: () async {
+                                          settingGroupStates();
+                                        },
+                                      );
+                                    },
+                                  );
                                 },
                                 style: ElevatedButton.styleFrom(
                                   backgroundColor: const Color(constants.primaryRegularTeal), // Change background color to red
                                 ),
                                 child: const Text(
-                                    style: TextStyle(
-                                      color: Colors.black54,
-                                    ),
-                                    'Edit'
+                                  'Edit',
                                 ),
                               ),
                             );
@@ -199,24 +181,35 @@ class _ManageAccountListState extends State<ManageAccountList> {
             color: Color(( constants.primaryDarkTeal.toInt() % 0xFF000000 + 0x66000000)),
           ),
           ExpansionTile(
-            title: Text(
-              desireList[2],
-              style: const TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 20,
-                color: Colors.black87,
+            title: Container(
+              padding: EdgeInsetsDirectional.zero,
+              decoration: BoxDecoration(
+                color: Colors.grey[100],
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: Text(
+                desireList[2],
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 20,
+                  color: Colors.black87,
                   letterSpacing: 2,
-                  fontFamily: "Ysabeau"
+                  fontFamily: "Ysabeau",
+                ),
               ),
             ),
             children: [
               SizedBox(
                 height: 200,
                 child: FutureBuilder<List<String>>(
-                  future: _getUserInTheList(desireList[2]),
+                  future: _futureResultStaff,
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
-                      return const CircularProgressIndicator();
+                      return const Center(
+                        child: CircularProgressIndicator(
+                          color: Colors.blueGrey,
+                        ),
+                      );
                     } else if (snapshot.hasError) {
                       return Text('Error: ${snapshot.error}');
                     } else {
@@ -229,21 +222,29 @@ class _ManageAccountListState extends State<ManageAccountList> {
                               title: Text(
                                 dataList[index],
                                 style: const TextStyle(
-                                    letterSpacing: 0.5
+                                  letterSpacing: 0.5,
                                 ),
                               ),
                               trailing: ElevatedButton(
                                 onPressed: () {
-                                  _showChangeGroupDialog(context, desireList[2], dataList[index]);
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return ChangeGroupDialog(
+                                        currentGroup: desireList[2],
+                                        currentUserEmail: dataList[index],
+                                        onGroupChanged: () async {
+                                          settingGroupStates();
+                                        },
+                                      );
+                                    },
+                                  );
                                 },
                                 style: ElevatedButton.styleFrom(
                                   backgroundColor: const Color(constants.primaryRegularTeal), // Change background color to red
                                 ),
                                 child: const Text(
-                                    style: TextStyle(
-                                      color: Colors.black54,
-                                    ),
-                                    'Edit'
+                                  'Edit',
                                 ),
                               ),
                             );
@@ -264,24 +265,35 @@ class _ManageAccountListState extends State<ManageAccountList> {
             color: Color(( constants.primaryDarkTeal.toInt() % 0xFF000000 + 0x66000000)),
           ),
           ExpansionTile(
-            title: Text(
-              desireList[1],
-              style: const TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 20,
-                color: Colors.black87,
+            title: Container(
+              padding: EdgeInsetsDirectional.zero,
+              decoration: BoxDecoration(
+                color: Colors.grey[100],
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: Text(
+                desireList[1],
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 20,
+                  color: Colors.black87,
                   letterSpacing: 2,
-                  fontFamily: 'Ysabeau',
+                  fontFamily: "Ysabeau",
+                ),
               ),
             ),
             children: [
               SizedBox(
                 height: 200,
                 child: FutureBuilder<List<String>>(
-                  future: _getUserInTheList(desireList[1]),
+                  future: _futureResultParent,
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
-                      return const CircularProgressIndicator();
+                      return const Center(
+                        child: CircularProgressIndicator(
+                          color: Colors.blueGrey,
+                        ),
+                      );
                     } else if (snapshot.hasError) {
                       return Text('Error: ${snapshot.error}');
                     } else {
@@ -292,23 +304,31 @@ class _ManageAccountListState extends State<ManageAccountList> {
                           itemBuilder: (context, index) {
                             return ListTile(
                               title: Text(
-                                  dataList[index],
+                                dataList[index],
                                 style: const TextStyle(
-                                  letterSpacing: 0.5
+                                  letterSpacing: 0.5,
                                 ),
                               ),
                               trailing: ElevatedButton(
                                 onPressed: () {
-                                  _showChangeGroupDialog(context, desireList[1], dataList[index]);
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return ChangeGroupDialog(
+                                        currentGroup: desireList[1],
+                                        currentUserEmail: dataList[index],
+                                        onGroupChanged: () async {
+                                          settingGroupStates();
+                                        },
+                                      );
+                                    },
+                                  );
                                 },
                                 style: ElevatedButton.styleFrom(
                                   backgroundColor: const Color(constants.primaryRegularTeal), // Change background color to red
                                 ),
                                 child: const Text(
-                                    style: TextStyle(
-                                      color: Colors.black54,
-                                    ),
-                                    'Edit'
+                                  'Edit',
                                 ),
                               ),
                             );
