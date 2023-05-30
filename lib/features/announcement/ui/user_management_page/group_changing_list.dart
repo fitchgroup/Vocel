@@ -19,6 +19,7 @@ class _ManageAccountListState extends State<ManageAccountList> {
   late Future<List<String>> _futureResultLeader;
   late Future<List<String>> _futureResultParent;
   late Future<List<String>> _futureResultStaff;
+  bool loading = false;
 
 
   /// get users in a specific group
@@ -28,7 +29,6 @@ class _ManageAccountListState extends State<ManageAccountList> {
   }
   Future<List<String>> getUserInTheList(String desireSingleList) async {
     Map<String, dynamic> listInGroup = await listUsersInGroup(desireSingleList);
-    // debuggingPrint("user is ${listInGroup['Users']}");
     List<String> outputString = [];
     for(var userDict in listInGroup['Users']){
       for(var attributesDict in userDict['Attributes']){
@@ -44,16 +44,21 @@ class _ManageAccountListState extends State<ManageAccountList> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    // _getUserInTheList(desireList[0]).then((listElement) {
-    //   print(listElement);
-    // });
+    loading = false;
     _futureResultLeader = _getUserInTheList(desireList[0]);
     _futureResultParent = _getUserInTheList(desireList[1]);
     _futureResultStaff = _getUserInTheList(desireList[2]);
+    loading = true;
   }
 
   Future<void> settingGroupStates() async {
-    await Future.delayed(const Duration(seconds: 1));
+    setState(() {
+      loading = false;
+    });
+    await Future.delayed(Duration(seconds: 1));
+    setState(() {
+      loading = true;
+    });
     List<String> leaderList = await _getUserInTheList(desireList[0]);
     List<String> staffList = await _getUserInTheList(desireList[2]);
     List<String> parentList = await _getUserInTheList(desireList[1]);
@@ -94,84 +99,70 @@ class _ManageAccountListState extends State<ManageAccountList> {
         elevation: 2,
         backgroundColor: const Color(constants.primaryColorDark),
       ),
-      body: ListView(
+      body: loading ? ListView(
         children: [
-          ExpansionTile(
-            title: Container(
-              padding: EdgeInsetsDirectional.zero,
-              decoration: BoxDecoration(
-                color: Colors.grey[100],
-                borderRadius: BorderRadius.circular(8),
-              ),
-              child: Text(
-                desireList[0],
-                style: const TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 20,
-                  color: Colors.black87,
-                  letterSpacing: 2,
-                  fontFamily: "Ysabeau",
+          Container(
+            child: ExpansionTile(
+              title: GroupTextWidget(text: desireList[0]),
+              children: [
+                SizedBox(
+                  height: 200,
+                  child: FutureBuilder<List<String>>(
+                    future: _futureResultLeader,
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const Center(
+                          child: CircularProgressIndicator(
+                            color: Colors.blueGrey,
+                          ),
+                        );
+                      } else if (snapshot.hasError) {
+                        return Text('Error: ${snapshot.error}');
+                      } else {
+                        List<String> dataList = snapshot.data ?? [];
+                        return Scrollbar(
+                          child: ListView.builder(
+                            itemCount: dataList.length,
+                            itemBuilder: (context, index) {
+                              return ListTile(
+                                title: Text(
+                                  dataList[index],
+                                  style: const TextStyle(
+                                    letterSpacing: 0.5,
+                                  ),
+                                ),
+                                trailing: ElevatedButton(
+                                  onPressed: () {
+                                    showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return ChangeGroupDialog(
+                                          currentGroup: desireList[0],
+                                          currentUserEmail: dataList[index],
+                                          onGroupChanged: () async {
+                                            settingGroupStates();
+                                          },
+                                        );
+                                      },
+                                    );
+                                  },
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: const Color(constants.primaryRegularTeal), // Change background color to red
+                                  ),
+                                  child: const Text(
+                                    'Edit',
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
+                        );
+                      }
+                    },
+                  ),
                 ),
-              ),
+              ],
             ),
-            children: [
-              SizedBox(
-                height: 200,
-                child: FutureBuilder<List<String>>(
-                  future: _futureResultLeader,
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return const Center(
-                        child: CircularProgressIndicator(
-                          color: Colors.blueGrey,
-                        ),
-                      );
-                    } else if (snapshot.hasError) {
-                      return Text('Error: ${snapshot.error}');
-                    } else {
-                      List<String> dataList = snapshot.data ?? [];
-                      return Scrollbar(
-                        child: ListView.builder(
-                          itemCount: dataList.length,
-                          itemBuilder: (context, index) {
-                            return ListTile(
-                              title: Text(
-                                dataList[index],
-                                style: const TextStyle(
-                                  letterSpacing: 0.5,
-                                ),
-                              ),
-                              trailing: ElevatedButton(
-                                onPressed: () {
-                                  showDialog(
-                                    context: context,
-                                    builder: (BuildContext context) {
-                                      return ChangeGroupDialog(
-                                        currentGroup: desireList[0],
-                                        currentUserEmail: dataList[index],
-                                        onGroupChanged: () async {
-                                          settingGroupStates();
-                                        },
-                                      );
-                                    },
-                                  );
-                                },
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: const Color(constants.primaryRegularTeal), // Change background color to red
-                                ),
-                                child: const Text(
-                                  'Edit',
-                                ),
-                              ),
-                            );
-                          },
-                        ),
-                      );
-                    }
-                  },
-                ),
-              ),
-            ],
           ),
           Divider(
             height: 0,
@@ -181,23 +172,7 @@ class _ManageAccountListState extends State<ManageAccountList> {
             color: Color(( constants.primaryDarkTeal.toInt() % 0xFF000000 + 0x66000000)),
           ),
           ExpansionTile(
-            title: Container(
-              padding: EdgeInsetsDirectional.zero,
-              decoration: BoxDecoration(
-                color: Colors.grey[100],
-                borderRadius: BorderRadius.circular(8),
-              ),
-              child: Text(
-                desireList[2],
-                style: const TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 20,
-                  color: Colors.black87,
-                  letterSpacing: 2,
-                  fontFamily: "Ysabeau",
-                ),
-              ),
-            ),
+            title: GroupTextWidget(text: desireList[2]),
             children: [
               SizedBox(
                 height: 200,
@@ -265,23 +240,7 @@ class _ManageAccountListState extends State<ManageAccountList> {
             color: Color(( constants.primaryDarkTeal.toInt() % 0xFF000000 + 0x66000000)),
           ),
           ExpansionTile(
-            title: Container(
-              padding: EdgeInsetsDirectional.zero,
-              decoration: BoxDecoration(
-                color: Colors.grey[100],
-                borderRadius: BorderRadius.circular(8),
-              ),
-              child: Text(
-                desireList[1],
-                style: const TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 20,
-                  color: Colors.black87,
-                  letterSpacing: 2,
-                  fontFamily: "Ysabeau",
-                ),
-              ),
-            ),
+            title: GroupTextWidget(text: desireList[1]),
             children: [
               SizedBox(
                 height: 200,
@@ -342,9 +301,58 @@ class _ManageAccountListState extends State<ManageAccountList> {
             ],
           ),
         ],
-      ),
+      ) : const SpinKitFadingCircle(color: Color(constants.primaryDarkTeal)),
     );
   }
 }
 
+class GroupTextWidget extends StatelessWidget {
+  final String text;
 
+  const GroupTextWidget({
+    required this.text,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.grey[200],
+        borderRadius: BorderRadius.circular(8),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.blueGrey[200]!.withOpacity(0.5),
+            spreadRadius: 5,
+            blurRadius: 40,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.max,
+        children: [
+          Expanded(
+            child: Row(
+              mainAxisAlignment:
+              MainAxisAlignment.start,
+              children: [
+                Container(
+                  child: Text(
+                    text,
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 25,
+                      color: Colors.black87,
+                      letterSpacing: 2,
+                      fontFamily: "Ysabeau",
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
