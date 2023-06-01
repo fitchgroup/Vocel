@@ -1,20 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:vocel/LocalizedButtonResolver.dart';
-import 'package:vocel/LocalizedMessageResolver.dart';
 import 'package:vocel/common/utils/colors.dart' as constants;
 import 'package:vocel/common/utils/manage_user.dart';
-import 'package:vocel/features/announcement/ui/discussion_forum/forum_post.dart';
-import 'package:vocel/features/announcement/ui/user_management_page/change_group_dialog.dart';
+import 'package:vocel/features/announcement/ui/people_page/change_group_dialog.dart';
+import 'package:vocel/features/announcement/ui/people_page/friend_profile_page.dart';
 
-class ManageAccountList extends StatefulWidget {
-  const ManageAccountList({super.key});
-
+class PeopleList extends StatefulWidget {
+  const PeopleList({super.key, this.showEdit, this.userEmail});
+  final showEdit;
+  final userEmail;
   @override
-  State<ManageAccountList> createState() => _ManageAccountListState();
+  State<PeopleList> createState() => _PeopleListState();
 }
 
-class _ManageAccountListState extends State<ManageAccountList> {
+class _PeopleListState extends State<PeopleList> {
   List<String> desireList = ["leader", "parent", "staff"];
   late Future<List<String>> _futureResultLeader;
   late Future<List<String>> _futureResultParent;
@@ -55,7 +54,7 @@ class _ManageAccountListState extends State<ManageAccountList> {
     setState(() {
       loading = false;
     });
-    await Future.delayed(Duration(seconds: 1));
+    await Future.delayed(const Duration(seconds: 1));
     setState(() {
       loading = true;
     });
@@ -73,32 +72,6 @@ class _ManageAccountListState extends State<ManageAccountList> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        leading: SizedBox(
-          height: 60,
-          width: 60,
-          child: FloatingActionButton(
-            backgroundColor: Colors.transparent, // Back Button Color
-            elevation: 0,
-            child: const Icon(
-              Icons.arrow_back_rounded,
-              color: Colors.white, // Back Icon Color
-              size: 30,
-            ),
-            onPressed: () {
-              Navigator.pop(context);
-            },
-          ),
-        ),
-        title: const Text(
-          "Manage Account",
-        ),
-        actions: const [],
-        centerTitle: false,
-        elevation: 2,
-        backgroundColor: const Color(constants.primaryColorDark),
-      ),
       body: loading ? ListView(
         children: [
           Container(
@@ -124,16 +97,13 @@ class _ManageAccountListState extends State<ManageAccountList> {
                           child: ListView.builder(
                             itemCount: dataList.length,
                             itemBuilder: (context, index) {
-                              return ListTile(
-                                title: Text(
-                                  dataList[index],
-                                  style: const TextStyle(
-                                    letterSpacing: 0.5,
-                                  ),
-                                ),
-                                trailing: ElevatedButton(
-                                  onPressed: () {
-                                    showDialog(
+                              return Dismissible(
+                                key: Key(index.toString()),
+                                direction: widget.showEdit ? DismissDirection.endToStart : DismissDirection.none,
+                                confirmDismiss: (direction) async {
+                                  if (direction == DismissDirection.endToStart && widget.showEdit) {
+                                    // Show confirmation dialog for delete action
+                                    return await showDialog(
                                       context: context,
                                       builder: (BuildContext context) {
                                         return ChangeGroupDialog(
@@ -145,14 +115,11 @@ class _ManageAccountListState extends State<ManageAccountList> {
                                         );
                                       },
                                     );
-                                  },
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor: const Color(constants.primaryRegularTeal), // Change background color to red
-                                  ),
-                                  child: const Text(
-                                    'Edit',
-                                  ),
-                                ),
+                                  }
+                                  return null;
+                                },
+                                background: peopleBackgroundContainer(),
+                                child: peopleInkwell(context, widget.userEmail, dataList[index], desireList[0]),
                               );
                             },
                           ),
@@ -193,16 +160,13 @@ class _ManageAccountListState extends State<ManageAccountList> {
                         child: ListView.builder(
                           itemCount: dataList.length,
                           itemBuilder: (context, index) {
-                            return ListTile(
-                              title: Text(
-                                dataList[index],
-                                style: const TextStyle(
-                                  letterSpacing: 0.5,
-                                ),
-                              ),
-                              trailing: ElevatedButton(
-                                onPressed: () {
-                                  showDialog(
+                            return Dismissible(
+                              key: Key(index.toString()),
+                              direction: widget.showEdit ? DismissDirection.endToStart : DismissDirection.none,
+                              confirmDismiss: (direction) async {
+                                if (direction == DismissDirection.endToStart) {
+                                  // Show confirmation dialog for delete action
+                                  return await showDialog(
                                     context: context,
                                     builder: (BuildContext context) {
                                       return ChangeGroupDialog(
@@ -214,14 +178,11 @@ class _ManageAccountListState extends State<ManageAccountList> {
                                       );
                                     },
                                   );
-                                },
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: const Color(constants.primaryRegularTeal), // Change background color to red
-                                ),
-                                child: const Text(
-                                  'Edit',
-                                ),
-                              ),
+                                }
+                                return null;
+                              },
+                              background: peopleBackgroundContainer(),
+                              child: peopleInkwell(context, widget.userEmail, dataList[index], desireList[2]),
                             );
                           },
                         ),
@@ -261,16 +222,13 @@ class _ManageAccountListState extends State<ManageAccountList> {
                         child: ListView.builder(
                           itemCount: dataList.length,
                           itemBuilder: (context, index) {
-                            return ListTile(
-                              title: Text(
-                                dataList[index],
-                                style: const TextStyle(
-                                  letterSpacing: 0.5,
-                                ),
-                              ),
-                              trailing: ElevatedButton(
-                                onPressed: () {
-                                  showDialog(
+                            return Dismissible(
+                              key: Key(index.toString()),
+                              direction: widget.showEdit ? DismissDirection.endToStart : DismissDirection.none,
+                              confirmDismiss: (direction) async {
+                                if (direction == DismissDirection.endToStart) {
+                                  // Show confirmation dialog for delete action
+                                  return await showDialog(
                                     context: context,
                                     builder: (BuildContext context) {
                                       return ChangeGroupDialog(
@@ -282,14 +240,11 @@ class _ManageAccountListState extends State<ManageAccountList> {
                                       );
                                     },
                                   );
-                                },
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: const Color(constants.primaryRegularTeal), // Change background color to red
-                                ),
-                                child: const Text(
-                                  'Edit',
-                                ),
-                              ),
+                                }
+                                return null;
+                              },
+                              background: peopleBackgroundContainer(),
+                              child: peopleInkwell(context, widget.userEmail, dataList[index], desireList[1]),
                             );
                           },
                         ),
@@ -321,9 +276,9 @@ class GroupTextWidget extends StatelessWidget {
         borderRadius: BorderRadius.circular(8),
         boxShadow: [
           BoxShadow(
-            color: Colors.blueGrey[200]!.withOpacity(0.5),
-            spreadRadius: 5,
-            blurRadius: 40,
+            color: Colors.blueGrey[200]!.withOpacity(0.6),
+            spreadRadius: 1,
+            blurRadius: 30,
             offset: const Offset(0, 2),
           ),
         ],
@@ -355,4 +310,70 @@ class GroupTextWidget extends StatelessWidget {
       ),
     );
   }
+}
+
+Widget peopleBackgroundContainer() {
+  return Container(
+    color: const Color(constants.primaryDarkTeal).withOpacity(0.4), // Customize the background color for complete action
+    alignment: Alignment.centerRight,
+    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: const [
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: 8),
+          child: Icon(
+            Icons.edit,
+            color: Colors.white,
+          ),
+        ),
+        Text(
+          "Edit",
+          style: TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ],
+    ),
+  );
+}
+
+Widget peopleInkwell(BuildContext context, String myInfo, String theirEmail, String title) {
+  return InkWell(
+    onTap: () {
+      Navigator.push(context, MaterialPageRoute
+        (builder: (context) =>
+          // ChatPage(myInfo: myInfo, theirInfo: theirInfo, title: title),
+          FriendProfile(name: 'testing name', region: 'testing region', email: theirEmail, title: title, aboutMe: 'dsa', myInfo: myInfo),
+          settings: const RouteSettings(arguments: "")
+      ));
+      debuggingPrint("$myInfo is sending message to $theirEmail");
+    },
+    child: ListTile(
+      title: Text(
+        theirEmail,
+        style: const TextStyle(
+          letterSpacing: 0.5,
+        ),
+      ),
+      trailing: Container(
+        decoration: BoxDecoration(
+          color: title == "leader" ? const Color(constants.primaryDarkTeal) : title == "staff"
+                                   ? const Color(constants.primaryRegularTeal) : const Color(constants.primaryLightTeal),
+          borderRadius: BorderRadius.circular(20),
+        ),
+        child: Padding(
+          padding: const EdgeInsetsDirectional.fromSTEB(8, 4, 8, 4),
+          child: Text(
+            title,
+            style: const TextStyle(
+              color: Colors.white,
+              fontSize: 16,
+            ),
+          ),
+        ),
+      ),
+    ),
+  );
 }

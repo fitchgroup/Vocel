@@ -61,6 +61,12 @@ class _ChangeGroupDialogState extends State<ChangeGroupDialog> {
         ],
       ),
       actions: [
+        TextButton(
+          child: const Text("Cancel"),
+          onPressed: () {
+            Navigator.of(context).pop(false); // Dismiss the dialog and don't delete
+          },
+        ),
         ElevatedButton(
           onPressed: () {
             if (selectedGroup != widget.currentGroup) {
@@ -69,7 +75,7 @@ class _ChangeGroupDialogState extends State<ChangeGroupDialog> {
             if (widget.onGroupChanged != null) {
               widget.onGroupChanged!();
             }
-            Navigator.of(context).pop(); // Close the dialog
+            Navigator.of(context).pop(false); // Close the dialog
           },
           child: const Text('Confirm'),
         ),
