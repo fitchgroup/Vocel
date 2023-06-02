@@ -4,6 +4,7 @@ import 'package:vocel/common/utils/colors.dart' as constants;
 import 'package:vocel/common/utils/manage_user.dart';
 import 'package:vocel/features/announcement/ui/people_page/change_group_dialog.dart';
 import 'package:vocel/features/announcement/ui/people_page/friend_profile_page.dart';
+import 'package:vocel/features/announcement/ui/people_page/user_search_bar.dart';
 
 class PeopleList extends StatefulWidget {
   const PeopleList({super.key, this.showEdit, this.userEmail});
@@ -15,10 +16,6 @@ class PeopleList extends StatefulWidget {
 
 class _PeopleListState extends State<PeopleList> {
   List<String> desireList = ["leader", "parent", "staff"];
-  /// DEPRECIATED:
-  // late Future<List<Map<String, String>>> _futureResultLeader;
-  // late Future<List<Map<String, String>>> _futureResultParent;
-  // late Future<List<Map<String, String>>> _futureResultStaff;
   late Future<List<Map<String, String>>> _futureResult;
   bool loading = false;
 
@@ -57,7 +54,7 @@ class _PeopleListState extends State<PeopleList> {
               debuggingPrint("${outputMap["email"]} + $key + $value");
             });
             for (var element in jsonMap["Groups"]) {
-              if(!outputMap.containsKey("VocelGroup") && ["leader", "parent", "staff"].contains(element["GroupName"])){
+              if(!outputMap.containsKey("VocelGroup") && desireList.contains(element["GroupName"])){
                 outputMap["VocelGroup"] = element["GroupName"];
               }
             }
@@ -109,6 +106,7 @@ class _PeopleListState extends State<PeopleList> {
     return Scaffold(
       body: loading ? Column(
         children: [
+          UserSearchBar(onClickController: (String value) {  },),
           Expanded(
             child: FutureBuilder<List<Map<String, String>>>(
               future: _futureResult,
@@ -123,6 +121,8 @@ class _PeopleListState extends State<PeopleList> {
                   return Text('Error: ${snapshot.error}');
                 } else {
                   List<Map<String, String>> dataList = snapshot.data ?? [];
+                  /// TODO: SORT THE LIST BASED ON EMAIL, MAY CHANGE IN THE FUTURE
+                  dataList.sort((a,b) => a["email"]!.compareTo(b["email"]!));
                   return ListView.builder(
                     itemCount: dataList.length,
                     itemBuilder: (context, index) {
