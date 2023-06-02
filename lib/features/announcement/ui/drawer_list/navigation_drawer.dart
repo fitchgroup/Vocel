@@ -7,8 +7,7 @@ import 'package:vocel/features/announcement/ui/setting_page/setting_page.dart';
 import 'package:vocel/LocalizedButtonResolver.dart';
 import 'package:vocel/features/announcement/ui/discussion_forum/forum_page.dart';
 import 'package:vocel/features/announcement/ui/event_list/event_page.dart';
-import 'package:vocel/features/announcement/ui/help_page/help_list.dart';
-import 'package:vocel/features/announcement/ui/user_management_page/group_changing_list.dart';
+import 'package:vocel/features/announcement/ui/people_page/group_people_list.dart';
 class VocelNavigationDrawer extends StatefulWidget {
   final String? userEmail;
   const VocelNavigationDrawer({super.key, this.userEmail});
@@ -19,22 +18,10 @@ class VocelNavigationDrawer extends StatefulWidget {
 
 class _VocelNavigationDrawerState extends State<VocelNavigationDrawer> {
 
-  bool change = false;
-
-
   @override
   void initState() {
     super.initState();
-    calculateFinalTesting().then((value) {
-      setState(() {
-        change = value;
-      });
-      // debuggingPrint(change.toString());
-    });
   }
-
-  // Map<String, String> stringMap = await getUserAttributes();
-  // String? userName = stringMap['email'];
 
   @override
   Widget build(BuildContext context) {
@@ -67,15 +54,6 @@ class _VocelNavigationDrawerState extends State<VocelNavigationDrawer> {
                       name: const LocalizedButtonResolver().discussionForum(context),
                       leadingIcon: Icons.post_add,
                       onPressedFunction: ()=> itemPressed(context, index:2)
-                  ),
-                  const SizedBox(height: 6,),
-                  Visibility(
-                    visible: change,
-                    child: NavigationItem(
-                        name: "Group Settings",
-                        leadingIcon: Icons.manage_accounts_sharp,
-                        onPressedFunction: ()=> itemPressed(context, index:3)
-                    ),
                   ),
                   const SizedBox(height: 6,),
                   Divider(
@@ -129,7 +107,7 @@ itemPressed(BuildContext context, {required int index, String? userEmail}) {
     case 3:
       Navigator.push(context, MaterialPageRoute(
           builder: (context) =>
-              const ManageAccountList(),
+              const PeopleList(),
           settings: const RouteSettings(arguments: "settings page")));
       break;
     case 4:
@@ -138,11 +116,12 @@ itemPressed(BuildContext context, {required int index, String? userEmail}) {
         const VocelSetting(),
         settings: const RouteSettings(arguments: "settings page")));
     break;
-    case 5:
-    Navigator.push(context, MaterialPageRoute(
-        builder: (context) => ContactPage(),
-        settings: const RouteSettings(arguments: "settings page")));
-    break;
+    /// TODO: delete HELP page for now, may add in the future
+    // case 5:
+    // Navigator.push(context, MaterialPageRoute(
+    //     builder: (context) => ContactPage(),
+    //     settings: const RouteSettings(arguments: "settings page")));
+    // break;
     default:
       Navigator.pop(context);
       break;
