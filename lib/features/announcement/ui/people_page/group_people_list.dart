@@ -15,22 +15,35 @@ class PeopleList extends StatefulWidget {
 
 class _PeopleListState extends State<PeopleList> {
   List<String> desireList = ["leader", "parent", "staff"];
-  late Future<List<Map<String, String>>> _futureResultLeader;
-  late Future<List<Map<String, String>>> _futureResultParent;
-  late Future<List<Map<String, String>>> _futureResultStaff;
+  /// DEPRECIATED:
+  // late Future<List<Map<String, String>>> _futureResultLeader;
+  // late Future<List<Map<String, String>>> _futureResultParent;
+  // late Future<List<Map<String, String>>> _futureResultStaff;
+  late Future<List<Map<String, String>>> _futureResult;
   bool loading = false;
 
 
   /// get users in a specific group
   Future<List<Map<String, String>>> _getUserAttrInTheMap(String element) async {
-    List<Map<String, String>> mapElement = await getUserAttrInTheMap(element);
+    List<Map<String, String>> mapElement;
+    if(element == ""){
+      mapElement = await getUserAttrInTheMap("");
+    }
+    else {
+      mapElement = await getUserAttrInTheMap(element);
+    }
     return mapElement;
   }
   Future<List<Map<String, String>>> getUserAttrInTheMap(String desireSingleList) async {
-    Map<String, dynamic> listInGroup = await listUsersInGroup(desireSingleList);
+    Map<String, dynamic> listInGroup;
+    if(desireSingleList == ""){
+      listInGroup = await listAllUsersInGroup();
+    }
+    else {
+      listInGroup = await listUsersInGroup(desireSingleList);
+    }
     List<Map<String, String>> outputList = [];
     for(var userDict in listInGroup['Users']){
-      debuggingPrint(userDict.toString());
       Map<String, String> outputMap = {};
       for(var attributesDict in userDict['Attributes']){
         if(attributesDict["Name"] == "email" ||
@@ -39,6 +52,15 @@ class _PeopleListState extends State<PeopleList> {
             attributesDict["Name"] == "custom:region"){
           if(attributesDict["Name"] == "email"){
             outputMap["email"] = attributesDict["Value"].toString();
+            Map<String, dynamic> jsonMap = await listGroupsForUser(receivedUserName: outputMap["email"]);
+            jsonMap.forEach((key, value) {
+              debuggingPrint("${outputMap["email"]} + $key + $value");
+            });
+            for (var element in jsonMap["Groups"]) {
+              if(!outputMap.containsKey("VocelGroup") && ["leader", "parent", "staff"].contains(element["GroupName"])){
+                outputMap["VocelGroup"] = element["GroupName"];
+              }
+            }
           }
           else if(attributesDict["Name"] == "custom:name"){
             outputMap["name"] = attributesDict["Value"].toString();
@@ -49,13 +71,11 @@ class _PeopleListState extends State<PeopleList> {
           else {
             outputMap["region"] = attributesDict["Value"].toString();
           }
-
         }
       }
       if(outputMap.isNotEmpty) {
         outputList.add(outputMap);
       }
-      debuggingPrint(outputMap.toString());
     }
     return outputList;
   }
@@ -65,9 +85,7 @@ class _PeopleListState extends State<PeopleList> {
     // TODO: implement initState
     super.initState();
     loading = false;
-    _futureResultLeader = _getUserAttrInTheMap(desireList[0]);
-    _futureResultParent = _getUserAttrInTheMap(desireList[1]);
-    _futureResultStaff = _getUserAttrInTheMap(desireList[2]);
+    _futureResult = _getUserAttrInTheMap("");
     loading = true;
   }
 
@@ -79,14 +97,10 @@ class _PeopleListState extends State<PeopleList> {
     setState(() {
       loading = true;
     });
-    List<Map<String, String>> leaderList = await _getUserAttrInTheMap(desireList[0]);
-    List<Map<String, String>> staffList = await _getUserAttrInTheMap(desireList[2]);
-    List<Map<String, String>> parentList = await _getUserAttrInTheMap(desireList[1]);
+    List<Map<String, String>> allUserList = await _getUserAttrInTheMap("");
 
     setState(() {
-      _futureResultLeader = Future<List<Map<String, String>>>.value(leaderList);
-      _futureResultStaff = Future<List<Map<String, String>>>.value(staffList);
-      _futureResultParent = Future<List<Map<String, String>>>.value(parentList);
+      _futureResult = Future<List<Map<String, String>>>.value(allUserList);
     });
   }
 
@@ -97,7 +111,7 @@ class _PeopleListState extends State<PeopleList> {
         children: [
           Expanded(
             child: FutureBuilder<List<Map<String, String>>>(
-              future: _futureResultLeader,
+              future: _futureResult,
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return const Center(
@@ -124,7 +138,7 @@ class _PeopleListState extends State<PeopleList> {
                                   context: context,
                                   builder: (BuildContext context) {
                                     return ChangeGroupDialog(
-                                      currentGroup: desireList[0],
+                                      currentGroup: dataList[index]["VocelGroup"] ?? "Unassigned",
                                       currentUserEmail: dataList[index]["email"] ?? "...",
                                       onGroupChanged: () async {
                                         settingGroupStates();
@@ -136,111 +150,14 @@ class _PeopleListState extends State<PeopleList> {
                               return null;
                             },
                             background: peopleBackgroundContainer(),
-                            child: peopleInkwell(context, widget.userEmail, dataList[index]["email"] ?? "...", desireList[0]),
-                          ),
-                          peopleListDivider(),
-                        ],
-                      );
-                    },
-                  );
-                }
-              },
-            ),
-          ),
-          Expanded(
-            child: FutureBuilder<List<Map<String, String>>>(
-              future: _futureResultStaff,
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(
-                    child: CircularProgressIndicator(
-                      color: Colors.blueGrey,
-                    ),
-                  );
-                } else if (snapshot.hasError) {
-                  return Text('Error: ${snapshot.error}');
-                } else {
-                  List<Map<String, String>> dataList = snapshot.data ?? [];
-                  return ListView.builder(
-                    itemCount: dataList.length,
-                    itemBuilder: (context, index) {
-                      return Column(
-                        children: [
-                          Dismissible(
-                            key: Key(index.toString()),
-                            direction: widget.showEdit ? DismissDirection.endToStart : DismissDirection.none,
-                            confirmDismiss: (direction) async {
-                              if (direction == DismissDirection.endToStart) {
-                                // Show confirmation dialog for delete action
-                                return await showDialog(
-                                  context: context,
-                                  builder: (BuildContext context) {
-                                    return ChangeGroupDialog(
-                                      currentGroup: desireList[2],
-                                      currentUserEmail: dataList[index]["email"] ?? "...",
-                                      onGroupChanged: () async {
-                                        settingGroupStates();
-                                      },
-                                    );
-                                  },
-                                );
-                              }
-                              return null;
-                            },
-                            background: peopleBackgroundContainer(),
-                            child: peopleInkwell(context, widget.userEmail, dataList[index]["email"] ?? "...", desireList[2]),
-                          ),
-                          peopleListDivider(),
-                        ],
-                      );
-                    },
-                  );
-                }
-              },
-            ),
-          ),
-          Expanded(
-            child: FutureBuilder<List<Map<String, String>>>(
-              future: _futureResultParent,
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(
-                    child: CircularProgressIndicator(
-                      color: Colors.blueGrey,
-                    ),
-                  );
-                } else if (snapshot.hasError) {
-                  return Text('Error: ${snapshot.error}');
-                } else {
-                  List<Map<String, String>> dataList = snapshot.data ?? [];
-                  return ListView.builder(
-                    itemCount: dataList.length,
-                    itemBuilder: (context, index) {
-                      return Column(
-                        children: [
-                          Dismissible(
-                            key: Key(index.toString()),
-                            direction: widget.showEdit ? DismissDirection.endToStart : DismissDirection.none,
-                            confirmDismiss: (direction) async {
-                              if (direction == DismissDirection.endToStart) {
-                                // Show confirmation dialog for delete action
-                                return await showDialog(
-                                  context: context,
-                                  builder: (BuildContext context) {
-                                    return ChangeGroupDialog(
-                                      currentGroup: desireList[1],
-                                      currentUserEmail: dataList[index]["email"] ?? "...",
-                                      onGroupChanged: () async {
-                                        settingGroupStates();
-                                      },
-                                    );
-                                  },
-                                );
-                              }
-                              return null;
-                            },
-                            background: peopleBackgroundContainer(),
-                            child: peopleInkwell(context, widget.userEmail, dataList[index]["email"] ?? "...", desireList[1]),
+                            child: peopleInkwell(
+                                context,
+                                widget.userEmail,
+                                dataList[index]["email"] ?? "Not set...",
+                                dataList[index]["name"] ?? "Not set...",
+                                dataList[index]["region"] ?? "Not set...",
+                                dataList[index]["aboutMe"] ?? "Not set...",
+                                dataList[index]["VocelGroup"] ?? "Unassigned"),
                           ),
                           peopleListDivider(),
                         ],
@@ -335,28 +252,35 @@ Widget peopleBackgroundContainer() {
   );
 }
 
-Widget peopleInkwell(BuildContext context, String myInfo, String theirEmail, String title) {
+Widget peopleInkwell(BuildContext context, String myInfo, String theirEmail, String theirName, String theirRegion, String theirAboutMe, String title) {
   return InkWell(
     onTap: () {
       Navigator.push(context, MaterialPageRoute
         (builder: (context) =>
       // ChatPage(myInfo: myInfo, theirInfo: theirInfo, title: title),
-      FriendProfile(name: 'testing name', region: 'testing region', email: theirEmail, title: title, aboutMe: 'dsa', myInfo: myInfo),
+      FriendProfile(name: theirName, region: theirRegion, email: theirEmail, title: title, aboutMe: theirAboutMe, myInfo: myInfo),
           settings: const RouteSettings(arguments: "")
       ));
-      debuggingPrint("$myInfo is sending message to $theirEmail");
+      // debuggingPrint("$myInfo is sending message to $theirEmail");
     },
     child: ListTile(
+      leading: const CircleAvatar(
+        // Specify your avatar properties here
+        radius: 18,
+        backgroundImage: AssetImage('images/vocel_logo.png'), // Replace with your avatar image
+      ),
       title: Text(
         theirEmail,
         style: const TextStyle(
-          letterSpacing: 0.5,
+          fontSize: 14,
+          letterSpacing: 0.2,
         ),
       ),
       trailing: Container(
         decoration: BoxDecoration(
           color: title == "leader" ? const Color(constants.primaryDarkTeal) : title == "staff"
-              ? const Color(constants.primaryRegularTeal) : const Color(constants.primaryLightTeal),
+              ? const Color(constants.primaryRegularTeal) : title == "parent" ?
+                const Color(constants.primaryLightTeal) : Colors.grey[350],
           borderRadius: BorderRadius.circular(20),
         ),
         child: Padding(
@@ -376,7 +300,7 @@ Widget peopleInkwell(BuildContext context, String myInfo, String theirEmail, Str
 
 Widget peopleListDivider() => Divider(
   height: 0,
-  thickness: 0.2,
+  thickness: 0.3,
   indent: 10,
   endIndent: 10,
   color: Color(( constants.primaryDarkTeal.toInt() % 0xFF000000 + 0x66000000)),
