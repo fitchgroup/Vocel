@@ -15,28 +15,49 @@ class PeopleList extends StatefulWidget {
 
 class _PeopleListState extends State<PeopleList> {
   List<String> desireList = ["leader", "parent", "staff"];
-  late Future<List<String>> _futureResultLeader;
-  late Future<List<String>> _futureResultParent;
-  late Future<List<String>> _futureResultStaff;
+  late Future<List<Map<String, String>>> _futureResultLeader;
+  late Future<List<Map<String, String>>> _futureResultParent;
+  late Future<List<Map<String, String>>> _futureResultStaff;
   bool loading = false;
 
 
   /// get users in a specific group
-  Future<List<String>> _getUserInTheList(String element) async {
-    List<String> listElement = await getUserInTheList(element);
-    return listElement;
+  Future<List<Map<String, String>>> _getUserAttrInTheMap(String element) async {
+    List<Map<String, String>> mapElement = await getUserAttrInTheMap(element);
+    return mapElement;
   }
-  Future<List<String>> getUserInTheList(String desireSingleList) async {
+  Future<List<Map<String, String>>> getUserAttrInTheMap(String desireSingleList) async {
     Map<String, dynamic> listInGroup = await listUsersInGroup(desireSingleList);
-    List<String> outputString = [];
+    List<Map<String, String>> outputList = [];
     for(var userDict in listInGroup['Users']){
+      debuggingPrint(userDict.toString());
+      Map<String, String> outputMap = {};
       for(var attributesDict in userDict['Attributes']){
-        if(attributesDict["Name"] == "email"){
-          outputString.add(attributesDict["Value"]);
+        if(attributesDict["Name"] == "email" ||
+            attributesDict["Name"] == "custom:name" ||
+            attributesDict["Name"] == "custom:about" ||
+            attributesDict["Name"] == "custom:region"){
+          if(attributesDict["Name"] == "email"){
+            outputMap["email"] = attributesDict["Value"].toString();
+          }
+          else if(attributesDict["Name"] == "custom:name"){
+            outputMap["name"] = attributesDict["Value"].toString();
+          }
+          else if(attributesDict["Name"] == "custom:about"){
+            outputMap["aboutMe"] = attributesDict["Value"].toString();
+          }
+          else {
+            outputMap["region"] = attributesDict["Value"].toString();
+          }
+
         }
       }
+      if(outputMap.isNotEmpty) {
+        outputList.add(outputMap);
+      }
+      debuggingPrint(outputMap.toString());
     }
-    return outputString;
+    return outputList;
   }
 
   @override
@@ -44,9 +65,9 @@ class _PeopleListState extends State<PeopleList> {
     // TODO: implement initState
     super.initState();
     loading = false;
-    _futureResultLeader = _getUserInTheList(desireList[0]);
-    _futureResultParent = _getUserInTheList(desireList[1]);
-    _futureResultStaff = _getUserInTheList(desireList[2]);
+    _futureResultLeader = _getUserAttrInTheMap(desireList[0]);
+    _futureResultParent = _getUserAttrInTheMap(desireList[1]);
+    _futureResultStaff = _getUserAttrInTheMap(desireList[2]);
     loading = true;
   }
 
@@ -58,202 +79,177 @@ class _PeopleListState extends State<PeopleList> {
     setState(() {
       loading = true;
     });
-    List<String> leaderList = await _getUserInTheList(desireList[0]);
-    List<String> staffList = await _getUserInTheList(desireList[2]);
-    List<String> parentList = await _getUserInTheList(desireList[1]);
+    List<Map<String, String>> leaderList = await _getUserAttrInTheMap(desireList[0]);
+    List<Map<String, String>> staffList = await _getUserAttrInTheMap(desireList[2]);
+    List<Map<String, String>> parentList = await _getUserAttrInTheMap(desireList[1]);
 
     setState(() {
-      _futureResultLeader = Future<List<String>>.value(leaderList);
-      _futureResultStaff = Future<List<String>>.value(staffList);
-      _futureResultParent = Future<List<String>>.value(parentList);
+      _futureResultLeader = Future<List<Map<String, String>>>.value(leaderList);
+      _futureResultStaff = Future<List<Map<String, String>>>.value(staffList);
+      _futureResultParent = Future<List<Map<String, String>>>.value(parentList);
     });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: loading ? ListView(
+      body: loading ? Column(
         children: [
-          Container(
-            child: ExpansionTile(
-              title: GroupTextWidget(text: desireList[0]),
-              children: [
-                SizedBox(
-                  height: 200,
-                  child: FutureBuilder<List<String>>(
-                    future: _futureResultLeader,
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return const Center(
-                          child: CircularProgressIndicator(
-                            color: Colors.blueGrey,
-                          ),
-                        );
-                      } else if (snapshot.hasError) {
-                        return Text('Error: ${snapshot.error}');
-                      } else {
-                        List<String> dataList = snapshot.data ?? [];
-                        return Scrollbar(
-                          child: ListView.builder(
-                            itemCount: dataList.length,
-                            itemBuilder: (context, index) {
-                              return Dismissible(
-                                key: Key(index.toString()),
-                                direction: widget.showEdit ? DismissDirection.endToStart : DismissDirection.none,
-                                confirmDismiss: (direction) async {
-                                  if (direction == DismissDirection.endToStart && widget.showEdit) {
-                                    // Show confirmation dialog for delete action
-                                    return await showDialog(
-                                      context: context,
-                                      builder: (BuildContext context) {
-                                        return ChangeGroupDialog(
-                                          currentGroup: desireList[0],
-                                          currentUserEmail: dataList[index],
-                                          onGroupChanged: () async {
-                                            settingGroupStates();
-                                          },
-                                        );
+          Expanded(
+            child: FutureBuilder<List<Map<String, String>>>(
+              future: _futureResultLeader,
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(
+                    child: CircularProgressIndicator(
+                      color: Colors.blueGrey,
+                    ),
+                  );
+                } else if (snapshot.hasError) {
+                  return Text('Error: ${snapshot.error}');
+                } else {
+                  List<Map<String, String>> dataList = snapshot.data ?? [];
+                  return ListView.builder(
+                    itemCount: dataList.length,
+                    itemBuilder: (context, index) {
+                      return Column(
+                        children: [
+                          Dismissible(
+                            key: Key(index.toString()),
+                            direction: widget.showEdit ? DismissDirection.endToStart : DismissDirection.none,
+                            confirmDismiss: (direction) async {
+                              if (direction == DismissDirection.endToStart && widget.showEdit) {
+                                // Show confirmation dialog for delete action
+                                return await showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return ChangeGroupDialog(
+                                      currentGroup: desireList[0],
+                                      currentUserEmail: dataList[index]["email"] ?? "...",
+                                      onGroupChanged: () async {
+                                        settingGroupStates();
                                       },
                                     );
-                                  }
-                                  return null;
-                                },
-                                background: peopleBackgroundContainer(),
-                                child: peopleInkwell(context, widget.userEmail, dataList[index], desireList[0]),
-                              );
+                                  },
+                                );
+                              }
+                              return null;
                             },
+                            background: peopleBackgroundContainer(),
+                            child: peopleInkwell(context, widget.userEmail, dataList[index]["email"] ?? "...", desireList[0]),
                           ),
-                        );
-                      }
+                          peopleListDivider(),
+                        ],
+                      );
                     },
-                  ),
-                ),
-              ],
+                  );
+                }
+              },
             ),
           ),
-          Divider(
-            height: 0,
-            thickness: 1,
-            indent: 10,
-            endIndent: 10,
-            color: Color(( constants.primaryDarkTeal.toInt() % 0xFF000000 + 0x66000000)),
+          Expanded(
+            child: FutureBuilder<List<Map<String, String>>>(
+              future: _futureResultStaff,
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(
+                    child: CircularProgressIndicator(
+                      color: Colors.blueGrey,
+                    ),
+                  );
+                } else if (snapshot.hasError) {
+                  return Text('Error: ${snapshot.error}');
+                } else {
+                  List<Map<String, String>> dataList = snapshot.data ?? [];
+                  return ListView.builder(
+                    itemCount: dataList.length,
+                    itemBuilder: (context, index) {
+                      return Column(
+                        children: [
+                          Dismissible(
+                            key: Key(index.toString()),
+                            direction: widget.showEdit ? DismissDirection.endToStart : DismissDirection.none,
+                            confirmDismiss: (direction) async {
+                              if (direction == DismissDirection.endToStart) {
+                                // Show confirmation dialog for delete action
+                                return await showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return ChangeGroupDialog(
+                                      currentGroup: desireList[2],
+                                      currentUserEmail: dataList[index]["email"] ?? "...",
+                                      onGroupChanged: () async {
+                                        settingGroupStates();
+                                      },
+                                    );
+                                  },
+                                );
+                              }
+                              return null;
+                            },
+                            background: peopleBackgroundContainer(),
+                            child: peopleInkwell(context, widget.userEmail, dataList[index]["email"] ?? "...", desireList[2]),
+                          ),
+                          peopleListDivider(),
+                        ],
+                      );
+                    },
+                  );
+                }
+              },
+            ),
           ),
-          ExpansionTile(
-            title: GroupTextWidget(text: desireList[2]),
-            children: [
-              SizedBox(
-                height: 200,
-                child: FutureBuilder<List<String>>(
-                  future: _futureResultStaff,
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return const Center(
-                        child: CircularProgressIndicator(
-                          color: Colors.blueGrey,
-                        ),
+          Expanded(
+            child: FutureBuilder<List<Map<String, String>>>(
+              future: _futureResultParent,
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(
+                    child: CircularProgressIndicator(
+                      color: Colors.blueGrey,
+                    ),
+                  );
+                } else if (snapshot.hasError) {
+                  return Text('Error: ${snapshot.error}');
+                } else {
+                  List<Map<String, String>> dataList = snapshot.data ?? [];
+                  return ListView.builder(
+                    itemCount: dataList.length,
+                    itemBuilder: (context, index) {
+                      return Column(
+                        children: [
+                          Dismissible(
+                            key: Key(index.toString()),
+                            direction: widget.showEdit ? DismissDirection.endToStart : DismissDirection.none,
+                            confirmDismiss: (direction) async {
+                              if (direction == DismissDirection.endToStart) {
+                                // Show confirmation dialog for delete action
+                                return await showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return ChangeGroupDialog(
+                                      currentGroup: desireList[1],
+                                      currentUserEmail: dataList[index]["email"] ?? "...",
+                                      onGroupChanged: () async {
+                                        settingGroupStates();
+                                      },
+                                    );
+                                  },
+                                );
+                              }
+                              return null;
+                            },
+                            background: peopleBackgroundContainer(),
+                            child: peopleInkwell(context, widget.userEmail, dataList[index]["email"] ?? "...", desireList[1]),
+                          ),
+                          peopleListDivider(),
+                        ],
                       );
-                    } else if (snapshot.hasError) {
-                      return Text('Error: ${snapshot.error}');
-                    } else {
-                      List<String> dataList = snapshot.data ?? [];
-                      return Scrollbar(
-                        child: ListView.builder(
-                          itemCount: dataList.length,
-                          itemBuilder: (context, index) {
-                            return Dismissible(
-                              key: Key(index.toString()),
-                              direction: widget.showEdit ? DismissDirection.endToStart : DismissDirection.none,
-                              confirmDismiss: (direction) async {
-                                if (direction == DismissDirection.endToStart) {
-                                  // Show confirmation dialog for delete action
-                                  return await showDialog(
-                                    context: context,
-                                    builder: (BuildContext context) {
-                                      return ChangeGroupDialog(
-                                        currentGroup: desireList[2],
-                                        currentUserEmail: dataList[index],
-                                        onGroupChanged: () async {
-                                          settingGroupStates();
-                                        },
-                                      );
-                                    },
-                                  );
-                                }
-                                return null;
-                              },
-                              background: peopleBackgroundContainer(),
-                              child: peopleInkwell(context, widget.userEmail, dataList[index], desireList[2]),
-                            );
-                          },
-                        ),
-                      );
-                    }
-                  },
-                ),
-              ),
-            ],
-          ),
-          Divider(
-            height: 0,
-            thickness: 1,
-            indent: 10,
-            endIndent: 10,
-            color: Color(( constants.primaryDarkTeal.toInt() % 0xFF000000 + 0x66000000)),
-          ),
-          ExpansionTile(
-            title: GroupTextWidget(text: desireList[1]),
-            children: [
-              SizedBox(
-                height: 200,
-                child: FutureBuilder<List<String>>(
-                  future: _futureResultParent,
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return const Center(
-                        child: CircularProgressIndicator(
-                          color: Colors.blueGrey,
-                        ),
-                      );
-                    } else if (snapshot.hasError) {
-                      return Text('Error: ${snapshot.error}');
-                    } else {
-                      List<String> dataList = snapshot.data ?? [];
-                      return Scrollbar(
-                        child: ListView.builder(
-                          itemCount: dataList.length,
-                          itemBuilder: (context, index) {
-                            return Dismissible(
-                              key: Key(index.toString()),
-                              direction: widget.showEdit ? DismissDirection.endToStart : DismissDirection.none,
-                              confirmDismiss: (direction) async {
-                                if (direction == DismissDirection.endToStart) {
-                                  // Show confirmation dialog for delete action
-                                  return await showDialog(
-                                    context: context,
-                                    builder: (BuildContext context) {
-                                      return ChangeGroupDialog(
-                                        currentGroup: desireList[1],
-                                        currentUserEmail: dataList[index],
-                                        onGroupChanged: () async {
-                                          settingGroupStates();
-                                        },
-                                      );
-                                    },
-                                  );
-                                }
-                                return null;
-                              },
-                              background: peopleBackgroundContainer(),
-                              child: peopleInkwell(context, widget.userEmail, dataList[index], desireList[1]),
-                            );
-                          },
-                        ),
-                      );
-                    }
-                  },
-                ),
-              ),
-            ],
+                    },
+                  );
+                }
+              },
+            ),
           ),
         ],
       ) : const SpinKitFadingCircle(color: Color(constants.primaryDarkTeal)),
@@ -344,8 +340,8 @@ Widget peopleInkwell(BuildContext context, String myInfo, String theirEmail, Str
     onTap: () {
       Navigator.push(context, MaterialPageRoute
         (builder: (context) =>
-          // ChatPage(myInfo: myInfo, theirInfo: theirInfo, title: title),
-          FriendProfile(name: 'testing name', region: 'testing region', email: theirEmail, title: title, aboutMe: 'dsa', myInfo: myInfo),
+      // ChatPage(myInfo: myInfo, theirInfo: theirInfo, title: title),
+      FriendProfile(name: 'testing name', region: 'testing region', email: theirEmail, title: title, aboutMe: 'dsa', myInfo: myInfo),
           settings: const RouteSettings(arguments: "")
       ));
       debuggingPrint("$myInfo is sending message to $theirEmail");
@@ -360,7 +356,7 @@ Widget peopleInkwell(BuildContext context, String myInfo, String theirEmail, Str
       trailing: Container(
         decoration: BoxDecoration(
           color: title == "leader" ? const Color(constants.primaryDarkTeal) : title == "staff"
-                                   ? const Color(constants.primaryRegularTeal) : const Color(constants.primaryLightTeal),
+              ? const Color(constants.primaryRegularTeal) : const Color(constants.primaryLightTeal),
           borderRadius: BorderRadius.circular(20),
         ),
         child: Padding(
@@ -377,3 +373,11 @@ Widget peopleInkwell(BuildContext context, String myInfo, String theirEmail, Str
     ),
   );
 }
+
+Widget peopleListDivider() => Divider(
+  height: 0,
+  thickness: 0.2,
+  indent: 10,
+  endIndent: 10,
+  color: Color(( constants.primaryDarkTeal.toInt() % 0xFF000000 + 0x66000000)),
+);

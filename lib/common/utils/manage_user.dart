@@ -62,6 +62,7 @@ Future<Map<String, String>> getUserAttributes() async {
 
 }
 
+
 Future<void> addVocelUserAttribute({required String attrName, required String attrValue}) async {
   try {
     final myKey = CognitoUserAttributeKey.custom(attrName);
