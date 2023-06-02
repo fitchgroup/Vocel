@@ -62,6 +62,19 @@ Future<Map<String, String>> getUserAttributes() async {
 
 }
 
+
+Future<void> addVocelUserAttribute({required String attrName, required String attrValue}) async {
+  try {
+    final myKey = CognitoUserAttributeKey.custom(attrName);
+    final attribute = AuthUserAttribute(value: attrValue, userAttributeKey: myKey);
+    await Amplify.Auth.updateUserAttributes(attributes: [attribute]);
+    await Amplify.Auth.updateUserAttribute(userAttributeKey: myKey, value: attrValue);
+  } catch (e) {
+    debuggingPrint('Error adding user attribute: $e');
+  }
+}
+
+
 Future<void> addUserGroup(String desireGroup, {String? email}) async {
   Map<String, String> stringMap = await getUserAttributes();
   String? userName = stringMap['email'];
@@ -145,14 +158,17 @@ Future<void> changeUsersGroups(String originalGroup, String desireGroup, String 
 }
 
 
-Future<Map<String, dynamic>> listGroupsForUser() async {
+Future<Map<String, dynamic>> listGroupsForUser({String? receivedUserName}) async {
   Map<String, String> stringMap = await getUserAttributes();
   String? userName = stringMap['email'];
+  if(receivedUserName != null){
+    userName = receivedUserName;
+  }
   String nextToken = "";
   Map<String, dynamic> jsonMap = {};
   try {
     const pathRemove = '/listGroupsForUser';
-    final Map<String, String> bodyRemove = {
+    final Map<String, String> bodyList = {
       "username": userName!,
       "token": nextToken,
     };
@@ -162,7 +178,7 @@ Future<Map<String, dynamic>> listGroupsForUser() async {
     final accessToken =
         (authSessionRemove as CognitoAuthSession).userPoolTokens!.accessToken;
     final myInit = RestOptions(
-      queryParameters: bodyRemove, // Convert bodyBytes to Uint8List
+      queryParameters: bodyList, // Convert bodyBytes to Uint8List
       path: pathRemove,
       headers: {
         'Content-Type': 'application/json',
@@ -218,6 +234,38 @@ Future<dynamic> listUsersInGroup(String groupName) async {
   return null;
 }
 
+Future<dynamic> listAllUsersInGroup() async {
+  String nextToken = "";
+  try {
+    const pathListUser = '/listUsers';
+    final Map<String, String> bodyListUser = {
+      "token": nextToken,
+    };
+    final authSessionListUser = await Amplify.Auth.fetchAuthSession(
+      options: CognitoSessionOptions(getAWSCredentials: true),
+    );
+    final accessToken =
+        (authSessionListUser as CognitoAuthSession).userPoolTokens!.accessToken;
+    final myInit = RestOptions(
+      queryParameters: bodyListUser, // Convert bodyBytes to Uint8List
+      path: pathListUser,
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': accessToken,
+      },
+    );
+
+    /// sent get request
+    RestResponse responseData = await Amplify.API.get(restOptions: myInit).response;
+    Map<String, dynamic> jsonMap = jsonDecode(responseData.body);
+    // String nextToken = responseData['NextToken'] as String;
+    return jsonMap;
+  } catch (e) {
+    debuggingPrint("$e ${"*"*20} listUsers Fail ${"="*20}");
+  }
+  return null;
+}
+
 
 Future<bool> checkValidFuture(String currentGroup) async {
   if(currentGroup == 'admin' || currentGroup == 'leader' || currentGroup == 'staff') {
@@ -241,5 +289,14 @@ void debuggingPrint(String shouldPrint) {
     print(shouldPrint);
     print("--"*100);
   }
+}
+
+Future<bool> verifyAdminAccess() async {
+  bool finalTesting = false;
+  Map<String, dynamic> jsonMap = await listGroupsForUser();
+  for (var element in jsonMap["Groups"]) {
+    finalTesting = finalTesting || checkValid(element['GroupName'].toString());
+  }
+  return finalTesting;
 }
 
