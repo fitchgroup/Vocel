@@ -18,6 +18,7 @@ class _PeopleListState extends State<PeopleList> {
   List<String> desireList = ["leader", "parent", "staff"];
   late Future<List<Map<String, String>>> _futureResult;
   bool loading = false;
+  String searching = "";
 
 
   /// get users in a specific group
@@ -106,7 +107,11 @@ class _PeopleListState extends State<PeopleList> {
     return Scaffold(
       body: loading ? Column(
         children: [
-          UserSearchBar(onClickController: (String value) {  },),
+          UserSearchBar(onClickController: (String value) { 
+            setState(() {
+              searching = value;
+            });
+          },),
           Expanded(
             child: FutureBuilder<List<Map<String, String>>>(
               future: _futureResult,
@@ -128,36 +133,39 @@ class _PeopleListState extends State<PeopleList> {
                     itemBuilder: (context, index) {
                       return Column(
                         children: [
-                          Dismissible(
-                            key: Key(index.toString()),
-                            direction: widget.showEdit ? DismissDirection.endToStart : DismissDirection.none,
-                            confirmDismiss: (direction) async {
-                              if (direction == DismissDirection.endToStart && widget.showEdit) {
-                                // Show confirmation dialog for delete action
-                                return await showDialog(
-                                  context: context,
-                                  builder: (BuildContext context) {
-                                    return ChangeGroupDialog(
-                                      currentGroup: dataList[index]["VocelGroup"] ?? "Unassigned",
-                                      currentUserEmail: dataList[index]["email"] ?? "...",
-                                      onGroupChanged: () async {
-                                        settingGroupStates();
-                                      },
-                                    );
-                                  },
-                                );
-                              }
-                              return null;
-                            },
-                            background: peopleBackgroundContainer(),
-                            child: peopleInkwell(
-                                context,
-                                widget.userEmail,
-                                dataList[index]["email"] ?? "Not set...",
-                                dataList[index]["name"] ?? "Not set...",
-                                dataList[index]["region"] ?? "Not set...",
-                                dataList[index]["aboutMe"] ?? "Not set...",
-                                dataList[index]["VocelGroup"] ?? "Unassigned"),
+                          Visibility(
+                            visible: dataList[index]["email"]!.contains(searching),
+                            child: Dismissible(
+                              key: Key(index.toString()),
+                              direction: widget.showEdit ? DismissDirection.endToStart : DismissDirection.none,
+                              confirmDismiss: (direction) async {
+                                if (direction == DismissDirection.endToStart && widget.showEdit) {
+                                  // Show confirmation dialog for delete action
+                                  return await showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return ChangeGroupDialog(
+                                        currentGroup: dataList[index]["VocelGroup"] ?? "Unassigned",
+                                        currentUserEmail: dataList[index]["email"] ?? "...",
+                                        onGroupChanged: () async {
+                                          settingGroupStates();
+                                        },
+                                      );
+                                    },
+                                  );
+                                }
+                                return null;
+                              },
+                              background: peopleBackgroundContainer(),
+                              child: peopleInkwell(
+                                  context,
+                                  widget.userEmail,
+                                  dataList[index]["email"] ?? "Not set...",
+                                  dataList[index]["name"] ?? "Not set...",
+                                  dataList[index]["region"] ?? "Not set...",
+                                  dataList[index]["aboutMe"] ?? "Not set...",
+                                  dataList[index]["VocelGroup"] ?? "Unassigned"),
+                            ),
                           ),
                           peopleListDivider(),
                         ],
