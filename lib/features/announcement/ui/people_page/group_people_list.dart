@@ -134,7 +134,7 @@ class _PeopleListState extends State<PeopleList> {
                       return Column(
                         children: [
                           Visibility(
-                            visible: dataList[index]["email"]!.contains(searching),
+                            visible: dataList[index]["email"]!.contains(searching) || (dataList[index]["VocelGroup"] == null ? false : dataList[index]["VocelGroup"]!.contains(searching)),
                             child: Dismissible(
                               key: Key(index.toString()),
                               direction: widget.showEdit ? DismissDirection.endToStart : DismissDirection.none,
@@ -160,10 +160,10 @@ class _PeopleListState extends State<PeopleList> {
                               child: peopleInkwell(
                                   context,
                                   widget.userEmail,
-                                  dataList[index]["email"] ?? "Not set...",
-                                  dataList[index]["name"] ?? "Not set...",
-                                  dataList[index]["region"] ?? "Not set...",
-                                  dataList[index]["aboutMe"] ?? "Not set...",
+                                  dataList[index]["email"] ?? "",
+                                  dataList[index]["name"] ?? "",
+                                  dataList[index]["region"] ?? "",
+                                  dataList[index]["aboutMe"] ?? "",
                                   dataList[index]["VocelGroup"] ?? "Unassigned"),
                             ),
                           ),
