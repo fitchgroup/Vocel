@@ -14,7 +14,10 @@ import 'package:vocel/models/Announcement.dart';
 
 
 class AnnouncementHome extends HookConsumerWidget {
-  const AnnouncementHome({Key? key}) : super(key: key);
+
+  const AnnouncementHome({Key? key, required this.showEdit}) : super(key: key);
+
+  final bool showEdit;
 
   void showAddAnnouncementDialog(BuildContext context) async {
     await showModalBottomSheet<void>(
@@ -28,15 +31,8 @@ class AnnouncementHome extends HookConsumerWidget {
   }
 
   Future<bool> calculateFinalTesting() async {
-    bool finalTesting = false;
-    Map<String, dynamic> jsonMap = await listGroupsForUser();
-    for (var element in jsonMap["Groups"]) {
-      finalTesting = finalTesting || checkValid(element['GroupName'].toString());
-    }
-    return finalTesting;
+    return await verifyAdminAccess();
   }
-
-
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -91,8 +87,9 @@ class AnnouncementHome extends HookConsumerWidget {
 
     return Scaffold(
         floatingActionButton: Visibility(
-          visible: visibilityButton.value,
+          visible: showEdit,
           child: FloatingActionButton(
+            heroTag: "EventFloatingActionButton",
             backgroundColor: const Color(constants.primaryColorDark),
             onPressed: () async {
               showAddAnnouncementDialog(context);

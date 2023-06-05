@@ -2,16 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:vocel/common/utils/colors.dart' as constants;
 import 'package:vocel/common/utils/manage_user.dart';
 import 'package:vocel/features/announcement/ui/drawer_list/navigation_item.dart';
-import 'package:vocel/features/announcement/ui/notification_page/group_changing_list.dart';
 import 'package:vocel/features/announcement/ui/profile_page/profile.dart';
 import 'package:vocel/features/announcement/ui/setting_page/setting_page.dart';
 import 'package:vocel/LocalizedButtonResolver.dart';
 import 'package:vocel/features/announcement/ui/discussion_forum/forum_page.dart';
 import 'package:vocel/features/announcement/ui/event_list/event_page.dart';
-import 'package:vocel/features/announcement/ui/help_page/help_list.dart';
+import 'package:vocel/features/announcement/ui/people_page/group_people_list.dart';
 class VocelNavigationDrawer extends StatefulWidget {
   final String? userEmail;
-  const VocelNavigationDrawer({super.key, this.userEmail});
+  final bool showEdit;
+  const VocelNavigationDrawer({super.key, this.userEmail, required this.showEdit});
 
   @override
   State<VocelNavigationDrawer> createState() => _VocelNavigationDrawerState();
@@ -19,31 +19,10 @@ class VocelNavigationDrawer extends StatefulWidget {
 
 class _VocelNavigationDrawerState extends State<VocelNavigationDrawer> {
 
-  bool change = false;
-  Future<bool> calculateFinalTesting() async {
-    bool finalTesting = false;
-    Map<String, dynamic> jsonMap = await listGroupsForUser();
-    for (var element in jsonMap["Groups"]) {
-      finalTesting = finalTesting || checkValid(element['GroupName'].toString());
-    }
-    return finalTesting;
-  }
-
-
   @override
   void initState() {
     super.initState();
-    calculateFinalTesting().then((value) {
-      setState(() {
-        change = value;
-      });
-      debuggingPrint(change.toString());
-    });
   }
-
-
-  // Map<String, String> stringMap = await getUserAttributes();
-  // String? userName = stringMap['email'];
 
   @override
   Widget build(BuildContext context) {
@@ -69,22 +48,13 @@ class _VocelNavigationDrawerState extends State<VocelNavigationDrawer> {
                   NavigationItem(
                       name: const LocalizedButtonResolver().events(context),
                       leadingIcon: Icons.event,
-                      onPressedFunction: ()=> itemPressed(context, index:1)
+                      onPressedFunction: ()=> itemPressed(context, index:1, showEdit: widget.showEdit)
                   ),
                   const SizedBox(height: 6,),
                   NavigationItem(
                       name: const LocalizedButtonResolver().discussionForum(context),
                       leadingIcon: Icons.post_add,
                       onPressedFunction: ()=> itemPressed(context, index:2)
-                  ),
-                  const SizedBox(height: 6,),
-                  Visibility(
-                    visible: change,
-                    child: NavigationItem(
-                        name: "Group Settings",
-                        leadingIcon: Icons.manage_accounts_sharp,
-                        onPressedFunction: ()=> itemPressed(context, index:3)
-                    ),
                   ),
                   const SizedBox(height: 6,),
                   Divider(
@@ -100,12 +70,12 @@ class _VocelNavigationDrawerState extends State<VocelNavigationDrawer> {
                       onPressedFunction: ()=> itemPressed(context, index:4)
                   ),
                   const SizedBox(height: 6,),
-                  NavigationItem(
-                      name: const LocalizedButtonResolver().helps(context),
-                      leadingIcon: Icons.help_outline,
-                      onPressedFunction: ()=> itemPressed(context, index:5)
-                  ),
-                  const SizedBox(height: 6,),
+                  // NavigationItem(
+                  //     name: const LocalizedButtonResolver().helps(context),
+                  //     leadingIcon: Icons.help_outline,
+                  //     onPressedFunction: ()=> itemPressed(context, index:5)
+                  // ),
+                  // const SizedBox(height: 6,),
                 ],
             ),
           ),
@@ -115,7 +85,7 @@ class _VocelNavigationDrawerState extends State<VocelNavigationDrawer> {
   }
 }
 
-itemPressed(BuildContext context, {required int index, String? userEmail}) {
+itemPressed(BuildContext context, {required int index, String? userEmail, bool? showEdit}) {
   Navigator.pop(context);
   switch(index){
     case 0:
@@ -126,8 +96,10 @@ itemPressed(BuildContext context, {required int index, String? userEmail}) {
       break;
     case 1:
     Navigator.push(context, MaterialPageRoute(
-        builder: (context) => EventPage(),
-        settings: const RouteSettings(arguments: "settings page")));
+        builder: (context) =>
+            EventPage(),
+            // EventPage(showEdit: showEdit ?? false),
+        settings: RouteSettings(arguments: showEdit)));
     break;
     case 2:
     Navigator.push(context, MaterialPageRoute(
@@ -135,23 +107,24 @@ itemPressed(BuildContext context, {required int index, String? userEmail}) {
         ForumPage(),
         settings: const RouteSettings(arguments: "settings page")));
     break;
-    case 3:
-      Navigator.push(context, MaterialPageRoute(
-          builder: (context) =>
-              const ManageAccountList(),
-          settings: const RouteSettings(arguments: "settings page")));
-      break;
+    // case 3:
+    //   Navigator.push(context, MaterialPageRoute(
+    //       builder: (context) =>
+    //           const PeopleList(),
+    //       settings: const RouteSettings(arguments: "settings page")));
+    //   break;
     case 4:
     Navigator.push(context, MaterialPageRoute(
         builder: (context) =>
         const VocelSetting(),
         settings: const RouteSettings(arguments: "settings page")));
     break;
-    case 5:
-    Navigator.push(context, MaterialPageRoute(
-        builder: (context) => ContactPage(),
-        settings: const RouteSettings(arguments: "settings page")));
-    break;
+    /// TODO: delete HELP page for now, may add in the future
+    // case 5:
+    // Navigator.push(context, MaterialPageRoute(
+    //     builder: (context) => ContactPage(),
+    //     settings: const RouteSettings(arguments: "settings page")));
+    // break;
     default:
       Navigator.pop(context);
       break;
