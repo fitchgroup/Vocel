@@ -10,7 +10,8 @@ import 'package:vocel/features/announcement/ui/event_list/event_page.dart';
 import 'package:vocel/features/announcement/ui/people_page/group_people_list.dart';
 class VocelNavigationDrawer extends StatefulWidget {
   final String? userEmail;
-  const VocelNavigationDrawer({super.key, this.userEmail});
+  final bool showEdit;
+  const VocelNavigationDrawer({super.key, this.userEmail, required this.showEdit});
 
   @override
   State<VocelNavigationDrawer> createState() => _VocelNavigationDrawerState();
@@ -47,7 +48,7 @@ class _VocelNavigationDrawerState extends State<VocelNavigationDrawer> {
                   NavigationItem(
                       name: const LocalizedButtonResolver().events(context),
                       leadingIcon: Icons.event,
-                      onPressedFunction: ()=> itemPressed(context, index:1)
+                      onPressedFunction: ()=> itemPressed(context, index:1, showEdit: widget.showEdit)
                   ),
                   const SizedBox(height: 6,),
                   NavigationItem(
@@ -84,7 +85,7 @@ class _VocelNavigationDrawerState extends State<VocelNavigationDrawer> {
   }
 }
 
-itemPressed(BuildContext context, {required int index, String? userEmail}) {
+itemPressed(BuildContext context, {required int index, String? userEmail, bool? showEdit}) {
   Navigator.pop(context);
   switch(index){
     case 0:
@@ -95,8 +96,9 @@ itemPressed(BuildContext context, {required int index, String? userEmail}) {
       break;
     case 1:
     Navigator.push(context, MaterialPageRoute(
-        builder: (context) => EventPage(),
-        settings: const RouteSettings(arguments: "settings page")));
+        builder: (context) =>
+            EventPage(showEdit: showEdit ?? false),
+        settings: RouteSettings(arguments: showEdit)));
     break;
     case 2:
     Navigator.push(context, MaterialPageRoute(
@@ -104,12 +106,12 @@ itemPressed(BuildContext context, {required int index, String? userEmail}) {
         ForumPage(),
         settings: const RouteSettings(arguments: "settings page")));
     break;
-    case 3:
-      Navigator.push(context, MaterialPageRoute(
-          builder: (context) =>
-              const PeopleList(),
-          settings: const RouteSettings(arguments: "settings page")));
-      break;
+    // case 3:
+    //   Navigator.push(context, MaterialPageRoute(
+    //       builder: (context) =>
+    //           const PeopleList(),
+    //       settings: const RouteSettings(arguments: "settings page")));
+    //   break;
     case 4:
     Navigator.push(context, MaterialPageRoute(
         builder: (context) =>
