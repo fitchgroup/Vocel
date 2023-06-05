@@ -34,14 +34,6 @@ class _AnnouncementsListPageState extends State<AnnouncementsListPage> {
 
   _AnnouncementsListPageState(this.fetchGroups, this.addUserGroup, this.removeUserGroup, this.getUserAttributes);
 
-  Future<void> _fetchAttributes() async {
-    var userAttr = await getUserAttributes();
-  }
-
-  Future<void> _fetchAndPrintGroups() async {
-    List groups = await fetchGroups();
-  }
-
   @override
   void initState() {
     super.initState();
@@ -63,8 +55,8 @@ class _AnnouncementsListPageState extends State<AnnouncementsListPage> {
 
   Widget selectPage(int pageNumber){
     switch(pageNumber){
-      case 0: return const Center(
-        child: AnnouncementHome(),
+      case 0: return Center(
+        child: AnnouncementHome(showEdit: showEdit),
       );
       case 1: return const Center(
         child: ChatList(),
@@ -75,8 +67,8 @@ class _AnnouncementsListPageState extends State<AnnouncementsListPage> {
       case 3: return const Center(
         child: CalendarHook(),
       );
-      default: return const Center(
-        child: AnnouncementHome(),
+      default: return Center(
+        child: AnnouncementHome(showEdit: showEdit),
       );
     }
   }
@@ -84,7 +76,7 @@ class _AnnouncementsListPageState extends State<AnnouncementsListPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: VocelNavigationDrawer(userEmail: userEmail),
+      drawer: VocelNavigationDrawer(userEmail: userEmail, showEdit: showEdit),
       appBar: AppBar(
         leading: Builder(
           builder: (BuildContext context) {
