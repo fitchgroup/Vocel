@@ -97,7 +97,8 @@ itemPressed(BuildContext context, {required int index, String? userEmail, bool? 
     case 1:
     Navigator.push(context, MaterialPageRoute(
         builder: (context) =>
-            EventPage(showEdit: showEdit ?? false),
+            EventPage(),
+            // EventPage(showEdit: showEdit ?? false),
         settings: RouteSettings(arguments: showEdit)));
     break;
     case 2:
