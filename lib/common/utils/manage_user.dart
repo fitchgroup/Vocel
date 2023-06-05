@@ -274,6 +274,13 @@ Future<bool> checkValidFuture(String currentGroup) async {
   return false;
 }
 
+void debuggingPrint(String shouldPrint) {
+  if (kDebugMode) {
+    print("--"*100);
+    print(shouldPrint);
+    print("--"*100);
+  }
+}
 
 bool checkValid(String currentGroup) {
   List<String> stringList = ['staff', 'parent', 'admin', 'default', 'leader'];
@@ -283,20 +290,13 @@ bool checkValid(String currentGroup) {
   return false;
 }
 
-void debuggingPrint(String shouldPrint) {
-  if (kDebugMode) {
-    print("--"*100);
-    print(shouldPrint);
-    print("--"*100);
-  }
-}
-
 Future<bool> verifyAdminAccess() async {
-  bool finalTesting = false;
   Map<String, dynamic> jsonMap = await listGroupsForUser();
-  for (var element in jsonMap["Groups"]) {
-    finalTesting = finalTesting || checkValid(element['GroupName'].toString());
-  }
-  return finalTesting;
-}
+  List<String> validGroups = ['staff', 'leader'];
 
+  bool hasValidGroup = jsonMap["Groups"].any((element) {
+    return validGroups.contains(element['GroupName'].toString());
+  });
+
+  return hasValidGroup;
+}
