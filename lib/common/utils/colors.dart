@@ -19,6 +19,7 @@ const int primaryColorDark = 0xFF2798A5;
 const int primaryLightTeal = 0xFF8CC3CC;
 const int primaryDarkTeal = 0xFF007182;
 const int primaryRegularTeal = 0xFF44ABB9;
+const List<int> shiftColor = [0xFF2798A5, 0xFF8CC3CC, 0xFF007182, 0xFF44ABB9];
 
 Color baseColor = const Color(primaryDarkTeal);
 Color blueGreyColor = const Color(0xFF607D8B); // Example blue-grey color
