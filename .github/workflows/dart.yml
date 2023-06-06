@@ -151,8 +151,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
-      - name: Check Flutter Version
-        run: flutter --version
       - name: Restore the keyfile
         run: |
           echo "${{ secrets.RELEASE_KEYSTORE }}" > release.keystore.asc
@@ -185,6 +183,8 @@ jobs:
       - run: flutter pub get
       - run: flutter build apk --release --split-per-abi
       - run: flutter build appbundle --release
+      - name: Check Flutter Version
+          run: flutter --version
       - name: Create a Release in GitHub
         uses: ncipollo/release-action@v1
         with:
