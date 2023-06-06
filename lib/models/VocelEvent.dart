@@ -23,16 +23,18 @@ import 'package:amplify_core/amplify_core.dart';
 import 'package:flutter/foundation.dart';
 
 
-/** This is an auto generated class representing the Event type in your schema. */
+/** This is an auto generated class representing the VocelEvent type in your schema. */
 @immutable
-class Event extends Model {
-  static const classType = const _EventModelType();
+class VocelEvent extends Model {
+  static const classType = const _VocelEventModelType();
   final String id;
   final String? _eventTitle;
   final String? _eventLocation;
   final String? _eventDescription;
   final TemporalDateTime? _startTime;
   final int? _duration;
+  final String? _eventImageUrl;
+  final String? _eventImageKey;
   final TemporalDateTime? _createdAt;
   final TemporalDateTime? _updatedAt;
 
@@ -43,8 +45,8 @@ class Event extends Model {
   @override
   String getId() => id;
   
-  EventModelIdentifier get modelIdentifier {
-      return EventModelIdentifier(
+  VocelEventModelIdentifier get modelIdentifier {
+      return VocelEventModelIdentifier(
         id: id
       );
   }
@@ -114,6 +116,14 @@ class Event extends Model {
     }
   }
   
+  String? get eventImageUrl {
+    return _eventImageUrl;
+  }
+  
+  String? get eventImageKey {
+    return _eventImageKey;
+  }
+  
   TemporalDateTime? get createdAt {
     return _createdAt;
   }
@@ -122,16 +132,18 @@ class Event extends Model {
     return _updatedAt;
   }
   
-  const Event._internal({required this.id, required eventTitle, required eventLocation, required eventDescription, required startTime, required duration, createdAt, updatedAt}): _eventTitle = eventTitle, _eventLocation = eventLocation, _eventDescription = eventDescription, _startTime = startTime, _duration = duration, _createdAt = createdAt, _updatedAt = updatedAt;
+  const VocelEvent._internal({required this.id, required eventTitle, required eventLocation, required eventDescription, required startTime, required duration, eventImageUrl, eventImageKey, createdAt, updatedAt}): _eventTitle = eventTitle, _eventLocation = eventLocation, _eventDescription = eventDescription, _startTime = startTime, _duration = duration, _eventImageUrl = eventImageUrl, _eventImageKey = eventImageKey, _createdAt = createdAt, _updatedAt = updatedAt;
   
-  factory Event({String? id, required String eventTitle, required String eventLocation, required String eventDescription, required TemporalDateTime startTime, required int duration}) {
-    return Event._internal(
+  factory VocelEvent({String? id, required String eventTitle, required String eventLocation, required String eventDescription, required TemporalDateTime startTime, required int duration, String? eventImageUrl, String? eventImageKey}) {
+    return VocelEvent._internal(
       id: id == null ? UUID.getUUID() : id,
       eventTitle: eventTitle,
       eventLocation: eventLocation,
       eventDescription: eventDescription,
       startTime: startTime,
-      duration: duration);
+      duration: duration,
+      eventImageUrl: eventImageUrl,
+      eventImageKey: eventImageKey);
   }
   
   bool equals(Object other) {
@@ -141,13 +153,15 @@ class Event extends Model {
   @override
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
-    return other is Event &&
+    return other is VocelEvent &&
       id == other.id &&
       _eventTitle == other._eventTitle &&
       _eventLocation == other._eventLocation &&
       _eventDescription == other._eventDescription &&
       _startTime == other._startTime &&
-      _duration == other._duration;
+      _duration == other._duration &&
+      _eventImageUrl == other._eventImageUrl &&
+      _eventImageKey == other._eventImageKey;
   }
   
   @override
@@ -157,13 +171,15 @@ class Event extends Model {
   String toString() {
     var buffer = new StringBuffer();
     
-    buffer.write("Event {");
+    buffer.write("VocelEvent {");
     buffer.write("id=" + "$id" + ", ");
     buffer.write("eventTitle=" + "$_eventTitle" + ", ");
     buffer.write("eventLocation=" + "$_eventLocation" + ", ");
     buffer.write("eventDescription=" + "$_eventDescription" + ", ");
     buffer.write("startTime=" + (_startTime != null ? _startTime!.format() : "null") + ", ");
     buffer.write("duration=" + (_duration != null ? _duration!.toString() : "null") + ", ");
+    buffer.write("eventImageUrl=" + "$_eventImageUrl" + ", ");
+    buffer.write("eventImageKey=" + "$_eventImageKey" + ", ");
     buffer.write("createdAt=" + (_createdAt != null ? _createdAt!.format() : "null") + ", ");
     buffer.write("updatedAt=" + (_updatedAt != null ? _updatedAt!.format() : "null"));
     buffer.write("}");
@@ -171,44 +187,50 @@ class Event extends Model {
     return buffer.toString();
   }
   
-  Event copyWith({String? eventTitle, String? eventLocation, String? eventDescription, TemporalDateTime? startTime, int? duration}) {
-    return Event._internal(
+  VocelEvent copyWith({String? eventTitle, String? eventLocation, String? eventDescription, TemporalDateTime? startTime, int? duration, String? eventImageUrl, String? eventImageKey}) {
+    return VocelEvent._internal(
       id: id,
       eventTitle: eventTitle ?? this.eventTitle,
       eventLocation: eventLocation ?? this.eventLocation,
       eventDescription: eventDescription ?? this.eventDescription,
       startTime: startTime ?? this.startTime,
-      duration: duration ?? this.duration);
+      duration: duration ?? this.duration,
+      eventImageUrl: eventImageUrl ?? this.eventImageUrl,
+      eventImageKey: eventImageKey ?? this.eventImageKey);
   }
   
-  Event.fromJson(Map<String, dynamic> json)  
+  VocelEvent.fromJson(Map<String, dynamic> json)  
     : id = json['id'],
       _eventTitle = json['eventTitle'],
       _eventLocation = json['eventLocation'],
       _eventDescription = json['eventDescription'],
       _startTime = json['startTime'] != null ? TemporalDateTime.fromString(json['startTime']) : null,
       _duration = (json['duration'] as num?)?.toInt(),
+      _eventImageUrl = json['eventImageUrl'],
+      _eventImageKey = json['eventImageKey'],
       _createdAt = json['createdAt'] != null ? TemporalDateTime.fromString(json['createdAt']) : null,
       _updatedAt = json['updatedAt'] != null ? TemporalDateTime.fromString(json['updatedAt']) : null;
   
   Map<String, dynamic> toJson() => {
-    'id': id, 'eventTitle': _eventTitle, 'eventLocation': _eventLocation, 'eventDescription': _eventDescription, 'startTime': _startTime?.format(), 'duration': _duration, 'createdAt': _createdAt?.format(), 'updatedAt': _updatedAt?.format()
+    'id': id, 'eventTitle': _eventTitle, 'eventLocation': _eventLocation, 'eventDescription': _eventDescription, 'startTime': _startTime?.format(), 'duration': _duration, 'eventImageUrl': _eventImageUrl, 'eventImageKey': _eventImageKey, 'createdAt': _createdAt?.format(), 'updatedAt': _updatedAt?.format()
   };
   
   Map<String, Object?> toMap() => {
-    'id': id, 'eventTitle': _eventTitle, 'eventLocation': _eventLocation, 'eventDescription': _eventDescription, 'startTime': _startTime, 'duration': _duration, 'createdAt': _createdAt, 'updatedAt': _updatedAt
+    'id': id, 'eventTitle': _eventTitle, 'eventLocation': _eventLocation, 'eventDescription': _eventDescription, 'startTime': _startTime, 'duration': _duration, 'eventImageUrl': _eventImageUrl, 'eventImageKey': _eventImageKey, 'createdAt': _createdAt, 'updatedAt': _updatedAt
   };
 
-  static final QueryModelIdentifier<EventModelIdentifier> MODEL_IDENTIFIER = QueryModelIdentifier<EventModelIdentifier>();
+  static final QueryModelIdentifier<VocelEventModelIdentifier> MODEL_IDENTIFIER = QueryModelIdentifier<VocelEventModelIdentifier>();
   static final QueryField ID = QueryField(fieldName: "id");
   static final QueryField EVENTTITLE = QueryField(fieldName: "eventTitle");
   static final QueryField EVENTLOCATION = QueryField(fieldName: "eventLocation");
   static final QueryField EVENTDESCRIPTION = QueryField(fieldName: "eventDescription");
   static final QueryField STARTTIME = QueryField(fieldName: "startTime");
   static final QueryField DURATION = QueryField(fieldName: "duration");
+  static final QueryField EVENTIMAGEURL = QueryField(fieldName: "eventImageUrl");
+  static final QueryField EVENTIMAGEKEY = QueryField(fieldName: "eventImageKey");
   static var schema = Model.defineSchema(define: (ModelSchemaDefinition modelSchemaDefinition) {
-    modelSchemaDefinition.name = "Event";
-    modelSchemaDefinition.pluralName = "Events";
+    modelSchemaDefinition.name = "VocelEvent";
+    modelSchemaDefinition.pluralName = "VocelEvents";
     
     modelSchemaDefinition.authRules = [
       AuthRule(
@@ -227,33 +249,45 @@ class Event extends Model {
     modelSchemaDefinition.addField(ModelFieldDefinition.id());
     
     modelSchemaDefinition.addField(ModelFieldDefinition.field(
-      key: Event.EVENTTITLE,
+      key: VocelEvent.EVENTTITLE,
       isRequired: true,
       ofType: ModelFieldType(ModelFieldTypeEnum.string)
     ));
     
     modelSchemaDefinition.addField(ModelFieldDefinition.field(
-      key: Event.EVENTLOCATION,
+      key: VocelEvent.EVENTLOCATION,
       isRequired: true,
       ofType: ModelFieldType(ModelFieldTypeEnum.string)
     ));
     
     modelSchemaDefinition.addField(ModelFieldDefinition.field(
-      key: Event.EVENTDESCRIPTION,
+      key: VocelEvent.EVENTDESCRIPTION,
       isRequired: true,
       ofType: ModelFieldType(ModelFieldTypeEnum.string)
     ));
     
     modelSchemaDefinition.addField(ModelFieldDefinition.field(
-      key: Event.STARTTIME,
+      key: VocelEvent.STARTTIME,
       isRequired: true,
       ofType: ModelFieldType(ModelFieldTypeEnum.dateTime)
     ));
     
     modelSchemaDefinition.addField(ModelFieldDefinition.field(
-      key: Event.DURATION,
+      key: VocelEvent.DURATION,
       isRequired: true,
       ofType: ModelFieldType(ModelFieldTypeEnum.int)
+    ));
+    
+    modelSchemaDefinition.addField(ModelFieldDefinition.field(
+      key: VocelEvent.EVENTIMAGEURL,
+      isRequired: false,
+      ofType: ModelFieldType(ModelFieldTypeEnum.string)
+    ));
+    
+    modelSchemaDefinition.addField(ModelFieldDefinition.field(
+      key: VocelEvent.EVENTIMAGEKEY,
+      isRequired: false,
+      ofType: ModelFieldType(ModelFieldTypeEnum.string)
     ));
     
     modelSchemaDefinition.addField(ModelFieldDefinition.nonQueryField(
@@ -272,30 +306,30 @@ class Event extends Model {
   });
 }
 
-class _EventModelType extends ModelType<Event> {
-  const _EventModelType();
+class _VocelEventModelType extends ModelType<VocelEvent> {
+  const _VocelEventModelType();
   
   @override
-  Event fromJson(Map<String, dynamic> jsonData) {
-    return Event.fromJson(jsonData);
+  VocelEvent fromJson(Map<String, dynamic> jsonData) {
+    return VocelEvent.fromJson(jsonData);
   }
   
   @override
   String modelName() {
-    return 'Event';
+    return 'VocelEvent';
   }
 }
 
 /**
  * This is an auto generated class representing the model identifier
- * of [Event] in your schema.
+ * of [VocelEvent] in your schema.
  */
 @immutable
-class EventModelIdentifier implements ModelIdentifier<Event> {
+class VocelEventModelIdentifier implements ModelIdentifier<VocelEvent> {
   final String id;
 
-  /** Create an instance of EventModelIdentifier using [id] the primary key. */
-  const EventModelIdentifier({
+  /** Create an instance of VocelEventModelIdentifier using [id] the primary key. */
+  const VocelEventModelIdentifier({
     required this.id});
   
   @override
@@ -313,7 +347,7 @@ class EventModelIdentifier implements ModelIdentifier<Event> {
   String serializeAsString() => serializeAsMap().values.join('#');
   
   @override
-  String toString() => 'EventModelIdentifier(id: $id)';
+  String toString() => 'VocelEventModelIdentifier(id: $id)';
   
   @override
   bool operator ==(Object other) {
@@ -321,7 +355,7 @@ class EventModelIdentifier implements ModelIdentifier<Event> {
       return true;
     }
     
-    return other is EventModelIdentifier &&
+    return other is VocelEventModelIdentifier &&
       id == other.id;
   }
   

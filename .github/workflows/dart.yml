@@ -178,6 +178,8 @@ jobs:
       - uses: subosito/flutter-action@v1
         with:
           channel: "beta"
+      - name: Check Flutter Version
+        run: flutter --version
       - run: flutter clean
       - run: flutter gen-l10n
       - run: flutter pub get
