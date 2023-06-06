@@ -1,9 +1,3 @@
-import 'dart:convert';
-
-import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
-import 'package:amplify_authenticator/amplify_authenticator.dart';
-import 'package:amplify_flutter/amplify_flutter.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:vocel/LocalizedButtonResolver.dart';
 import 'package:vocel/common/utils/colors.dart' as constants;
@@ -11,8 +5,9 @@ import 'package:vocel/common/utils/manage_user.dart';
 import 'package:vocel/features/announcement/ui/calendar_page/calendar_hook.dart';
 import 'package:vocel/features/announcement/ui/drawer_list/navigation_drawer.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:vocel/features/announcement/ui/chat_page/chat_screen/chat_screen.dart';
+import 'package:vocel/features/announcement/ui/chat_page/chat_screen/chat_list.dart';
 import 'package:vocel/features/announcement/ui/home_page/announcement_list.dart';
+import 'package:vocel/features/announcement/ui/people_page/group_people_list.dart';
 
 
 class AnnouncementsListPage extends StatefulWidget {
@@ -29,7 +24,7 @@ class _AnnouncementsListPageState extends State<AnnouncementsListPage> {
   int selectPageNumber = 0;
   var currentGroup;
   final myKey = GlobalKey();
-  bool showButton = false;
+  bool showEdit = false;
 
   String? userEmail;
   final Future<List> Function() fetchGroups;
@@ -39,77 +34,41 @@ class _AnnouncementsListPageState extends State<AnnouncementsListPage> {
 
   _AnnouncementsListPageState(this.fetchGroups, this.addUserGroup, this.removeUserGroup, this.getUserAttributes);
 
-  Future<void> _fetchAttributes() async {
-    var userAttr = await getUserAttributes();
-  }
-
-  Future<void> _fetchAndPrintGroups() async {
-    List groups = await fetchGroups();
-  }
-
-  Future<bool> calculateFinalTesting() async {
-    bool finalTesting = false;
-    Map<String, dynamic> jsonMap = await listGroupsForUser();
-    for (var element in jsonMap["Groups"]) {
-      finalTesting = finalTesting || checkValid(element['GroupName'].toString());
-    }
-    return finalTesting;
-  }
-
-  // Future<void> _changeUserGroups() async {
-  //   Map<String, dynamic> bodyOfResponse = await listGroupsForUser();
-  //   currentGroup = bodyOfResponse['Groups'][0]['GroupName'];
-  //   debuggingPrint(bodyOfResponse.toString());
-  //   // await removeUserGroup(currentGroup.toString());
-  //   await addUserGroup(desireGroup);
-  //   Map<String, dynamic> listInGroup = await listUsersInGroup("staff");
-  //   debuggingPrint("user is ${listInGroup['Users']}");
-  //   print("*"*100);
-  //   for(var userDict in listInGroup['Users']){
-  //     String emailAddress = "";
-  //     for(var attributesDict in userDict['Attributes']){
-  //       if(attributesDict["Name"] == "email"){
-  //         emailAddress = attributesDict["Value"];
-  //       }
-  //     }
-  //     print(emailAddress);
-  //   }
-  //   print("*"*100);
-  // }
-
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-    getUserAttributes().then((Map<String, String> stringMap) {
-      setState(() {
-        userEmail = stringMap["email"];
-      });
+    initializeState();
+  }
+
+  Future<void> initializeState() async {
+    Map<String, String> stringMap = await getUserAttributes();
+    setState(() {
+      userEmail = stringMap["email"];
     });
-    calculateFinalTesting().then((value) {
-      setState(() {
-        showButton = value;
-      });
-      debuggingPrint(showButton.toString());
+
+    bool value = await verifyAdminAccess();
+    setState(() {
+      showEdit = value;
     });
   }
+
 
   Widget selectPage(int pageNumber){
     switch(pageNumber){
       case 0: return Center(
-        child: AnnouncementHome(key: Key(showButton.toString())),
+        child: AnnouncementHome(showEdit: showEdit),
       );
       case 1: return const Center(
-        child: ChatScreen(),
+        child: ChatList(),
       );
-      case 2: return const Center(
-        child: Text("People (Need Modification)"),
+      case 2: return Center(
+        child: PeopleList(userEmail: userEmail, showEdit: showEdit),
       );
       case 3: return const Center(
         child: CalendarHook(),
       );
-      default: return const Center(
-        child: AnnouncementHome(),
+      default: return Center(
+        child: AnnouncementHome(showEdit: showEdit),
       );
     }
   }
@@ -117,7 +76,7 @@ class _AnnouncementsListPageState extends State<AnnouncementsListPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: VocelNavigationDrawer(userEmail: userEmail),
+      drawer: VocelNavigationDrawer(userEmail: userEmail, showEdit: showEdit),
       appBar: AppBar(
         leading: Builder(
           builder: (BuildContext context) {
