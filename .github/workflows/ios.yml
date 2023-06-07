@@ -59,6 +59,7 @@ jobs:
         run: sed -i 's/#{KEY_PASSWORD}#/${{ secrets.KEY_PASSWORD }}/g' android/key.properties
   build:
     name: Build and Create release
+    needs: [shmersion]
     runs-on: macos-latest
     steps:      
       - uses: actions/checkout@v3
@@ -67,4 +68,4 @@ jobs:
           channel: 'stable'
           architecture: x64
       - run: flutter pub get
-      - run: flutter build ios --debug --no-codesign
+      - run: flutter build ipa --debug --no-codesign
