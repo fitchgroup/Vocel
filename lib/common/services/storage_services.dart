@@ -1,4 +1,5 @@
 import 'package:amplify_storage_s3/amplify_storage_s3.dart';
+import 'package:aws_common/vm.dart';
 import 'package:flutter/material.dart';
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -15,11 +16,17 @@ class StorageService {
 
   ValueNotifier<double> uploadProgress = ValueNotifier<double>(0);
   Future<String> getImageUrl(String key) async {
-    final GetUrlResult result = await Amplify.Storage.getUrl(
+    final result = await Amplify.Storage.getUrl(
       key: key,
-      options: S3GetUrlOptions(expires: 60000),
-    );
-    return result.url;
+      options: const StorageGetUrlOptions(
+        accessLevel: StorageAccessLevel.protected,
+        pluginOptions: S3GetUrlPluginOptions(
+          validateObjectExistence: true,
+          expiresIn: Duration(days: 1),
+        ),
+      ),
+    ).result;
+    return result.url.toString();
   }
 
   ValueNotifier<double> getUploadProgress() {
@@ -28,13 +35,14 @@ class StorageService {
 
   Future<String?> uploadFile(File file) async {
     try {
+      final awsFile = AWSFilePlatform.fromFile(file);
       final extension = p.extension(file.path);
       final key = const Uuid().v1() + extension;
       await Amplify.Storage.uploadFile(
-          local: file,
+          localFile: awsFile,
           key: key,
           onProgress: (progress) {
-            uploadProgress.value = progress.getFractionCompleted();
+            uploadProgress.value = progress.fractionCompleted;
           });
 
       return key;
