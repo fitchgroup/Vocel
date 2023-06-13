@@ -53,5 +53,36 @@
     <string>Some Description</string>
     <key>NSPhotoLibraryUsageDescription</key>
     <string>Some Description</string>
+
+
+    <!-- Enable large icon support for notifications -->
+    <key>UIUserNotificationCategoryOptions</key>
+    <array>
+      <dict>
+        <key>UIUserNotificationCategoryOptionCustomDismissAction</key>
+        <integer>1</integer>
+        <key>UIUserNotificationCategoryOptionAllowInCarPlay</key>
+        <integer>1</integer>
+        <key>UIUserNotificationCategoryOptionHiddenPreviewsShowTitle</key>
+        <integer>1</integer>
+        <key>UIUserNotificationCategoryOptionHiddenPreviewsShowSubtitle</key>
+        <integer>1</integer>
+        <key>UIUserNotificationCategoryOptionHiddenPreviewsShowBody</key>
+        <integer>1</integer>
+      </dict>
+    </array>
+
+    <!-- Enable big picture style for notifications -->
+    <key>UIUserNotificationCategoryOptionCustomDismissAction</key>
+    <integer>1</integer>
+    <key>UIUserNotificationCategoryOptionAllowInCarPlay</key>
+    <integer>1</integer>
+    <key>UIUserNotificationCategoryOptionHiddenPreviewsShowTitle</key>
+    <integer>1</integer>
+    <key>UIUserNotificationCategoryOptionHiddenPreviewsShowSubtitle</key>
+    <integer>1</integer>
+    <key>UIUserNotificationCategoryOptionHiddenPreviewsShowBody</key>
+    <integer>1</integer>
+
 </dict>
 </plist>

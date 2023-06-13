@@ -2,41 +2,12 @@
   "AWSTemplateFormatVersion": "2010-09-09",
   "Description": "{\"createdOn\":\"Windows\",\"createdBy\":\"Amplify\",\"createdWith\":\"11.0.3\",\"stackType\":\"function-Lambda\",\"metadata\":{}}",
   "Parameters": {
-    "GROUP": {
-      "Type": "String",
-      "Default": ""
-    },
-    "modules": {
-      "Type": "String",
-      "Default": "",
-      "Description": "Comma-delimited list of modules to be executed by a lambda trigger. Sent to resource as an env variable."
-    },
-    "resourceName": {
-      "Type": "String",
-      "Default": ""
-    },
-    "trigger": {
-      "Type": "String",
-      "Default": "true"
-    },
-    "functionName": {
-      "Type": "String",
-      "Default": ""
-    },
-    "roleName": {
-      "Type": "String",
-      "Default": ""
-    },
-    "parentResource": {
-      "Type": "String",
-      "Default": ""
-    },
-    "parentStack": {
-      "Type": "String",
-      "Default": ""
-    },
     "env": {
       "Type": "String"
+    },
+    "authvocelappcf1453cbUserPoolId": {
+      "Type": "String",
+      "Default": "authvocelappcf1453cbUserPoolId"
     },
     "deploymentBucketName": {
       "Type": "String"
@@ -67,12 +38,12 @@
         "FunctionName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "fitchvocel5266d294PostConfirmation",
+            "AdminQueries5b1ab4e5",
             {
               "Fn::Join": [
                 "",
                 [
-                  "fitchvocel5266d294PostConfirmation",
+                  "AdminQueries5b1ab4e5",
                   "-",
                   {
                     "Ref": "env"
@@ -87,14 +58,9 @@
             "ENV": {
               "Ref": "env"
             },
-            "MODULES": {
-              "Ref": "modules"
-            },
-            "REGION": {
-              "Ref": "AWS::Region"
-            },
-            "GROUP": {
-              "Ref": "GROUP"
+            "GROUP": "BELL",
+            "USERPOOL": {
+              "Ref": "authvocelappcf1453cbUserPoolId"
             }
           }
         },
@@ -122,12 +88,12 @@
         "RoleName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "fitchvocel5266d294PostConfirmation",
+            "AdminQueries5b1ab4e5LambdaRole",
             {
               "Fn::Join": [
                 "",
                 [
-                  "fitchvocel5266d294PostConfirmation",
+                  "AdminQueries5b1ab4e5LambdaRole",
                   "-",
                   {
                     "Ref": "env"
@@ -193,6 +159,41 @@
                   }
                 ]
               }
+            },
+            {
+              "Effect": "Allow",
+              "Action": [
+                "cognito-idp:ListUsersInGroup",
+                "cognito-idp:AdminUserGlobalSignOut",
+                "cognito-idp:AdminEnableUser",
+                "cognito-idp:AdminDisableUser",
+                "cognito-idp:AdminRemoveUserFromGroup",
+                "cognito-idp:AdminAddUserToGroup",
+                "cognito-idp:AdminListGroupsForUser",
+                "cognito-idp:AdminGetUser",
+                "cognito-idp:AdminConfirmSignUp",
+                "cognito-idp:ListUsers",
+                "cognito-idp:ListGroups"
+              ],
+              "Resource": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:aws:cognito-idp:",
+                    {
+                      "Ref": "AWS::Region"
+                    },
+                    ":",
+                    {
+                      "Ref": "AWS::AccountId"
+                    },
+                    ":userpool/",
+                    {
+                      "Ref": "authvocelappcf1453cbUserPoolId"
+                    }
+                  ]
+                ]
+              }
             }
           ]
         }
@@ -213,6 +214,11 @@
         ]
       }
     },
+    "Region": {
+      "Value": {
+        "Ref": "AWS::Region"
+      }
+    },
     "LambdaExecutionRole": {
       "Value": {
         "Ref": "LambdaExecutionRole"
@@ -224,11 +230,6 @@
           "LambdaExecutionRole",
           "Arn"
         ]
-      }
-    },
-    "Region": {
-      "Value": {
-        "Ref": "AWS::Region"
       }
     }
   }

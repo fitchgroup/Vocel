@@ -1,0 +1,22 @@
+{
+  "resourceName": "s37710959f",
+  "policyUUID": "7710959f",
+  "bucketName": "vocelappstorage",
+  "storageAccess": "authAndGuest",
+  "guestAccess": [
+    "READ"
+  ],
+  "authAccess": [
+    "CREATE_AND_UPDATE",
+    "READ",
+    "DELETE"
+  ],
+  "triggerFunction": "AdminQueries5b1ab4e5",
+  "groupAccess": {
+    "STAFF": [
+      "CREATE_AND_UPDATE",
+      "READ",
+      "DELETE"
+    ]
+  }
+}

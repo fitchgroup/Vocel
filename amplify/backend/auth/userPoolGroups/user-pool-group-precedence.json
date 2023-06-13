@@ -1,18 +1,18 @@
 [
   {
-    "groupName": "default",
+    "groupName": "STAFF",
     "precedence": 1
   },
   {
-    "groupName": "leader",
+    "groupName": "BELL",
     "precedence": 2
   },
   {
-    "groupName": "staff",
+    "groupName": "EETC",
     "precedence": 3
   },
   {
-    "groupName": "parent",
+    "groupName": "VCPA",
     "precedence": 4
   }
 ]
