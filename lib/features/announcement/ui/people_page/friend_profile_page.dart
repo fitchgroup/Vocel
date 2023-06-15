@@ -60,7 +60,9 @@ class _FriendProfileState extends State<FriendProfile> {
                   child: FittedBox(
                     fit: BoxFit.scaleDown,
                     child: Text(
-                      widget.name == "" ? widget.email.split("@")[0] : widget.name,
+                      widget.name == ""
+                          ? widget.email.split("@")[0]
+                          : widget.name,
                       overflow: TextOverflow.ellipsis,
                       style: const TextStyle(
                         fontSize: 18,
@@ -124,21 +126,26 @@ class _FriendProfileState extends State<FriendProfile> {
                 ),
               ),
               SizedBox(height: MediaQuery.of(context).size.width * 0.08),
-              Row(
+              Wrap(
                 children: [
                   Text(
-                    widget.name == "" ? widget.email.split("@")[0] : widget.name,
+                    widget.name == ""
+                        ? widget.email.split("@")[0]
+                        : widget.name,
                     style: const TextStyle(
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
-                      letterSpacing: 1.3
+                      letterSpacing: 1.3,
                     ),
                   ),
                   const SizedBox(width: 15.0),
                   Container(
                     decoration: BoxDecoration(
-                      color: widget.title == "leader" ? const Color(constants.primaryDarkTeal) : widget.title == "staff"
-                          ? const Color(constants.primaryRegularTeal) : const Color(constants.primaryLightTeal),
+                      color: widget.title == "leader"
+                          ? const Color(constants.primaryDarkTeal)
+                          : widget.title == "staff"
+                              ? const Color(constants.primaryRegularTeal)
+                              : const Color(constants.primaryLightTeal),
                       borderRadius: BorderRadius.circular(20),
                     ),
                     child: Padding(
@@ -154,23 +161,17 @@ class _FriendProfileState extends State<FriendProfile> {
                   ),
                 ],
               ),
-              const SizedBox(height: 8.0),
+              const SizedBox(height: 10.0),
               Text(
                 "Email: ${widget.email}",
                 style: TextStyle(
-                  fontSize: 16,
-                  letterSpacing: 0.6,
-                  color: Colors.grey[600]
-                ),
+                    fontSize: 16, letterSpacing: 0.6, color: Colors.grey[600]),
               ),
               const SizedBox(height: 8.0),
               Text(
                 "Region: ${widget.region == "" ? "..." : widget.region}",
                 style: TextStyle(
-                  fontSize: 16,
-                  letterSpacing: 0.6,
-                  color: Colors.grey[600]
-                ),
+                    fontSize: 16, letterSpacing: 0.6, color: Colors.grey[600]),
               ),
               SizedBox(height: MediaQuery.of(context).size.width * 0.08),
               const Text(
@@ -184,10 +185,7 @@ class _FriendProfileState extends State<FriendProfile> {
               Text(
                 widget.aboutMe == "" ? "..." : widget.aboutMe,
                 style: TextStyle(
-                  fontSize: 16,
-                  letterSpacing: 0.6,
-                  color: Colors.grey[600]
-                ),
+                    fontSize: 16, letterSpacing: 0.6, color: Colors.grey[600]),
               ),
               SizedBox(height: MediaQuery.of(context).size.width * 0.2),
               Center(
@@ -202,7 +200,8 @@ class _FriendProfileState extends State<FriendProfile> {
                   child: Container(
                     width: MediaQuery.of(context).size.width * 0.6,
                     margin: const EdgeInsets.fromLTRB(15, 15, 15, 15),
-                    padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 15, horizontal: 20),
                     decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(8),
@@ -214,16 +213,16 @@ class _FriendProfileState extends State<FriendProfile> {
                         ),
                       ],
                     ),
+                    // ChatPage(myInfo: myInfo, theirInfo: theirInfo, title: title),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
                           const LocalizedMessageResolver().message(context),
                           style: const TextStyle(
-                            fontSize: 16,
-                            fontFamily: "Pangolin",
-                            letterSpacing: 2
-                          ),
+                              fontSize: 16,
+                              fontFamily: "Pangolin",
+                              letterSpacing: 2),
                         ),
                       ],
                     ),
