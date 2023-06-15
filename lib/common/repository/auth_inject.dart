@@ -42,13 +42,12 @@ class configureAmplifySuccess extends AuthRepository {
       await Amplify.addPlugins([
         AmplifyAuthCognito(),
         AmplifyDataStore(modelProvider: ModelProvider.instance),
-        AmplifyAPI(),
+        apiPlugin,
         AmplifyStorageS3()
         // notificationsPlugin,
       ]);
 
       const String amplifyConfig = String.fromEnvironment('VERSION');
-      debugPrint('${"=" * 50}\nConfig: $amplifyConfig\n${"=" * 50}');
       await Amplify.configure(amplifyConfig);
       return "Successfully configured";
     } on Exception catch (e) {

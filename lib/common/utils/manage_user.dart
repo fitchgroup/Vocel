@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:amplify_api/amplify_api.dart';
 import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/foundation.dart';
@@ -24,23 +23,6 @@ extension AWSApiPluginConfigHelpers on AWSApiPluginConfig {
 }
 
 /// TODO: change version from V0 to V1
-
-// v0
-// Future<List> fetchGroups() async {
-//   List groups = List.filled(0, 0);
-//   try {
-//     final result = await Amplify.Auth.fetchAuthSession(
-//       options: CognitoSessionOptions(getAWSCredentials: true),
-//     );
-//     String accessToken = ((result as CognitoAuthSession).userPoolTokens)!
-//         .accessToken; //.idToken;
-//     Map<String, dynamic> decodedToken = JwtDecoder.decode(accessToken);
-//     groups = decodedToken["cognito:groups"];
-//   } on AuthException catch (e) {
-//     debuggingPrint("$e \n ${"*"*20} fetchGroups Fail ${"="*20}");
-//   }
-//   return groups;
-// }
 
 // v1
 Future<List> fetchGroups() async {
@@ -86,29 +68,6 @@ Future<Map<String, String>> getUserAttributes() async {
   }
 
   return stringMap;
-
-  // Find and modify the group attribute
-  // List<AuthUserAttribute> modifiedAttributes = [];
-  // UserAttributeKey store = userAttributes.first.userAttributeKey;?
-  // for (AuthUserAttribute attribute in userAttributes) {
-  //   print("**"*40 + attribute.userAttributeKey.toString());
-  //   print("**"*40 + attribute.value);
-  //   if (attribute.userAttributeKey == "cognito:groups") {
-  //     store = attribute.userAttributeKey;
-  //     modifiedAttributes.add(AuthUserAttribute(
-  //       userAttributeKey: attribute.userAttributeKey,
-  //       value: desireGroup, // Change the group to desireGroup
-  //     ));
-  //   } else if (attribute.userAttributeKey != 'sub') {
-  //     modifiedAttributes.add(attribute);
-  //   }
-  // }
-
-  // Update the user's attributes
-  // await Amplify.Auth.updateUserAttribute(
-  //   userAttributeKey: store, // Replace 'group' with your custom attribute name
-  //   value: desireGroup,
-  // );
 }
 
 Future<void> addVocelUserAttribute(
@@ -135,13 +94,6 @@ Future<void> addUserGroup(String desireGroup, {String? email}) async {
     // const apiName = 'AdminQueries';
     const path = '/addUserToGroup';
     final body = {"username": userName, "groupname": desireGroup};
-
-    // v0:
-    // final authSession = await Amplify.Auth.fetchAuthSession(
-    //   options: CognitoSessionOptions(getAWSCredentials: true),
-    // );
-    // final accessToken =
-    //     (authSession as CognitoAuthSession).userPoolTokens!.accessToken;
 
     // v1
     final session = await Amplify.Auth.getPlugin(
@@ -220,21 +172,6 @@ Future<void> changeUsersGroups(
 
 Future<Map<String, dynamic>> listGroupsForUser(
     {String? receivedUserName}) async {
-  // final amplify = AmplifyClass.instance;
-  // final apiCategory = amplify?.API;
-  // List<String> apiNames = [];
-  //
-  // if (apiCategory != null) {
-  //   final plugins = apiCategory.plugins;
-  //
-  //   for (final plugin in plugins) {
-  //     final apiPlugin = plugin;
-  //     final categoryName = apiCategory.category.name;
-  //     apiNames.add(categoryName); // Add the apiName to the list
-  //     manageUserDebuggingPrint('API Name: $categoryName');
-  //   }
-  // }
-
   Map<String, String> stringMap = await getUserAttributes();
   String? userName = stringMap['email'];
   if (receivedUserName != null) {
@@ -273,7 +210,6 @@ Future<Map<String, dynamic>> listGroupsForUser(
         .response;
 
     jsonMap = jsonDecode(responseData.decodeBody());
-    // String nextToken = responseData['NextToken'] as String;
     return jsonMap;
   } catch (e) {
     // Attribute update failed
@@ -284,8 +220,6 @@ Future<Map<String, dynamic>> listGroupsForUser(
 }
 
 Future<dynamic> listUsersInGroup(String groupName) async {
-  // Map<String, String> stringMap = await getUserAttributes();
-  // String? userName = stringMap['email'];
   String nextToken = "";
   try {
     const pathListUser = '/listUsersInGroup';
@@ -374,18 +308,33 @@ void manageUserDebuggingPrint(String shouldPrint) {
 
 Future<bool> verifyAdminAccess() async {
   Map<String, dynamic> jsonMap = await listGroupsForUser();
-  List<String> validGroups = ['STAFF'];
-
+  List<String> validGroups = ['Staffversion1'];
   for (var entry in jsonMap.entries) {
     manageUserDebuggingPrint("${entry.key} + ${entry.value}");
   }
-
   bool hasValidGroup = false;
   if (jsonMap.isNotEmpty) {
     hasValidGroup = jsonMap["Groups"].any((element) {
       return validGroups.contains(element['GroupName'].toString());
     });
   }
-
   return hasValidGroup;
+}
+
+Future<String> verifyGroupAccess() async {
+  Map<String, dynamic> jsonMap = await listGroupsForUser();
+  // any new users into each of the three other profile roles (BELL, EETC, VCPA )
+  List<String> validGroups = ['Bellversion1', 'Eetcversion1', 'Vcpaversion1'];
+  for (var entry in jsonMap.entries) {
+    manageUserDebuggingPrint("${entry.key} + ${entry.value}");
+  }
+  String groupName;
+  jsonMap["Groups"].forEach((element) {
+    String currentGroupName = element['GroupName'].toString();
+    if (validGroups.contains(currentGroupName)) {
+      groupName = currentGroupName;
+      return groupName;
+    }
+  });
+  return "";
 }
