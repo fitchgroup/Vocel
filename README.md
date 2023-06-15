@@ -218,6 +218,67 @@ requirements.
 
 <br>
 
+# Use REST API in this flutter project
+
+## 1. Exploring the precedence of different roles
+```
+/amplify/backend/auth/userPoolGroups/user-pool-group-precedence.json
+```
+Each object represents a group and provides information about the group's name ("groupName") and its precedence value ("precedence"). The precedence value indicates the priority or order in which these groups should be considered or processed, with lower numbers indicating higher precedence. You can set it in amplify console
+
+## 2. Define function in this file: 
+
+```
+amplify/backend/function/AdminQueriesf35eea9e/src/app.js
+```
+
+
+1. Import required modules and dependencies:
+
+   - `express`: Framework for building web applications.
+   - `body-parser`: Middleware to parse request bodies.
+   - `aws-serverless-express/middleware`: Middleware for AWS Serverless Express integration.
+   - `cognitoActions`: Module containing functions for performing Cognito user management actions.
+
+
+2. Configure CORS (Cross-Origin Resource Sharing):
+
+   - Allow cross-origin requests by setting appropriate headers.
+
+3. Define a middleware function to check if the user is in a specific group:
+
+   - The `allowedGroup` variable represents the group name that is allowed to perform administrative tasks.
+   - If the `allowedGroup` is not defined or set to `'NONE'`, all requests are allowed.
+   - If the user is not in the allowed group, an error is returned.
+
+4. Register endpoint handlers for various user management actions:
+
+   - `/addUserToGroup`: Add a user to a group.
+   - `/removeUserFromGroup`: Remove a user from a group.
+   - `/confirmUserSignUp`: Confirm user sign-up.
+   - `/disableUser`: Disable a user.
+   - `/enableUser`: Enable a user.
+   - `/getUser`: Get user information.
+   - `/listUsers`: List users in the Cognito User Pool.
+   - `/listGroups`: List groups in the Cognito User Pool.
+   - `/listGroupsForUser`: List groups for a specific user.
+   - `/listUsersInGroup`: List users in a specific group.
+   - `/signUserOut`: Sign a user out (requires user verification).
+
+5. Define error-handling middleware:
+
+   - Log and handle errors that occur during request processing.
+
+6. Start the Express application on port 3000.
+
+
+
+<br> 
+
+---
+
+<br>
+
 #### Here's the breakdown of the key-value pairs:
 
 - Key: "UserAgent"

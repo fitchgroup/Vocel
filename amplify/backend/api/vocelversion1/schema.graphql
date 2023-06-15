@@ -1,0 +1,81 @@
+## This "input" configures a global authorization rule to enable public access to
+## all models in this schema. Learn more about authorization rules here: https://docs.amplify.aws/cli/graphql/authorization-rules
+#input AMPLIFY { globalAuthRule: AuthRule = { allow: public } } # FOR TESTING ONLY!
+#
+#type Blog @model {
+#  id: ID!
+#  name: String!
+#  posts: [Post] @hasMany
+#}
+#
+#type Post @model {
+#  id: ID!
+#  title: String!
+#  blog: Blog @belongsTo
+#  comments: [Comment] @hasMany
+#}
+#
+#type Comment @model {
+#  id: ID!
+#  post: Post @belongsTo
+#  content: String!
+#}
+
+#The rules argument in the @auth directive can have different configurations based on the specific requirements of your application. Here are some commonly used options for the rule:
+#
+#allow: owner: Allows the owner of the data to perform operations.
+#allow: groups: Allows specific groups to perform operations.
+#allow: public: Allows public access to perform operations (no authentication required).
+#allow: private: Restricts access to only authenticated users.
+#allow: groups, private: Allows specific groups and authenticated users to perform operations.
+#allow: owner, groups: Allows the owner and specific groups to perform operations.
+
+type Announcement @model @auth(rules: [{ allow: owner }]) {
+    id: ID!
+    tripName: String!
+    description: String!
+    startDate: AWSDate!
+    endDate: AWSDate!
+    isCompleted: Boolean!
+    isPinned: Boolean!
+}
+
+type VocelEvent @model @auth(rules: [{ allow: owner }]) {
+    id: ID!
+    eventTitle: String!
+    eventLocation: String!
+    eventGroup: ProfileRole!
+    eventDescription: String!
+    startTime: AWSDateTime!
+    duration: Int!
+    eventImageUrl: String
+    eventImageKey: String
+}
+
+enum ProfileRole {
+    BELL
+    EETC
+    VCPA
+}
+#
+#type Post @model @auth(rules: [
+#  { allow: owner, operations: [read, update, delete] },
+#  { allow: public, operations: [read] }
+#]) {
+#  id: ID!
+#  postAuthor: String! @auth(rules: [{ allow: owner, operations: [read, update, delete] }, { allow: public, operations: [read] }])
+#  postContent: String! @auth(rules: [{ allow: owner, operations: [read, update, delete] }, { allow: public, operations: [read] }])
+#  likes: [String] @auth(rules: [{ allow: public, operations: [read, update] }])
+#  # comments: [Comment] @hasMany(indexName: "byPost", fields: ["postID"])
+#}
+
+
+
+
+#type Comment @model {
+#    id: ID!
+#    commentAuthor: String!
+#    commentContent: String!
+#    post: Post @belongsTo(fields: ["postID"])
+#    postID: ID! @index(name: "byPost", sortKeyFields: ["id"])
+#}

@@ -42,9 +42,13 @@ app.use((req, res, next) => {
 });
 
 // Only perform tasks if the user is in a specific group
-const allowedGroup = process.env.GROUP;
+const allowedGroup = 'Staffversion1'; // process.env.GROUP; //
 
 const checkGroup = function (req, res, next) {
+//const err = new Error(`User does not have permissions to perform administrative tasks. Group: ${process.env.GROUP}`);
+//    err.statusCode = 403;
+//    next(err);
+
   if (req.path == '/signUserOut') {
     return next();
   }
@@ -57,11 +61,11 @@ const checkGroup = function (req, res, next) {
   if (req.apiGateway.event.requestContext.authorizer.claims['cognito:groups']) {
     const groups = req.apiGateway.event.requestContext.authorizer.claims['cognito:groups'].split(',');
     if (!(allowedGroup && groups.indexOf(allowedGroup) > -1)) {
-      const err = new Error(`User does not have permissions to perform administrative tasks`);
+      const err = new Error(`User does not have permissions to perform administrative tasks. First Statement. Group: ${process.env.GROUP} and group: ${groups}`);
       next(err);
     }
   } else {
-    const err = new Error(`User does not have permissions to perform administrative tasks`);
+    const err = new Error(`User does not have permissions to perform administrative tasks. Group: ${process.env.GROUP}. group: ${req.apiGateway.event.requestContext.authorizer.claims['cognito:groups']}`);
     err.statusCode = 403;
     next(err);
   }

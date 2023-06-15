@@ -5,7 +5,7 @@ export type AmplifyDependentResourcesAttributes = {
       "ApiName": "string",
       "RootUrl": "string"
     },
-    "vocelapp": {
+    "vocelversion1": {
       "GraphQLAPIEndpointOutput": "string",
       "GraphQLAPIIdOutput": "string",
       "GraphQLAPIKeyOutput": "string"
@@ -13,12 +13,13 @@ export type AmplifyDependentResourcesAttributes = {
   },
   "auth": {
     "userPoolGroups": {
-      "BELLGroupRole": "string",
-      "EETCGroupRole": "string",
-      "STAFFGroupRole": "string",
-      "VCPAGroupRole": "string"
+      "Bellversion1GroupRole": "string",
+      "Eetcversion1GroupRole": "string",
+      "Staffversion1GroupRole": "string",
+      "Unassignedversion1GroupRole": "string",
+      "Vcpaversion1GroupRole": "string"
     },
-    "vocelappcf1453cb": {
+    "vocelversion10392777d": {
       "AppClientID": "string",
       "AppClientIDWeb": "string",
       "IdentityPoolId": "string",
@@ -29,17 +30,11 @@ export type AmplifyDependentResourcesAttributes = {
     }
   },
   "function": {
-    "AdminQueries5b1ab4e5": {
+    "AdminQueriesf35eea9e": {
       "Arn": "string",
       "LambdaExecutionRole": "string",
       "LambdaExecutionRoleArn": "string",
       "Name": "string",
-      "Region": "string"
-    }
-  },
-  "storage": {
-    "s37710959f": {
-      "BucketName": "string",
       "Region": "string"
     }
   }

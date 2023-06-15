@@ -5,9 +5,9 @@
     "env": {
       "Type": "String"
     },
-    "authvocelappcf1453cbUserPoolId": {
+    "authvocelversion10392777dUserPoolId": {
       "Type": "String",
-      "Default": "authvocelappcf1453cbUserPoolId"
+      "Default": "authvocelversion10392777dUserPoolId"
     },
     "deploymentBucketName": {
       "Type": "String"
@@ -38,12 +38,12 @@
         "FunctionName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "AdminQueries5b1ab4e5",
+            "AdminQueriesf35eea9e",
             {
               "Fn::Join": [
                 "",
                 [
-                  "AdminQueries5b1ab4e5",
+                  "AdminQueriesf35eea9e",
                   "-",
                   {
                     "Ref": "env"
@@ -58,9 +58,9 @@
             "ENV": {
               "Ref": "env"
             },
-            "GROUP": "BELL",
+            "GROUP": "Staffversion1",
             "USERPOOL": {
-              "Ref": "authvocelappcf1453cbUserPoolId"
+              "Ref": "authvocelversion10392777dUserPoolId"
             }
           }
         },
@@ -88,12 +88,12 @@
         "RoleName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "AdminQueries5b1ab4e5LambdaRole",
+            "AdminQueriesf35eea9eLambdaRole",
             {
               "Fn::Join": [
                 "",
                 [
-                  "AdminQueries5b1ab4e5LambdaRole",
+                  "AdminQueriesf35eea9eLambdaRole",
                   "-",
                   {
                     "Ref": "env"
@@ -189,7 +189,7 @@
                     },
                     ":userpool/",
                     {
-                      "Ref": "authvocelappcf1453cbUserPoolId"
+                      "Ref": "authvocelversion10392777dUserPoolId"
                     }
                   ]
                 ]

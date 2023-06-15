@@ -8,7 +8,7 @@
             "UserPoolId"
           ],
           "category": "auth",
-          "resourceName": "vocelappcf1453cb"
+          "resourceName": "vocelversion10392777d"
         },
         {
           "attributes": [
@@ -16,42 +16,37 @@
             "Name"
           ],
           "category": "function",
-          "resourceName": "AdminQueries5b1ab4e5"
+          "resourceName": "AdminQueriesf35eea9e"
         }
       ],
       "providerPlugin": "awscloudformation",
       "service": "API Gateway"
     },
-    "vocelapp": {
+    "vocelversion1": {
       "dependsOn": [
         {
           "attributes": [
             "UserPoolId"
           ],
           "category": "auth",
-          "resourceName": "vocelappcf1453cb"
+          "resourceName": "vocelversion10392777d"
         }
       ],
       "output": {
         "authConfig": {
           "additionalAuthenticationProviders": [
             {
-              "apiKeyConfig": {
-                "apiKeyExpirationDate": "2024-06-11T23:34:55.350Z",
-                "apiKeyExpirationDays": 365,
-                "description": "vocelapp-dev"
-              },
-              "authenticationType": "API_KEY"
-            },
-            {
-              "authenticationType": "AWS_IAM"
+              "authenticationType": "AMAZON_COGNITO_USER_POOLS",
+              "userPoolConfig": {
+                "userPoolId": "authvocelversion10392777d"
+              }
             }
           ],
           "defaultAuthentication": {
-            "authenticationType": "AMAZON_COGNITO_USER_POOLS",
-            "userPoolConfig": {
-              "userPoolId": "authvocelappcf1453cb"
-            }
+            "apiKeyConfig": {
+              "apiKeyExpirationDays": 7
+            },
+            "authenticationType": "API_KEY"
           }
         }
       },
@@ -70,13 +65,13 @@
             "IdentityPoolId"
           ],
           "category": "auth",
-          "resourceName": "vocelappcf1453cb"
+          "resourceName": "vocelversion10392777d"
         }
       ],
       "providerPlugin": "awscloudformation",
       "service": "Cognito-UserPool-Groups"
     },
-    "vocelappcf1453cb": {
+    "vocelversion10392777d": {
       "customAuth": false,
       "dependsOn": [],
       "frontendAuthConfig": {
@@ -104,7 +99,7 @@
     }
   },
   "function": {
-    "AdminQueries5b1ab4e5": {
+    "AdminQueriesf35eea9e": {
       "build": true,
       "dependsOn": [
         {
@@ -112,7 +107,7 @@
             "UserPoolId"
           ],
           "category": "auth",
-          "resourceName": "vocelappcf1453cb"
+          "resourceName": "vocelversion10392777d"
         }
       ],
       "providerPlugin": "awscloudformation",
@@ -127,19 +122,19 @@
     }
   },
   "parameters": {
-    "AMPLIFY_function_AdminQueries5b1ab4e5_deploymentBucketName": {
+    "AMPLIFY_function_AdminQueriesf35eea9e_deploymentBucketName": {
       "usedBy": [
         {
           "category": "function",
-          "resourceName": "AdminQueries5b1ab4e5"
+          "resourceName": "AdminQueriesf35eea9e"
         }
       ]
     },
-    "AMPLIFY_function_AdminQueries5b1ab4e5_s3Key": {
+    "AMPLIFY_function_AdminQueriesf35eea9e_s3Key": {
       "usedBy": [
         {
           "category": "function",
-          "resourceName": "AdminQueries5b1ab4e5"
+          "resourceName": "AdminQueriesf35eea9e"
         }
       ]
     },
@@ -160,35 +155,5 @@
       ]
     }
   },
-  "storage": {
-    "s37710959f": {
-      "dependsOn": [
-        {
-          "attributes": [
-            "Name",
-            "Arn",
-            "LambdaExecutionRole"
-          ],
-          "category": "function",
-          "resourceName": "AdminQueries5b1ab4e5"
-        },
-        {
-          "attributes": [
-            "UserPoolId"
-          ],
-          "category": "auth",
-          "resourceName": "vocelappcf1453cb"
-        },
-        {
-          "attributes": [
-            "STAFFGroupRole"
-          ],
-          "category": "auth",
-          "resourceName": "userPoolGroups"
-        }
-      ],
-      "providerPlugin": "awscloudformation",
-      "service": "S3"
-    }
-  }
+  "storage": {}
 }

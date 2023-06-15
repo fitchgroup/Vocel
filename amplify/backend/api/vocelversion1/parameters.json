@@ -1,12 +1,11 @@
 {
-  "AppSyncApiName": "vocelapp",
+  "AppSyncApiName": "vocelversion1",
   "DynamoDBBillingMode": "PAY_PER_REQUEST",
   "DynamoDBEnableServerSideEncryption": false,
   "AuthCognitoUserPoolId": {
     "Fn::GetAtt": [
-      "authvocelappcf1453cb",
+      "authvocelversion10392777d",
       "Outputs.UserPoolId"
     ]
-  },
-  "AuthModeLastUpdated": "2023-06-12T22:19:40.902Z"
+  }
 }

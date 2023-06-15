@@ -1,38 +1,35 @@
 {
-  "dev": {
+  "vocelenv": {
     "awscloudformation": {
-      "AuthRoleName": "amplify-vocelapp-dev-142325-authRole",
-      "UnauthRoleArn": "arn:aws:iam::528051559496:role/amplify-vocelapp-dev-142325-unauthRole",
-      "AuthRoleArn": "arn:aws:iam::528051559496:role/amplify-vocelapp-dev-142325-authRole",
+      "AuthRoleName": "amplify-vocelversion1-vocelenv-120358-authRole",
+      "UnauthRoleArn": "arn:aws:iam::528051559496:role/amplify-vocelversion1-vocelenv-120358-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::528051559496:role/amplify-vocelversion1-vocelenv-120358-authRole",
       "Region": "us-east-1",
-      "DeploymentBucketName": "amplify-vocelapp-dev-142325-deployment",
-      "UnauthRoleName": "amplify-vocelapp-dev-142325-unauthRole",
-      "StackName": "amplify-vocelapp-dev-142325",
-      "StackId": "arn:aws:cloudformation:us-east-1:528051559496:stack/amplify-vocelapp-dev-142325/9a7ced60-0956-11ee-a4c8-0e7e45a925af",
-      "AmplifyAppId": "d10kqte9hx7r36"
+      "DeploymentBucketName": "amplify-vocelversion1-vocelenv-120358-deployment",
+      "UnauthRoleName": "amplify-vocelversion1-vocelenv-120358-unauthRole",
+      "StackName": "amplify-vocelversion1-vocelenv-120358",
+      "StackId": "arn:aws:cloudformation:us-east-1:528051559496:stack/amplify-vocelversion1-vocelenv-120358/74f61460-0ad5-11ee-bca9-12808cd0e631",
+      "AmplifyAppId": "d6jsmzq1iiyc6"
     },
     "categories": {
       "auth": {
-        "vocelappcf1453cb": {},
+        "vocelversion10392777d": {},
         "userPoolGroups": {}
       },
       "api": {
-        "vocelapp": {},
+        "vocelversion1": {},
         "AdminQueries": {}
       },
-      "storage": {
-        "s37710959f": {}
+      "function": {
+        "AdminQueriesf35eea9e": {
+          "deploymentBucketName": "amplify-vocelversion1-vocelenv-120358-deployment",
+          "s3Key": "amplify-builds/AdminQueriesf35eea9e-4f2b424c76682b74484b-build.zip"
+        }
       },
       "hosting": {
         "amplifyhosting": {
-          "appId": "d10kqte9hx7r36",
+          "appId": "d6jsmzq1iiyc6",
           "type": "manual"
-        }
-      },
-      "function": {
-        "AdminQueries5b1ab4e5": {
-          "deploymentBucketName": "amplify-vocelapp-dev-142325-deployment",
-          "s3Key": "amplify-builds/AdminQueries5b1ab4e5-496d47432f6c5539796d-build.zip"
         }
       }
     }

@@ -1,10 +1,10 @@
 {
   "version": "1",
   "cognitoConfig": {
-    "identityPoolName": "vocelappcf1453cb_identitypool_cf1453cb",
+    "identityPoolName": "vocelversion10392777d_identitypool_0392777d",
     "allowUnauthenticatedIdentities": true,
-    "resourceNameTruncated": "vocelacf1453cb",
-    "userPoolName": "vocelappcf1453cb_userpool_cf1453cb",
+    "resourceNameTruncated": "vocelv0392777d",
+    "userPoolName": "vocelversion10392777d_userpool_0392777d",
     "autoVerifiedAttributes": [
       "email"
     ],
@@ -31,20 +31,21 @@
     "userpoolClientReadAttributes": [
       "email"
     ],
-    "userpoolClientLambdaRole": "vocelacf1453cb_userpoolclient_lambda_role",
+    "userpoolClientLambdaRole": "vocelv0392777d_userpoolclient_lambda_role",
     "userpoolClientSetAttributes": false,
-    "sharedId": "cf1453cb",
-    "resourceName": "vocelappcf1453cb",
+    "sharedId": "0392777d",
+    "resourceName": "vocelversion10392777d",
     "authSelections": "identityPoolAndUserPool",
     "useDefault": "default",
     "usernameAttributes": [
       "email"
     ],
     "userPoolGroupList": [
-      "STAFF",
-      "BELL",
-      "EETC",
-      "VCPA"
+      "Staffversion1",
+      "Bellversion1",
+      "Eetcversion1",
+      "Vcpaversion1",
+      "Unassignedversion1"
     ],
     "serviceName": "Cognito",
     "usernameCaseSensitive": false,
@@ -63,6 +64,6 @@
     },
     "breakCircularDependency": true,
     "dependsOn": [],
-    "adminQueryGroup": "STAFF"
+    "adminQueryGroup": "Unassignedv0"
   }
 }
