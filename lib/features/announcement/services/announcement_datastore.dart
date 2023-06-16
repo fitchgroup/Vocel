@@ -14,14 +14,9 @@ class TripsDataStoreService {
   Stream<List<Announcement>> listenToAnnouncements() {
     return Amplify.DataStore.observeQuery(
       Announcement.classType,
-      sortBy: [Announcement.STARTDATE.ascending()],
-    )
-        .map((event) => event.items
-        .where((element) =>
-        element.endDate.getDateTime().isAfter(DateTime.now()))
-        .toList())
-        .handleError(
-          (error) {
+      sortBy: [Announcement.TRIPNAME.ascending()],
+    ).map((event) => event.items.toList()).handleError(
+      (error) {
         debugPrint('listenToTrips: A Stream error happened');
       },
     );
@@ -30,22 +25,17 @@ class TripsDataStoreService {
   Stream<List<Announcement>> listenToPastAnnouncements() {
     return Amplify.DataStore.observeQuery(
       Announcement.classType,
-      sortBy: [Announcement.STARTDATE.ascending()],
-    )
-        .map((event) => event.items
-        .where((element) =>
-        element.endDate.getDateTime().isBefore(DateTime.now()))
-        .toList())
-        .handleError(
-          (error) {
+      sortBy: [Announcement.TRIPNAME.ascending()],
+    ).map((event) => event.items.toList()).handleError(
+      (error) {
         debugPrint('listenToTrips: A Stream error happened');
       },
     );
   }
 
   Stream<Announcement> getAnnouncementsStream(String id) {
-    final tripStream =
-    Amplify.DataStore.observeQuery(Announcement.classType, where: Announcement.ID.eq(id))
+    final tripStream = Amplify.DataStore.observeQuery(Announcement.classType,
+            where: Announcement.ID.eq(id))
         .map((event) => event.items.toList().single);
 
     return tripStream;
@@ -78,8 +68,6 @@ class TripsDataStoreService {
       final newTrip = oldTrip.copyWith(
         tripName: updatedTrip.tripName,
         description: updatedTrip.description,
-        startDate: updatedTrip.startDate,
-        endDate: updatedTrip.endDate,
         // tripImageKey: updatedTrip.tripImageKey,
         // tripImageUrl: updatedTrip.tripImageUrl,
       );
@@ -102,9 +90,7 @@ class TripsDataStoreService {
       bool assign = oldTrip.isPinned ?? false;
       assign = !assign;
 
-      final newTrip = oldTrip.copyWith(
-          isPinned: assign
-      );
+      final newTrip = oldTrip.copyWith(isPinned: assign);
 
       await Amplify.DataStore.save(newTrip);
     } on Exception catch (error) {
@@ -124,9 +110,7 @@ class TripsDataStoreService {
       bool assign = oldTrip.isCompleted ?? false;
       assign = !assign;
 
-      final newTrip = oldTrip.copyWith(
-          isCompleted: assign
-      );
+      final newTrip = oldTrip.copyWith(isCompleted: assign);
 
       await Amplify.DataStore.save(newTrip);
     } on Exception catch (error) {

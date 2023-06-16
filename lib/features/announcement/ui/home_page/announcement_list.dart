@@ -11,10 +11,9 @@ import 'package:vocel/features/announcement/data/announcement_repository.dart';
 import 'package:vocel/features/announcement/ui/home_page/add_announcement_bottomsheet.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:vocel/models/Announcement.dart';
-
+import 'package:amplify_core/amplify_core.dart';
 
 class AnnouncementHome extends HookConsumerWidget {
-
   const AnnouncementHome({Key? key, required this.showEdit}) : super(key: key);
 
   final bool showEdit;
@@ -36,7 +35,6 @@ class AnnouncementHome extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-
     final visibilityButton = useState(false);
 
     /// why using [key] in the useEffect method.
@@ -56,7 +54,8 @@ class AnnouncementHome extends HookConsumerWidget {
     }, [key]);
 
     final Orientation orientation = MediaQuery.of(context).orientation;
-    final AsyncValue<List<Announcement?>> reminderValue = ref.watch(tripsListStreamProvider);
+    final AsyncValue<List<Announcement?>> reminderValue =
+        ref.watch(tripsListStreamProvider);
 
     /// if use checkValidFuture
     // floatingActionButton: FutureBuilder<bool>(
@@ -100,22 +99,22 @@ class AnnouncementHome extends HookConsumerWidget {
         body: reminderValue.when(
             data: (announcement) => announcement.isEmpty
                 ? const Center(
-              child: Text("No Announcement"),
-            ) :
+                    child: Text("No Announcement"),
+                  )
+                :
 
-            // it is a trick:
-            // We use the whereType method to filter out the null elements and only
-            // keep the non-null Trip objects. Finally, we call toList() to convert
-            // the filtered iterable into a List<Trip>.
-            buildReminders(announcement.whereType<Announcement>().toList(), ref),
+                // it is a trick:
+                // We use the whereType method to filter out the null elements and only
+                // keep the non-null Trip objects. Finally, we call toList() to convert
+                // the filtered iterable into a List<Trip>.
+                buildReminders(
+                    announcement.whereType<Announcement>().toList(), ref),
             error: (e, st) => const Center(
-              child: Text('Error Here'),
-            ),
+                  child: Text('Error Here'),
+                ),
             loading: () => const Center(
-              child: CircularProgressIndicator(),
-            )
-        )
-    );
+                  child: CircularProgressIndicator(),
+                )));
   }
 
   Center buildReminders(List<Announcement> reminders, WidgetRef ref) {
@@ -131,8 +130,29 @@ class AnnouncementHome extends HookConsumerWidget {
         } else if (!a.isPinned && b.isPinned) {
           return 1; // b should come before a
         } else {
-          // Both are either pinned or not pinned
-          return a.endDate.compareTo(b.endDate);
+          DateTime? comparedTimeFromA;
+          DateTime? comparedTimeFromB;
+          if (a.updatedAt != null) {
+            comparedTimeFromA = a.updatedAt!.getDateTimeInUtc();
+          } else if (a.createdAt != null) {
+            comparedTimeFromA = a.createdAt!.getDateTimeInUtc();
+          }
+
+          if (b.updatedAt != null) {
+            comparedTimeFromB = b.updatedAt!.getDateTimeInUtc();
+          } else if (b.createdAt != null) {
+            comparedTimeFromB = b.createdAt!.getDateTimeInUtc();
+          }
+
+          if (comparedTimeFromA == null && comparedTimeFromB != null) {
+            return -1; // a should come before b
+          } else if (comparedTimeFromB == null && comparedTimeFromA != null) {
+            return 1; // b should come before a
+          } else if (comparedTimeFromA != null && comparedTimeFromB != null) {
+            return -1 * comparedTimeFromA.compareTo(comparedTimeFromB);
+          } else {
+            return a.tripName.compareTo(b.tripName);
+          }
         }
       }
     });
@@ -141,166 +161,210 @@ class AnnouncementHome extends HookConsumerWidget {
         itemCount: reminders.length,
         itemBuilder: (context, index) {
           final reminder = reminders[index];
-          return Dismissible(
-            key: Key(reminder.id),
-            confirmDismiss: (direction) async {
-              if (direction == DismissDirection.endToStart) {
-                // Show confirmation dialog for delete action
-                return await showDialog(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return AlertDialog(
-                      title: const Text("Delete Reminder"),
-                      content: const Text("Are you sure you want to delete this reminder?"),
-                      actions: [
-                        TextButton(
-                          child: const Text("Cancel"),
-                          onPressed: () {
-                            Navigator.of(context).pop(false); // Dismiss the dialog and don't delete
-                          },
-                        ),
-                        TextButton(
-                          child: const Text("Delete"),
-                          onPressed: () {
-                            ref.read(tripControllerProvider).delete(reminder);
-                            Navigator.of(context).pop(false); // Dismiss the dialog and delete
-                          },
-                        ),
-                      ],
-                    );
-                  },
-                );
-              } else if (direction == DismissDirection.startToEnd) {
-                // Show confirmation dialog for complete action
-                return await showDialog(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return AlertDialog(
-                      title: reminder.isCompleted ? const Text("Reset Reminder") : const Text("Complete Reminder"),
-                      content: reminder.isCompleted ? const Text("Are you sure you want to reset this reminder as complete?") : const Text("Are you sure you want to mark this reminder as complete?"),
-                      actions: [
-                        TextButton(
-                          child: const Text("Cancel"),
-                          onPressed: () {
-                            Navigator.of(context).pop(false); // Dismiss the dialog and don't complete
-                          },
-                        ),
-                        TextButton(
-                          child: reminder.isCompleted ? const Text("Reset") : const Text("Complete"),
-                          onPressed: () {
-                            ref.read(tripControllerProvider).completeMe(reminder);
-                            Navigator.of(context).pop(false); // Dismiss the dialog and complete
-                          },
-                        ),
-                      ],
-                    );
-                  },
-                );
-              }
-              return false;
-            },
-            background: Container(
-              color: Colors.blueGrey[600]?.withOpacity(0.4), // Customize the background color for complete action
-              alignment: Alignment.centerRight,
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: const Icon(
-                Icons.check,
-                color: Colors.white,
-              ),
+          return Container(
+            margin: const EdgeInsets.fromLTRB(5, 2, 5, 2),
+            decoration: BoxDecoration(
+              border: Border(
+                  left: BorderSide(
+                color: reminder.isCompleted
+                    ? Colors.grey
+                    : Color(constants.shiftColor[index % 4]),
+                width: 6.0,
+              )),
+              color: Colors.grey[
+                  200], // Add a background color to mimic blockquote style
             ),
-            secondaryBackground: Container(
-              color: Colors.red[800]?.withOpacity(0.6), // Customize the background color for delete action
-              alignment: Alignment.centerLeft,
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: const Icon(
-                Icons.delete,
-                color: Colors.white,
+            child: Dismissible(
+              key: Key(reminder.id),
+              confirmDismiss: (direction) async {
+                if (direction == DismissDirection.endToStart) {
+                  // Show confirmation dialog for delete action
+                  return await showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        title: const Text("Delete Reminder"),
+                        content: const Text(
+                            "Are you sure you want to delete this reminder?"),
+                        actions: [
+                          TextButton(
+                            child: const Text("Cancel"),
+                            onPressed: () {
+                              Navigator.of(context).pop(
+                                  false); // Dismiss the dialog and don't delete
+                            },
+                          ),
+                          TextButton(
+                            child: const Text("Delete"),
+                            onPressed: () {
+                              ref.read(tripControllerProvider).delete(reminder);
+                              Navigator.of(context)
+                                  .pop(false); // Dismiss the dialog and delete
+                            },
+                          ),
+                        ],
+                      );
+                    },
+                  );
+                } else if (direction == DismissDirection.startToEnd) {
+                  // Show confirmation dialog for complete action
+                  return await showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        title: reminder.isCompleted
+                            ? const Text("Reset Reminder")
+                            : const Text("Complete Reminder"),
+                        content: reminder.isCompleted
+                            ? const Text(
+                                "Are you sure you want to reset this reminder as complete?")
+                            : const Text(
+                                "Are you sure you want to mark this reminder as not completed?"),
+                        actions: [
+                          TextButton(
+                            child: const Text("Cancel"),
+                            onPressed: () {
+                              Navigator.of(context).pop(
+                                  false); // Dismiss the dialog and don't complete
+                            },
+                          ),
+                          TextButton(
+                            child: reminder.isCompleted
+                                ? const Text("Reset")
+                                : const Text("Complete"),
+                            onPressed: () {
+                              ref
+                                  .read(tripControllerProvider)
+                                  .completeMe(reminder);
+                              Navigator.of(context).pop(
+                                  false); // Dismiss the dialog and complete
+                            },
+                          ),
+                        ],
+                      );
+                    },
+                  );
+                }
+                return false;
+              },
+              background: Container(
+                color: Colors.blueGrey[600]?.withOpacity(0.4),
+                // Customize the background color for complete action
+                alignment: Alignment.centerRight,
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                child: const Icon(
+                  Icons.check,
+                  color: Colors.white,
+                ),
               ),
-            ),
-
-            direction: DismissDirection.horizontal,
-            child: Container(
-              margin: const EdgeInsets.fromLTRB(0, 2, 0, 2),
-              padding: const EdgeInsets.all(1),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(3),
-                boxShadow: [
-                  BoxShadow(
-                    color: reminder.isCompleted ? Colors.grey.shade300.withOpacity(0.2) : (reminder.isPinned ? const Color(constants.primaryDarkTeal).withOpacity(0.45) : const Color(constants.primaryRegularTeal).withOpacity(0.2)),
-                    spreadRadius: 1.5,
-                    blurRadius: 1,
-                    offset: reminder.isPinned ? const Offset(0, 0) : const Offset(0, 1),
+              secondaryBackground: Container(
+                color: Colors.red[800]?.withOpacity(0.6),
+                // Customize the background color for delete action
+                alignment: Alignment.centerLeft,
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                child: const Icon(
+                  Icons.delete,
+                  color: Colors.white,
+                ),
+              ),
+              direction: DismissDirection.horizontal,
+              child: Container(
+                margin: const EdgeInsets.fromLTRB(0, 2, 0, 2),
+                padding: const EdgeInsets.all(1),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: const BorderRadius.only(
+                    topLeft: Radius.circular(2.0),
+                    topRight: Radius.circular(12.0),
+                    bottomLeft: Radius.circular(2.0),
+                    bottomRight: Radius.circular(12.0),
                   ),
-                ],
-                gradient: reminder.isPinned ? LinearGradient(
-                  colors: [
-                    Colors.white,
-                    const Color(constants.primaryColorDark).withOpacity(0.8),
-                    const Color(constants.primaryDarkTeal),
+                  boxShadow: [
+                    BoxShadow(
+                      color: reminder.isCompleted
+                          ? Colors.grey.shade300.withOpacity(0.2)
+                          : (reminder.isPinned
+                              ? const Color(constants.primaryDarkTeal)
+                                  .withOpacity(0.45)
+                              : const Color(constants.primaryRegularTeal)
+                                  .withOpacity(0.2)),
+                      spreadRadius: 1.5,
+                      blurRadius: 1,
+                      offset: reminder.isPinned
+                          ? const Offset(1, 0)
+                          : const Offset(1, 0),
+                    ),
                   ],
-                  begin: const Alignment(-0.2, -0.8),
-                  end: const Alignment(1, 1),
-                  stops: [0.0, 0.85, 1],
-                ) : null,
-              ),
-              child: ListTile(
+                  gradient: reminder.isPinned
+                      ? LinearGradient(
+                          colors: [
+                            Colors.white,
+                            const Color(constants.primaryColorDark)
+                                .withOpacity(0.8),
+                            const Color(constants.primaryDarkTeal),
+                          ],
+                          begin: const Alignment(-0.2, -0.8),
+                          end: const Alignment(1, 1),
+                          stops: [0.0, 0.85, 1],
+                        )
+                      : null,
+                ),
+                child: ListTile(
                   leading: IconButton(
                     onPressed: () {
-                      ref.read(tripControllerProvider).pinMe(reminder); // Assuming you have a provider notifier for toggling the pin state
+                      ref.read(tripControllerProvider).pinMe(
+                          reminder); // Assuming you have a provider notifier for toggling the pin state
                     },
-                    icon: reminder.isPinned ? const Icon(Icons.push_pin) : const Icon(Icons.push_pin_outlined),
+                    icon: reminder.isPinned
+                        ? const Icon(Icons.push_pin)
+                        : const Icon(Icons.push_pin_outlined),
                   ),
-                  title: Row(
-                    children: [
-                      Expanded(
-                        child: Opacity(
-                          opacity: reminder.isCompleted ? 0.5 : 1.0,
-                          child: Text(
-                            reminder.tripName,
-                            style: TextStyle(
-                              decoration: reminder.isCompleted ? TextDecoration.lineThrough : null,
-                              color: reminder.isCompleted ? Colors.grey : Colors.black,
-                              fontWeight: reminder.isCompleted ? FontWeight.normal : FontWeight.bold,
-                            ),
-                          ),
-                        ),
+                  title: Opacity(
+                    opacity: reminder.isCompleted ? 0.5 : 1.0,
+                    child: Text(
+                      reminder.tripName,
+                      style: TextStyle(
+                        decoration: reminder.isCompleted
+                            ? TextDecoration.lineThrough
+                            : null,
+                        color:
+                            reminder.isCompleted ? Colors.grey : Colors.black,
+                        fontWeight: reminder.isCompleted
+                            ? FontWeight.normal
+                            : FontWeight.bold,
                       ),
-                      // GestureDetector(
-                      //   child: Opacity(
-                      //     opacity: reminder.isCompleted ? 0.5 : 1.0,
-                      //     child: Text(
-                      //       reminder.endDate.toString()??  'No date set',
-                      //       style: TextStyle(
-                      //         decoration: reminder.isCompleted ? TextDecoration.lineThrough : null,
-                      //         color: reminder.isCompleted ? Colors.grey : Colors.black,
-                      //         fontWeight: reminder.isCompleted ? FontWeight.normal : FontWeight.bold,
-                      //       ),
-                      //     ),
-                      //   ),
-                      //   onTap: () async {
-                      //     // TODO: Implement editing the due date of the reminder
-                      //   },
-                      //   onDoubleTap: () async {
-                      //     // TODO: Implement clearing the due date of the reminder
-                      //   },
-                      // ),
-                    ],
-                  ),
-                  subtitle: Text(
-                    "Posted on: ${DateFormat('MMMM d, yyyy').format(reminder.endDate.getDateTime())}",
-                    style: TextStyle(
-                      decoration: reminder.isCompleted ? TextDecoration.lineThrough : null,
-                      color: reminder.isCompleted ? Colors.grey : Colors.black,
-                      fontWeight: reminder.isCompleted ? FontWeight.normal : FontWeight.w300,
                     ),
-                  )
-                // trailing: GestureDetector(
-                //   child: reminder.isCompleted ? const Icon(Icons.check_box) : const Icon(Icons.check_box_outline_blank),
-                //   onTap: () async {
-                //     ref.read(tripControllerProvider).completeMe(reminder); // Assuming you have a provider notifier for toggling the completion state
-                //   },
-                // ),
+                  ),
+                  subtitle: Opacity(
+                    opacity: reminder.isCompleted ? 0.2 : 1.0,
+                    child: Text(
+                      // DateFormat('MMMM d, yyyy').format(reminder.endDate.getDateTime()),
+                      reminder.description,
+                      style: TextStyle(
+                        decoration: reminder.isCompleted
+                            ? TextDecoration.lineThrough
+                            : null,
+                        color:
+                            reminder.isCompleted ? Colors.grey : Colors.black,
+                        fontWeight: reminder.isCompleted
+                            ? FontWeight.normal
+                            : FontWeight.w300,
+                      ),
+                    ),
+                  ),
+                  trailing: Text(
+                    reminder.createdAt == null
+                        ? DateFormat('MMM d, yy')
+                            .format(reminder.createdAt!.getDateTimeInUtc())
+                        : "",
+                  ),
+                  // trailing: GestureDetector(
+                  //   child: reminder.isCompleted ? const Icon(Icons.check_box) : const Icon(Icons.check_box_outline_blank),
+                  //   onTap: () async {
+                  //     ref.read(tripControllerProvider).completeMe(reminder); // Assuming you have a provider notifier for toggling the completion state
+                  //   },
+                  // ),
+                ),
               ),
             ),
           );
@@ -309,4 +373,3 @@ class AnnouncementHome extends HookConsumerWidget {
     );
   }
 }
-

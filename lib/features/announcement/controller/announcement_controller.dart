@@ -18,7 +18,6 @@ class TripController {
     return ref.read(storageServiceProvider).getUploadProgress();
   }
 
-
   Future<void> edit(Announcement updatedTrip) async {
     final tripsRepository = ref.read(tripsRepositoryProvider);
     await tripsRepository.update(updatedTrip);

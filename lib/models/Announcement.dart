@@ -30,8 +30,6 @@ class Announcement extends Model {
   final String id;
   final String? _tripName;
   final String? _description;
-  final TemporalDate? _startDate;
-  final TemporalDate? _endDate;
   final bool? _isCompleted;
   final bool? _isPinned;
   final TemporalDateTime? _createdAt;
@@ -76,32 +74,6 @@ class Announcement extends Model {
     }
   }
   
-  TemporalDate get startDate {
-    try {
-      return _startDate!;
-    } catch(e) {
-      throw new AmplifyCodeGenModelException(
-          AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
-          recoverySuggestion:
-            AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
-          underlyingException: e.toString()
-          );
-    }
-  }
-  
-  TemporalDate get endDate {
-    try {
-      return _endDate!;
-    } catch(e) {
-      throw new AmplifyCodeGenModelException(
-          AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
-          recoverySuggestion:
-            AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
-          underlyingException: e.toString()
-          );
-    }
-  }
-  
   bool get isCompleted {
     try {
       return _isCompleted!;
@@ -136,15 +108,13 @@ class Announcement extends Model {
     return _updatedAt;
   }
   
-  const Announcement._internal({required this.id, required tripName, required description, required startDate, required endDate, required isCompleted, required isPinned, createdAt, updatedAt}): _tripName = tripName, _description = description, _startDate = startDate, _endDate = endDate, _isCompleted = isCompleted, _isPinned = isPinned, _createdAt = createdAt, _updatedAt = updatedAt;
+  const Announcement._internal({required this.id, required tripName, required description, required isCompleted, required isPinned, createdAt, updatedAt}): _tripName = tripName, _description = description, _isCompleted = isCompleted, _isPinned = isPinned, _createdAt = createdAt, _updatedAt = updatedAt;
   
-  factory Announcement({String? id, required String tripName, required String description, required TemporalDate startDate, required TemporalDate endDate, required bool isCompleted, required bool isPinned}) {
+  factory Announcement({String? id, required String tripName, required String description, required bool isCompleted, required bool isPinned}) {
     return Announcement._internal(
       id: id == null ? UUID.getUUID() : id,
       tripName: tripName,
       description: description,
-      startDate: startDate,
-      endDate: endDate,
       isCompleted: isCompleted,
       isPinned: isPinned);
   }
@@ -160,8 +130,6 @@ class Announcement extends Model {
       id == other.id &&
       _tripName == other._tripName &&
       _description == other._description &&
-      _startDate == other._startDate &&
-      _endDate == other._endDate &&
       _isCompleted == other._isCompleted &&
       _isPinned == other._isPinned;
   }
@@ -177,8 +145,6 @@ class Announcement extends Model {
     buffer.write("id=" + "$id" + ", ");
     buffer.write("tripName=" + "$_tripName" + ", ");
     buffer.write("description=" + "$_description" + ", ");
-    buffer.write("startDate=" + (_startDate != null ? _startDate!.format() : "null") + ", ");
-    buffer.write("endDate=" + (_endDate != null ? _endDate!.format() : "null") + ", ");
     buffer.write("isCompleted=" + (_isCompleted != null ? _isCompleted!.toString() : "null") + ", ");
     buffer.write("isPinned=" + (_isPinned != null ? _isPinned!.toString() : "null") + ", ");
     buffer.write("createdAt=" + (_createdAt != null ? _createdAt!.format() : "null") + ", ");
@@ -188,13 +154,11 @@ class Announcement extends Model {
     return buffer.toString();
   }
   
-  Announcement copyWith({String? tripName, String? description, TemporalDate? startDate, TemporalDate? endDate, bool? isCompleted, bool? isPinned}) {
+  Announcement copyWith({String? tripName, String? description, bool? isCompleted, bool? isPinned}) {
     return Announcement._internal(
       id: id,
       tripName: tripName ?? this.tripName,
       description: description ?? this.description,
-      startDate: startDate ?? this.startDate,
-      endDate: endDate ?? this.endDate,
       isCompleted: isCompleted ?? this.isCompleted,
       isPinned: isPinned ?? this.isPinned);
   }
@@ -203,27 +167,23 @@ class Announcement extends Model {
     : id = json['id'],
       _tripName = json['tripName'],
       _description = json['description'],
-      _startDate = json['startDate'] != null ? TemporalDate.fromString(json['startDate']) : null,
-      _endDate = json['endDate'] != null ? TemporalDate.fromString(json['endDate']) : null,
       _isCompleted = json['isCompleted'],
       _isPinned = json['isPinned'],
       _createdAt = json['createdAt'] != null ? TemporalDateTime.fromString(json['createdAt']) : null,
       _updatedAt = json['updatedAt'] != null ? TemporalDateTime.fromString(json['updatedAt']) : null;
   
   Map<String, dynamic> toJson() => {
-    'id': id, 'tripName': _tripName, 'description': _description, 'startDate': _startDate?.format(), 'endDate': _endDate?.format(), 'isCompleted': _isCompleted, 'isPinned': _isPinned, 'createdAt': _createdAt?.format(), 'updatedAt': _updatedAt?.format()
+    'id': id, 'tripName': _tripName, 'description': _description, 'isCompleted': _isCompleted, 'isPinned': _isPinned, 'createdAt': _createdAt?.format(), 'updatedAt': _updatedAt?.format()
   };
   
   Map<String, Object?> toMap() => {
-    'id': id, 'tripName': _tripName, 'description': _description, 'startDate': _startDate, 'endDate': _endDate, 'isCompleted': _isCompleted, 'isPinned': _isPinned, 'createdAt': _createdAt, 'updatedAt': _updatedAt
+    'id': id, 'tripName': _tripName, 'description': _description, 'isCompleted': _isCompleted, 'isPinned': _isPinned, 'createdAt': _createdAt, 'updatedAt': _updatedAt
   };
 
   static final QueryModelIdentifier<AnnouncementModelIdentifier> MODEL_IDENTIFIER = QueryModelIdentifier<AnnouncementModelIdentifier>();
   static final QueryField ID = QueryField(fieldName: "id");
   static final QueryField TRIPNAME = QueryField(fieldName: "tripName");
   static final QueryField DESCRIPTION = QueryField(fieldName: "description");
-  static final QueryField STARTDATE = QueryField(fieldName: "startDate");
-  static final QueryField ENDDATE = QueryField(fieldName: "endDate");
   static final QueryField ISCOMPLETED = QueryField(fieldName: "isCompleted");
   static final QueryField ISPINNED = QueryField(fieldName: "isPinned");
   static var schema = Model.defineSchema(define: (ModelSchemaDefinition modelSchemaDefinition) {
@@ -256,18 +216,6 @@ class Announcement extends Model {
       key: Announcement.DESCRIPTION,
       isRequired: true,
       ofType: ModelFieldType(ModelFieldTypeEnum.string)
-    ));
-    
-    modelSchemaDefinition.addField(ModelFieldDefinition.field(
-      key: Announcement.STARTDATE,
-      isRequired: true,
-      ofType: ModelFieldType(ModelFieldTypeEnum.date)
-    ));
-    
-    modelSchemaDefinition.addField(ModelFieldDefinition.field(
-      key: Announcement.ENDDATE,
-      isRequired: true,
-      ofType: ModelFieldType(ModelFieldTypeEnum.date)
     ));
     
     modelSchemaDefinition.addField(ModelFieldDefinition.field(
