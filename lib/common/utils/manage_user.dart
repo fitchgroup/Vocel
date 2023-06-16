@@ -295,7 +295,7 @@ Future<dynamic> listAllUsersInGroup() async {
   } catch (e) {
     manageUserDebuggingPrint("$e ${"*" * 20} listUsers Fail ${"=" * 20}");
   }
-  return null;
+  return {};
 }
 
 void manageUserDebuggingPrint(String shouldPrint) {
@@ -309,9 +309,6 @@ void manageUserDebuggingPrint(String shouldPrint) {
 Future<bool> verifyAdminAccess() async {
   Map<String, dynamic> jsonMap = await listGroupsForUser();
   List<String> validGroups = ['Staffversion1'];
-  for (var entry in jsonMap.entries) {
-    manageUserDebuggingPrint("${entry.key} + ${entry.value}");
-  }
   bool hasValidGroup = false;
   if (jsonMap.isNotEmpty) {
     hasValidGroup = jsonMap["Groups"].any((element) {
@@ -325,9 +322,6 @@ Future<String> verifyGroupAccess() async {
   Map<String, dynamic> jsonMap = await listGroupsForUser();
   // any new users into each of the three other profile roles (BELL, EETC, VCPA )
   List<String> validGroups = ['Bellversion1', 'Eetcversion1', 'Vcpaversion1'];
-  for (var entry in jsonMap.entries) {
-    manageUserDebuggingPrint("${entry.key} + ${entry.value}");
-  }
   String groupName;
   jsonMap["Groups"].forEach((element) {
     String currentGroupName = element['GroupName'].toString();
