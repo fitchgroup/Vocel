@@ -1,3 +1,4 @@
+import 'package:add_2_calendar/add_2_calendar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/src/consumer.dart';
 import 'package:vocel/common/utils/colors.dart' as constants;
@@ -60,10 +61,9 @@ class _CalendarListPageState extends State<CalendarListPage> {
   void initState() {
     super.initState();
     _selectedDays.add(_currentDateTime.value);
-    // _selectedAnnouncements =
-    //     ValueNotifier(_getAnnouncementsForDay(_currentDateTime.value));
-    _selectedEvents =
-        ValueNotifier(_getEventsForDay(_currentDateTime.value));
+    _selectedAnnouncements =
+        ValueNotifier(_getAnnouncementsForDay(_currentDateTime.value));
+    _selectedEvents = ValueNotifier(_getEventsForDay(_currentDateTime.value));
   }
 
   @override
@@ -82,11 +82,12 @@ class _CalendarListPageState extends State<CalendarListPage> {
               null; // decide whether the clearButton should be displayed
 
   /// TODO: CHANGE THE ANNOUNCEMENT TO POST?
-  // late LinkedHashMap<DateTime, List<Announcement>> calendarRenderMap =
-  //     LinkedHashMap<DateTime, List<Announcement>>(
-  //   equals: isSameDay,
-  //   hashCode: getHashCode,
-  // )..addAll(change());
+  late LinkedHashMap<DateTime, List<Announcement>> calendarRenderMap =
+  LinkedHashMap<DateTime, List<Announcement>>(
+    equals: isSameDay,
+    hashCode: getHashCode,
+  )
+    ..addAll(change());
 
   late LinkedHashMap<DateTime, List<VocelEvent>> calendarRenderMap2 =
   LinkedHashMap<DateTime, List<VocelEvent>>(
@@ -99,31 +100,41 @@ class _CalendarListPageState extends State<CalendarListPage> {
   // and a calendarRenderSource2 which is a LinkedHashMap<DateTime, List<VocelEvent>>
 
   /// TODO: CHANGE THE ANNOUNCEMENT TO POST?
-  // late LinkedHashMap<DateTime, List<Announcement>> calendarRenderSource;
+  late LinkedHashMap<DateTime, List<Announcement>> calendarRenderSource;
   late LinkedHashMap<DateTime, List<VocelEvent>> calendarRenderSource2;
 
-  // LinkedHashMap<DateTime, List<Announcement>> change() {
-  //   calendarRenderSource = LinkedHashMap<DateTime,
-  //       List<Announcement>>(); // Initialize the variable with the correct type
-  //   for (var item in widget.calendarItemAnnouncement) {
-  //     final key = item.endDate.getDateTime().toUtc();
-  //     if (calendarRenderSource.containsKey(key)) {
-  //       calendarRenderSource[key] = [
-  //         ...calendarRenderSource[key]!,
-  //         item,
-  //       ];
-  //     } else {
-  //       calendarRenderSource[key] = [item];
-  //     }
-  //   }
-  //   return calendarRenderSource;
-  // }
+  LinkedHashMap<DateTime, List<Announcement>> change() {
+    calendarRenderSource = LinkedHashMap<DateTime,
+        List<Announcement>>(); // Initialize the variable with the correct type
+    for (var item in widget.calendarItemAnnouncement) {
+      final key = item.createdAt!.getDateTimeInUtc();
+      if (calendarRenderSource.containsKey(key)) {
+        calendarRenderSource[key] = [
+          ...calendarRenderSource[key]!,
+          item,
+        ];
+      } else {
+        calendarRenderSource[key] = [item];
+      }
+    }
+    return calendarRenderSource;
+  }
 
   LinkedHashMap<DateTime, List<VocelEvent>> change2() {
     calendarRenderSource2 = LinkedHashMap<DateTime,
         List<VocelEvent>>(); // Initialize the variable with the correct type
     for (var item in widget.calendarItemEvent) {
-      final key = item.startTime.getDateTimeInUtc();
+      DateTime dateOnly = DateTime(
+          item.startTime
+              .getDateTimeInUtc()
+              .year,
+          item.startTime
+              .getDateTimeInUtc()
+              .month,
+          item.startTime
+              .getDateTimeInUtc()
+              .day);
+      final key = dateOnly;
       if (calendarRenderSource2.containsKey(key)) {
         calendarRenderSource2[key] = [
           ...calendarRenderSource2[key]!,
@@ -140,20 +151,20 @@ class _CalendarListPageState extends State<CalendarListPage> {
   // ----------------------- here are the methods get respond from the maps ----------------------
   // ---------------------------------------------------------------------------------------------
   /// TODO: CHANGE THE ANNOUNCEMENT TO POST?
-  // List<Announcement> _getAnnouncementsForDay(DateTime day) {
-  //   return calendarRenderMap[day] ?? [];
-  // }
+  List<Announcement> _getAnnouncementsForDay(DateTime day) {
+    return calendarRenderMap[day] ?? [];
+  }
 
   List<VocelEvent> _getEventsForDay(DateTime day) {
     return calendarRenderMap2[day] ?? [];
   }
 
   /// TODO: CHANGE THE ANNOUNCEMENT TO POST?
-  // List<Announcement> _getAnnouncementsForDays(Iterable<DateTime> days) {
-  //   return [
-  //     for (final d in days) ..._getAnnouncementsForDay(d),
-  //   ];
-  // }
+  List<Announcement> _getAnnouncementsForDays(Iterable<DateTime> days) {
+    return [
+      for (final d in days) ..._getAnnouncementsForDay(d),
+    ];
+  }
 
   List<VocelEvent> _getEventsForDays(Iterable<DateTime> days) {
     return [
@@ -163,10 +174,10 @@ class _CalendarListPageState extends State<CalendarListPage> {
 
   // get announcements within specific range
   /// TODO: CHANGE THE ANNOUNCEMENT TO POST?
-  // List<Announcement> _getAnnoucementsForRange(DateTime start, DateTime end) {
-  //   final days = daysInRange(start, end);
-  //   return _getAnnouncementsForDays(days);
-  // }
+  List<Announcement> _getAnnoucementsForRange(DateTime start, DateTime end) {
+    final days = daysInRange(start, end);
+    return _getAnnouncementsForDays(days);
+  }
 
   // not used
   List<VocelEvent> _getEventsForRange(DateTime start, DateTime end) {
@@ -335,7 +346,52 @@ class _CalendarListPageState extends State<CalendarListPage> {
                                   // Make the text italic
                                   color: Colors.grey[800],
                                   // Adjust text color to your preference
-                                  fontFamily: "Pangolin"),
+                                  fontFamily: "Pangolin",
+                                  fontSize: 16),
+                            ),
+                            subtitle: Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              // Align button to the center horizontally
+                              children: [
+                                Flexible(
+                                  child: ElevatedButton(
+                                    onPressed: () {
+                                      VocelEvent thisEvent = item as VocelEvent;
+                                      addingVocelEventToCalendar(thisEvent);
+                                    },
+                                    style: ElevatedButton.styleFrom(
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(24),
+                                      ),
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 10, vertical: 3),
+                                      // Remove the default padding inside the button
+                                      backgroundColor: const Color(
+                                          constants.primaryDarkTeal),
+                                    ),
+                                    child: const Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Icon(
+                                          Icons.event,
+                                          color: Colors.white,
+                                        ),
+                                        SizedBox(width: 8),
+                                        Text(
+                                          "Add to Calendar",
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 13,
+                                            fontFamily:
+                                            'Montserrat', // Custom font family
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
                         );
@@ -349,5 +405,31 @@ class _CalendarListPageState extends State<CalendarListPage> {
         ],
       ),
     );
+  }
+
+  void addingVocelEventToCalendar(VocelEvent thisEvent) {
+    Event event = Event(
+      title: thisEvent.eventTitle,
+      description: thisEvent.eventDescription,
+      location: thisEvent.eventLocation,
+      startDate: thisEvent.startTime.getDateTimeInUtc().toLocal(),
+      timeZone: DateTime
+          .now()
+          .timeZoneName,
+      endDate: thisEvent.startTime
+          .getDateTimeInUtc()
+          .toLocal()
+          .add(Duration(minutes: thisEvent.duration)),
+      // iosParams: const IOSParams(
+      //   reminder: Duration(/* Ex. hours:1 */),
+      //   // on iOS, you can set alarm notification after your event.
+      //   url:
+      //       'https://www.example.com', // on iOS, you can set url to your event.
+      // ),
+      // androidParams: const AndroidParams(
+      //   emailInvites: [], // on Android, you can add invite emails to your event.
+      // ),
+    );
+    Add2Calendar.addEvent2Cal(event);
   }
 }
