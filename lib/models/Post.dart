@@ -19,18 +19,20 @@
 
 // ignore_for_file: public_member_api_docs, annotate_overrides, dead_code, dead_codepublic_member_api_docs, depend_on_referenced_packages, file_names, library_private_types_in_public_api, no_leading_underscores_for_library_prefixes, no_leading_underscores_for_local_identifiers, non_constant_identifier_names, null_check_on_nullable_type_parameter, prefer_adjacent_string_concatenation, prefer_const_constructors, prefer_if_null_operators, prefer_interpolation_to_compose_strings, slash_for_doc_comments, sort_child_properties_last, unnecessary_const, unnecessary_constructor_name, unnecessary_late, unnecessary_new, unnecessary_null_aware_assignments, unnecessary_nullable_for_final_variable_declarations, unnecessary_string_interpolations, use_build_context_synchronously
 
+import 'ModelProvider.dart';
 import 'package:amplify_core/amplify_core.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter/foundation.dart';
 
-/** This is an auto generated class representing the Announcement type in your schema. */
+/** This is an auto generated class representing the Post type in your schema. */
 @immutable
-class Announcement extends Model {
-  static const classType = const _AnnouncementModelType();
+class Post extends Model {
+  static const classType = const _PostModelType();
   final String id;
-  final String? _tripName;
-  final String? _description;
-  final bool? _isCompleted;
-  final bool? _isPinned;
+  final String? _postAuthor;
+  final String? _postContent;
+  final List<String>? _likes;
+  final List<Comment>? _comments;
   final TemporalDateTime? _createdAt;
   final TemporalDateTime? _updatedAt;
 
@@ -42,13 +44,13 @@ class Announcement extends Model {
   @override
   String getId() => id;
 
-  AnnouncementModelIdentifier get modelIdentifier {
-    return AnnouncementModelIdentifier(id: id);
+  PostModelIdentifier get modelIdentifier {
+    return PostModelIdentifier(id: id);
   }
 
-  String get tripName {
+  String get postAuthor {
     try {
-      return _tripName!;
+      return _postAuthor!;
     } catch (e) {
       throw new AmplifyCodeGenModelException(
           AmplifyExceptionMessages
@@ -59,9 +61,9 @@ class Announcement extends Model {
     }
   }
 
-  String get description {
+  String get postContent {
     try {
-      return _description!;
+      return _postContent!;
     } catch (e) {
       throw new AmplifyCodeGenModelException(
           AmplifyExceptionMessages
@@ -72,30 +74,12 @@ class Announcement extends Model {
     }
   }
 
-  bool get isCompleted {
-    try {
-      return _isCompleted!;
-    } catch (e) {
-      throw new AmplifyCodeGenModelException(
-          AmplifyExceptionMessages
-              .codeGenRequiredFieldForceCastExceptionMessage,
-          recoverySuggestion: AmplifyExceptionMessages
-              .codeGenRequiredFieldForceCastRecoverySuggestion,
-          underlyingException: e.toString());
-    }
+  List<String>? get likes {
+    return _likes;
   }
 
-  bool get isPinned {
-    try {
-      return _isPinned!;
-    } catch (e) {
-      throw new AmplifyCodeGenModelException(
-          AmplifyExceptionMessages
-              .codeGenRequiredFieldForceCastExceptionMessage,
-          recoverySuggestion: AmplifyExceptionMessages
-              .codeGenRequiredFieldForceCastRecoverySuggestion,
-          underlyingException: e.toString());
-    }
+  List<Comment>? get comments {
+    return _comments;
   }
 
   TemporalDateTime? get createdAt {
@@ -106,33 +90,34 @@ class Announcement extends Model {
     return _updatedAt;
   }
 
-  const Announcement._internal(
+  const Post._internal(
       {required this.id,
-      required tripName,
-      required description,
-      required isCompleted,
-      required isPinned,
+      required postAuthor,
+      required postContent,
+      likes,
+      comments,
       createdAt,
       updatedAt})
-      : _tripName = tripName,
-        _description = description,
-        _isCompleted = isCompleted,
-        _isPinned = isPinned,
+      : _postAuthor = postAuthor,
+        _postContent = postContent,
+        _likes = likes,
+        _comments = comments,
         _createdAt = createdAt,
         _updatedAt = updatedAt;
 
-  factory Announcement(
+  factory Post(
       {String? id,
-      required String tripName,
-      required String description,
-      required bool isCompleted,
-      required bool isPinned}) {
-    return Announcement._internal(
+      required String postAuthor,
+      required String postContent,
+      List<String>? likes,
+      List<Comment>? comments}) {
+    return Post._internal(
         id: id == null ? UUID.getUUID() : id,
-        tripName: tripName,
-        description: description,
-        isCompleted: isCompleted,
-        isPinned: isPinned,
+        postAuthor: postAuthor,
+        postContent: postContent,
+        likes: likes != null ? List<String>.unmodifiable(likes) : likes,
+        comments:
+            comments != null ? List<Comment>.unmodifiable(comments) : comments,
         createdAt: TemporalDateTime.now());
   }
 
@@ -143,12 +128,12 @@ class Announcement extends Model {
   @override
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
-    return other is Announcement &&
+    return other is Post &&
         id == other.id &&
-        _tripName == other._tripName &&
-        _description == other._description &&
-        _isCompleted == other._isCompleted &&
-        _isPinned == other._isPinned;
+        _postAuthor == other._postAuthor &&
+        _postContent == other._postContent &&
+        DeepCollectionEquality().equals(_likes, other._likes) &&
+        DeepCollectionEquality().equals(_comments, other._comments);
   }
 
   @override
@@ -158,16 +143,12 @@ class Announcement extends Model {
   String toString() {
     var buffer = new StringBuffer();
 
-    buffer.write("Announcement {");
+    buffer.write("Post {");
     buffer.write("id=" + "$id" + ", ");
-    buffer.write("tripName=" + "$_tripName" + ", ");
-    buffer.write("description=" + "$_description" + ", ");
-    buffer.write("isCompleted=" +
-        (_isCompleted != null ? _isCompleted!.toString() : "null") +
-        ", ");
-    buffer.write("isPinned=" +
-        (_isPinned != null ? _isPinned!.toString() : "null") +
-        ", ");
+    buffer.write("postAuthor=" + "$_postAuthor" + ", ");
+    buffer.write("postContent=" + "$_postContent" + ", ");
+    buffer.write(
+        "likes=" + (_likes != null ? _likes!.toString() : "null") + ", ");
     buffer.write("createdAt=" +
         (_createdAt != null ? _createdAt!.format() : "null") +
         ", ");
@@ -178,25 +159,31 @@ class Announcement extends Model {
     return buffer.toString();
   }
 
-  Announcement copyWith(
-      {String? tripName,
-      String? description,
-      bool? isCompleted,
-      bool? isPinned}) {
-    return Announcement._internal(
+  Post copyWith(
+      {String? postAuthor,
+      String? postContent,
+      List<String>? likes,
+      List<Comment>? comments}) {
+    return Post._internal(
         id: id,
-        tripName: tripName ?? this.tripName,
-        description: description ?? this.description,
-        isCompleted: isCompleted ?? this.isCompleted,
-        isPinned: isPinned ?? this.isPinned);
+        postAuthor: postAuthor ?? this.postAuthor,
+        postContent: postContent ?? this.postContent,
+        likes: likes ?? this.likes,
+        comments: comments ?? this.comments);
   }
 
-  Announcement.fromJson(Map<String, dynamic> json)
+  Post.fromJson(Map<String, dynamic> json)
       : id = json['id'],
-        _tripName = json['tripName'],
-        _description = json['description'],
-        _isCompleted = json['isCompleted'],
-        _isPinned = json['isPinned'],
+        _postAuthor = json['postAuthor'],
+        _postContent = json['postContent'],
+        _likes = json['likes']?.cast<String>(),
+        _comments = json['comments'] is List
+            ? (json['comments'] as List)
+                .where((e) => e?['serializedData'] != null)
+                .map((e) => Comment.fromJson(
+                    new Map<String, dynamic>.from(e['serializedData'])))
+                .toList()
+            : null,
         _createdAt = json['createdAt'] != null
             ? TemporalDateTime.fromString(json['createdAt'])
             : null,
@@ -206,35 +193,38 @@ class Announcement extends Model {
 
   Map<String, dynamic> toJson() => {
         'id': id,
-        'tripName': _tripName,
-        'description': _description,
-        'isCompleted': _isCompleted,
-        'isPinned': _isPinned,
+        'postAuthor': _postAuthor,
+        'postContent': _postContent,
+        'likes': _likes,
+        'comments': _comments?.map((Comment? e) => e?.toJson()).toList(),
         'createdAt': _createdAt?.format(),
         'updatedAt': _updatedAt?.format()
       };
 
   Map<String, Object?> toMap() => {
         'id': id,
-        'tripName': _tripName,
-        'description': _description,
-        'isCompleted': _isCompleted,
-        'isPinned': _isPinned,
+        'postAuthor': _postAuthor,
+        'postContent': _postContent,
+        'likes': _likes,
+        'comments': _comments,
         'createdAt': _createdAt,
         'updatedAt': _updatedAt
       };
 
-  static final QueryModelIdentifier<AnnouncementModelIdentifier>
-      MODEL_IDENTIFIER = QueryModelIdentifier<AnnouncementModelIdentifier>();
+  static final QueryModelIdentifier<PostModelIdentifier> MODEL_IDENTIFIER =
+      QueryModelIdentifier<PostModelIdentifier>();
   static final QueryField ID = QueryField(fieldName: "id");
-  static final QueryField TRIPNAME = QueryField(fieldName: "tripName");
-  static final QueryField DESCRIPTION = QueryField(fieldName: "description");
-  static final QueryField ISCOMPLETED = QueryField(fieldName: "isCompleted");
-  static final QueryField ISPINNED = QueryField(fieldName: "isPinned");
+  static final QueryField POSTAUTHOR = QueryField(fieldName: "postAuthor");
+  static final QueryField POSTCONTENT = QueryField(fieldName: "postContent");
+  static final QueryField LIKES = QueryField(fieldName: "likes");
+  static final QueryField COMMENTS = QueryField(
+      fieldName: "comments",
+      fieldType:
+          ModelFieldType(ModelFieldTypeEnum.model, ofModelName: 'Comment'));
   static var schema =
       Model.defineSchema(define: (ModelSchemaDefinition modelSchemaDefinition) {
-    modelSchemaDefinition.name = "Announcement";
-    modelSchemaDefinition.pluralName = "Announcements";
+    modelSchemaDefinition.name = "Post";
+    modelSchemaDefinition.pluralName = "Posts";
 
     modelSchemaDefinition.authRules = [
       AuthRule(
@@ -243,34 +233,38 @@ class Announcement extends Model {
           identityClaim: "cognito:username",
           provider: AuthRuleProvider.USERPOOLS,
           operations: [
-            ModelOperation.CREATE,
+            ModelOperation.READ,
             ModelOperation.UPDATE,
-            ModelOperation.DELETE,
-            ModelOperation.READ
-          ])
+            ModelOperation.DELETE
+          ]),
+      AuthRule(
+          authStrategy: AuthStrategy.PUBLIC, operations: [ModelOperation.READ])
     ];
 
     modelSchemaDefinition.addField(ModelFieldDefinition.id());
 
     modelSchemaDefinition.addField(ModelFieldDefinition.field(
-        key: Announcement.TRIPNAME,
+        key: Post.POSTAUTHOR,
         isRequired: true,
         ofType: ModelFieldType(ModelFieldTypeEnum.string)));
 
     modelSchemaDefinition.addField(ModelFieldDefinition.field(
-        key: Announcement.DESCRIPTION,
+        key: Post.POSTCONTENT,
         isRequired: true,
         ofType: ModelFieldType(ModelFieldTypeEnum.string)));
 
     modelSchemaDefinition.addField(ModelFieldDefinition.field(
-        key: Announcement.ISCOMPLETED,
-        isRequired: true,
-        ofType: ModelFieldType(ModelFieldTypeEnum.bool)));
+        key: Post.LIKES,
+        isRequired: false,
+        isArray: true,
+        ofType: ModelFieldType(ModelFieldTypeEnum.collection,
+            ofModelName: describeEnum(ModelFieldTypeEnum.string))));
 
-    modelSchemaDefinition.addField(ModelFieldDefinition.field(
-        key: Announcement.ISPINNED,
-        isRequired: true,
-        ofType: ModelFieldType(ModelFieldTypeEnum.bool)));
+    modelSchemaDefinition.addField(ModelFieldDefinition.hasMany(
+        key: Post.COMMENTS,
+        isRequired: false,
+        ofModelName: 'Comment',
+        associatedKey: Comment.POST));
 
     modelSchemaDefinition.addField(ModelFieldDefinition.nonQueryField(
         fieldName: 'createdAt',
@@ -286,30 +280,30 @@ class Announcement extends Model {
   });
 }
 
-class _AnnouncementModelType extends ModelType<Announcement> {
-  const _AnnouncementModelType();
+class _PostModelType extends ModelType<Post> {
+  const _PostModelType();
 
   @override
-  Announcement fromJson(Map<String, dynamic> jsonData) {
-    return Announcement.fromJson(jsonData);
+  Post fromJson(Map<String, dynamic> jsonData) {
+    return Post.fromJson(jsonData);
   }
 
   @override
   String modelName() {
-    return 'Announcement';
+    return 'Post';
   }
 }
 
 /**
  * This is an auto generated class representing the model identifier
- * of [Announcement] in your schema.
+ * of [Post] in your schema.
  */
 @immutable
-class AnnouncementModelIdentifier implements ModelIdentifier<Announcement> {
+class PostModelIdentifier implements ModelIdentifier<Post> {
   final String id;
 
-  /** Create an instance of AnnouncementModelIdentifier using [id] the primary key. */
-  const AnnouncementModelIdentifier({required this.id});
+  /** Create an instance of PostModelIdentifier using [id] the primary key. */
+  const PostModelIdentifier({required this.id});
 
   @override
   Map<String, dynamic> serializeAsMap() => (<String, dynamic>{'id': id});
@@ -324,7 +318,7 @@ class AnnouncementModelIdentifier implements ModelIdentifier<Announcement> {
   String serializeAsString() => serializeAsMap().values.join('#');
 
   @override
-  String toString() => 'AnnouncementModelIdentifier(id: $id)';
+  String toString() => 'PostModelIdentifier(id: $id)';
 
   @override
   bool operator ==(Object other) {
@@ -332,7 +326,7 @@ class AnnouncementModelIdentifier implements ModelIdentifier<Announcement> {
       return true;
     }
 
-    return other is AnnouncementModelIdentifier && id == other.id;
+    return other is PostModelIdentifier && id == other.id;
   }
 
   @override

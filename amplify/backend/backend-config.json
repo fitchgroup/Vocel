@@ -8,7 +8,7 @@
             "UserPoolId"
           ],
           "category": "auth",
-          "resourceName": "fitchvocel5266d294"
+          "resourceName": "vocelversion10392777d"
         },
         {
           "attributes": [
@@ -16,30 +16,37 @@
             "Name"
           ],
           "category": "function",
-          "resourceName": "AdminQueriesfd66d56a"
+          "resourceName": "AdminQueriesf35eea9e"
         }
       ],
       "providerPlugin": "awscloudformation",
       "service": "API Gateway"
     },
-    "fitchvocel": {
+    "vocelversion1": {
       "dependsOn": [
         {
           "attributes": [
             "UserPoolId"
           ],
           "category": "auth",
-          "resourceName": "fitchvocel5266d294"
+          "resourceName": "vocelversion10392777d"
         }
       ],
       "output": {
         "authConfig": {
-          "additionalAuthenticationProviders": [],
-          "defaultAuthentication": {
-            "authenticationType": "AMAZON_COGNITO_USER_POOLS",
-            "userPoolConfig": {
-              "userPoolId": "authfitchvocel5266d294"
+          "additionalAuthenticationProviders": [
+            {
+              "authenticationType": "AMAZON_COGNITO_USER_POOLS",
+              "userPoolConfig": {
+                "userPoolId": "authvocelversion10392777d"
+              }
             }
+          ],
+          "defaultAuthentication": {
+            "apiKeyConfig": {
+              "apiKeyExpirationDays": 7
+            },
+            "authenticationType": "API_KEY"
           }
         }
       },
@@ -48,19 +55,25 @@
     }
   },
   "auth": {
-    "fitchvocel5266d294": {
-      "customAuth": false,
+    "userPoolGroups": {
       "dependsOn": [
         {
           "attributes": [
-            "Arn",
-            "Name"
+            "UserPoolId",
+            "AppClientIDWeb",
+            "AppClientID",
+            "IdentityPoolId"
           ],
-          "category": "function",
-          "resourceName": "fitchvocel5266d294PostConfirmation",
-          "triggerProvider": "Cognito"
+          "category": "auth",
+          "resourceName": "vocelversion10392777d"
         }
       ],
+      "providerPlugin": "awscloudformation",
+      "service": "Cognito-UserPool-Groups"
+    },
+    "vocelversion10392777d": {
+      "customAuth": false,
+      "dependsOn": [],
       "frontendAuthConfig": {
         "mfaConfiguration": "OFF",
         "mfaTypes": [
@@ -83,25 +96,10 @@
       },
       "providerPlugin": "awscloudformation",
       "service": "Cognito"
-    },
-    "userPoolGroups": {
-      "dependsOn": [
-        {
-          "attributes": [
-            "UserPoolId",
-            "AppClientIDWeb",
-            "AppClientID"
-          ],
-          "category": "auth",
-          "resourceName": "fitchvocel5266d294"
-        }
-      ],
-      "providerPlugin": "awscloudformation",
-      "service": "Cognito-UserPool-Groups"
     }
   },
   "function": {
-    "AdminQueriesfd66d56a": {
+    "AdminQueriesf35eea9e": {
       "build": true,
       "dependsOn": [
         {
@@ -109,14 +107,9 @@
             "UserPoolId"
           ],
           "category": "auth",
-          "resourceName": "fitchvocel5266d294"
+          "resourceName": "vocelversion10392777d"
         }
       ],
-      "providerPlugin": "awscloudformation",
-      "service": "Lambda"
-    },
-    "fitchvocel5266d294PostConfirmation": {
-      "build": true,
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     }
@@ -129,43 +122,19 @@
     }
   },
   "parameters": {
-    "AMPLIFY_function_AdminQueriesfd66d56a_deploymentBucketName": {
+    "AMPLIFY_function_AdminQueriesf35eea9e_deploymentBucketName": {
       "usedBy": [
         {
           "category": "function",
-          "resourceName": "AdminQueriesfd66d56a"
+          "resourceName": "AdminQueriesf35eea9e"
         }
       ]
     },
-    "AMPLIFY_function_AdminQueriesfd66d56a_s3Key": {
+    "AMPLIFY_function_AdminQueriesf35eea9e_s3Key": {
       "usedBy": [
         {
           "category": "function",
-          "resourceName": "AdminQueriesfd66d56a"
-        }
-      ]
-    },
-    "AMPLIFY_function_fitchvocel5266d294PostConfirmation_GROUP": {
-      "usedBy": [
-        {
-          "category": "function",
-          "resourceName": "fitchvocel5266d294PostConfirmation"
-        }
-      ]
-    },
-    "AMPLIFY_function_fitchvocel5266d294PostConfirmation_deploymentBucketName": {
-      "usedBy": [
-        {
-          "category": "function",
-          "resourceName": "fitchvocel5266d294PostConfirmation"
-        }
-      ]
-    },
-    "AMPLIFY_function_fitchvocel5266d294PostConfirmation_s3Key": {
-      "usedBy": [
-        {
-          "category": "function",
-          "resourceName": "fitchvocel5266d294PostConfirmation"
+          "resourceName": "AdminQueriesf35eea9e"
         }
       ]
     },
@@ -186,11 +155,5 @@
       ]
     }
   },
-  "storage": {
-    "s392ab7284": {
-      "dependsOn": [],
-      "providerPlugin": "awscloudformation",
-      "service": "S3"
-    }
-  }
+  "storage": {}
 }

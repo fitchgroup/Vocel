@@ -6,7 +6,10 @@ class ChangeGroupDialog extends StatefulWidget {
   final String currentUserEmail;
   final void Function()? onGroupChanged;
 
-  ChangeGroupDialog({required this.currentGroup, required this.currentUserEmail, required this.onGroupChanged});
+  ChangeGroupDialog(
+      {required this.currentGroup,
+      required this.currentUserEmail,
+      required this.onGroupChanged});
 
   @override
   _ChangeGroupDialogState createState() => _ChangeGroupDialogState();
@@ -64,13 +67,15 @@ class _ChangeGroupDialogState extends State<ChangeGroupDialog> {
         TextButton(
           child: const Text("Cancel"),
           onPressed: () {
-            Navigator.of(context).pop(false); // Dismiss the dialog and don't delete
+            Navigator.of(context)
+                .pop(false); // Dismiss the dialog and don't delete
           },
         ),
         ElevatedButton(
           onPressed: () {
             if (selectedGroup != widget.currentGroup) {
-              changeUsersGroups(widget.currentGroup, selectedGroup, widget.currentUserEmail);
+              changeUsersGroups(
+                  widget.currentGroup, selectedGroup, widget.currentUserEmail);
             }
             if (widget.onGroupChanged != null) {
               widget.onGroupChanged!();
@@ -82,5 +87,4 @@ class _ChangeGroupDialogState extends State<ChangeGroupDialog> {
       ],
     );
   }
-
 }

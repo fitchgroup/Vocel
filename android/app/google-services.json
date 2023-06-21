@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "841593942510",
+    "project_id": "vocelfitch-259ef",
+    "storage_bucket": "vocelfitch-259ef.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:841593942510:android:ce07266a490727d4819eff",
+        "android_client_info": {
+          "package_name": "com.fitchandvocel.vocel"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "841593942510-4npfb229glmsqto4pv98c4h57krfu37r.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCxXCCUbE70Gvy76QXrD8DuTplL4KB6mEs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "841593942510-4npfb229glmsqto4pv98c4h57krfu37r.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

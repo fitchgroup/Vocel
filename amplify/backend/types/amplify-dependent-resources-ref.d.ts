@@ -5,39 +5,36 @@ export type AmplifyDependentResourcesAttributes = {
       "ApiName": "string",
       "RootUrl": "string"
     },
-    "fitchvocel": {
+    "vocelversion1": {
       "GraphQLAPIEndpointOutput": "string",
-      "GraphQLAPIIdOutput": "string"
+      "GraphQLAPIIdOutput": "string",
+      "GraphQLAPIKeyOutput": "string"
     }
   },
   "auth": {
-    "fitchvocel5266d294": {
+    "userPoolGroups": {
+      "Bellversion1GroupRole": "string",
+      "Eetcversion1GroupRole": "string",
+      "Staffversion1GroupRole": "string",
+      "Unassignedversion1GroupRole": "string",
+      "Vcpaversion1GroupRole": "string"
+    },
+    "vocelversion10392777d": {
       "AppClientID": "string",
       "AppClientIDWeb": "string",
+      "IdentityPoolId": "string",
+      "IdentityPoolName": "string",
       "UserPoolArn": "string",
       "UserPoolId": "string",
       "UserPoolName": "string"
     }
   },
   "function": {
-    "AdminQueriesfd66d56a": {
+    "AdminQueriesf35eea9e": {
       "Arn": "string",
       "LambdaExecutionRole": "string",
       "LambdaExecutionRoleArn": "string",
       "Name": "string",
-      "Region": "string"
-    },
-    "fitchvocel5266d294PostConfirmation": {
-      "Arn": "string",
-      "LambdaExecutionRole": "string",
-      "LambdaExecutionRoleArn": "string",
-      "Name": "string",
-      "Region": "string"
-    }
-  },
-  "storage": {
-    "s392ab7284": {
-      "BucketName": "string",
       "Region": "string"
     }
   }

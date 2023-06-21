@@ -9,25 +9,22 @@ final tripsListControllerProvider = Provider<TripsListController>((ref) {
 
 class TripsListController {
   TripsListController(this.ref);
+
   final Ref ref;
 
   Future<void> add({
     required String name,
     required String description,
-    required String startDate,
-    required String endDate,
   }) async {
     Announcement announcement = Announcement(
-      tripName: name,
-      description: description,
-      startDate: TemporalDate(DateTime.parse(startDate)),
-      endDate: TemporalDate(DateTime.parse(endDate)),
-      isCompleted: false,
-      isPinned: false
-    );
+        tripName: name,
+        description: description,
+        isCompleted: false,
+        isPinned: false);
 
     final tripsRepository = ref.read(tripsRepositoryProvider);
 
     await tripsRepository.add(announcement);
+    await Amplify.DataStore.save(announcement);
   }
 }
