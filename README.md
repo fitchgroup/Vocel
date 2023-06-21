@@ -420,6 +420,13 @@ Create groups called ...
 1. In your `pubspec.yaml` file, add the `flutter_launcher_icons` package as a dev dependency.
 2. Make sure the spacing and formatting are correct.
 3. Replace the image path in the `flutter_icons` section with the correct file name and location.
+```yaml
+flutter_icons:
+  android: true
+  ios: true
+  # change the icon of the app
+  image_path: "assets/app_logo.png"
+```
 4. Save the `pubspec.yaml` file.
 5. Open the terminal or command line and navigate to your Flutter project's location.
 6. Run the following commands: `flutter clean`, `flutter pub get`
@@ -430,14 +437,17 @@ Create groups called ...
 
 1. In your terminal or command line, activate the `rename` package by running the installation
    command.
-2. Use the `pop global run rename` command to set a new app name.
+```bash
+pub global activate rename
+```
+2. Use the `pop global run rename --appname "Your app name"` command to set a new app name.
 3. Enter your desired app name when prompted.
 4. Check that the Android app name has changed successfully.
 
 The command `pub global run rename --bundleId com.example.myapp` is used to change the bundle
 identifier (package name) of a Flutter app. It helps in rebranding the app or ensuring uniqueness in
 the app stores.
-for example, change it to **pub global run rename --bundleId com.example.myapp**
+for example, change it to **pub global run rename --bundleId com.fitchandvocel.vocel**
 
 Notice: A bundle identifier (bundleId) is not always required for deploying an app. However, it is
 necessary if you want to distribute your app through app stores like Apple App Store or Google Play
