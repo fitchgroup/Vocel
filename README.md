@@ -271,6 +271,26 @@ amplify/backend/function/AdminQueriesf35eea9e/src/app.js
 
 6. Start the Express application on port 3000.
 
+### There is a file whose path is amplify/#current-cloud-backend/function/AdminQueriesxxxxxxx/AdminQueriesxxxxxxx-cloudformation-template.json
+
+The provided file is an AWS CloudFormation template file. CloudFormation is an AWS service that allows you to describe and provision infrastructure resources in a declarative manner. The CloudFormation template file you shared is used for deploying an AWS Lambda function and its associated resources.
+
+#### Template Breakdown
+
+- **AWSTemplateFormatVersion**: Specifies the version of the CloudFormation template format.
+- **Description**: Provides a description of the CloudFormation template.
+- **Parameters**: Defines the input parameters for the CloudFormation stack.
+- **Conditions**: Defines conditions based on which resources will be created or updated.
+- **Resources**: Specifies the AWS resources to be provisioned, such as the Lambda function and its execution role.
+- **Outputs**: Defines the outputs of the CloudFormation stack, such as the ARN (Amazon Resource Name) of the Lambda function.
+
+In this specific template, it deploys an AWS Lambda function (`LambdaFunction`) along with its execution role (`LambdaExecutionRole`). The Lambda function is written in Node.js 16.x (`Runtime: "nodejs16.x"`) and has a handler function named `index.handler`. The function's code is stored in an S3 bucket (`Code.S3Bucket` and `Code.S3Key`).
+
+The execution role (`LambdaExecutionRole`) is defined with an associated IAM policy (`lambdaexecutionpolicy`) that grants necessary permissions to the Lambda function. The permissions include actions related to logging, as well as various actions on a Cognito user pool (`cognito-idp`) for managing users and groups.
+
+The `Outputs` section defines several outputs that can be useful for referencing the created resources, such as the Lambda function's name, ARN, and the execution role's ARN.
+
+Overall, this CloudFormation template provides a way to deploy the Lambda function and its required resources in a structured and repeatable manner using AWS CloudFormation.
 
 
 <br> 

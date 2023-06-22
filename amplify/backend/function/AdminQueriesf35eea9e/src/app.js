@@ -42,7 +42,7 @@ app.use((req, res, next) => {
 });
 
 // Only perform tasks if the user is in a specific group
-const allowedGroup = 'Staffversion1'; // process.env.GROUP; //
+const allowedGroup = process.env.GROUP; // ['Staffversion1','Bellversion1','Eetcversion1']; //
 
 const checkGroup = function (req, res, next) {
 //const err = new Error(`User does not have permissions to perform administrative tasks. Group: ${process.env.GROUP}`);
@@ -59,9 +59,10 @@ const checkGroup = function (req, res, next) {
 
   // Fail if group enforcement is being used
   if (req.apiGateway.event.requestContext.authorizer.claims['cognito:groups']) {
+  /// TODO: change user access right here, group should contains different groups
     const groups = req.apiGateway.event.requestContext.authorizer.claims['cognito:groups'].split(',');
     if (!(allowedGroup && groups.indexOf(allowedGroup) > -1)) {
-      const err = new Error(`User does not have permissions to perform administrative tasks. First Statement. Group: ${process.env.GROUP} and group: ${groups}`);
+      const err = new Error(`User does not have permissions to perform administrative tasks. First Statement. Allow Group: ${allowedGroup} and group: ${groups}`);
       next(err);
     }
   } else {
