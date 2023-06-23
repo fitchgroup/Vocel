@@ -42,7 +42,7 @@ app.use((req, res, next) => {
 });
 
 // Only perform tasks if the user is in a specific group
-const allowedGroup = process.env.GROUP; // ['Staffversion1','Bellversion1','Eetcversion1']; //
+const allowedGroup = process.env.GROUP; // ['Staffversion1','Bellversion1','Eetcversion1', 'Staffversion1']; //
 
 const checkGroup = function (req, res, next) {
 //const err = new Error(`User does not have permissions to perform administrative tasks. Group: ${process.env.GROUP}`);
@@ -57,19 +57,36 @@ const checkGroup = function (req, res, next) {
     return next();
   }
 
-  // Fail if group enforcement is being used
+//  // Fail if group enforcement is being used
+//  if (req.apiGateway.event.requestContext.authorizer.claims['cognito:groups']) {
+//  /// TODO: change user access right here, group should contains different groups
+//    const groups = req.apiGateway.event.requestContext.authorizer.claims['cognito:groups'].split(',');
+//    if (!(allowedGroup && groups.indexOf(allowedGroup) > -1)) {
+//      const err = new Error(`User does not have permissions to perform administrative tasks. First Statement. Allow Group: ${allowedGroup} and group: ${groups}`);
+//      next(err);
+//    }
+//  } else {
+//    const err = new Error(`User does not have permissions to perform administrative tasks. Group: ${process.env.GROUP}. group: ${req.apiGateway.event.requestContext.authorizer.claims['cognito:groups']}`);
+//    err.statusCode = 403;
+//    next(err);
+//  }
+
+  /// TODO: GIVE OTHER COGNITO GROUPS PERMISSION
   if (req.apiGateway.event.requestContext.authorizer.claims['cognito:groups']) {
-  /// TODO: change user access right here, group should contains different groups
     const groups = req.apiGateway.event.requestContext.authorizer.claims['cognito:groups'].split(',');
-    if (!(allowedGroup && groups.indexOf(allowedGroup) > -1)) {
-      const err = new Error(`User does not have permissions to perform administrative tasks. First Statement. Allow Group: ${allowedGroup} and group: ${groups}`);
+    const allowedGroups = ['Staffversion1','Bellversion1','Eetcversion1', 'Vcpaversion1']; // Update with your allowed groups
+
+    const hasPermission = groups.some(group => allowedGroups.includes(group));
+    if (!hasPermission) {
+      const err = new Error(`User does not have permissions to perform administrative tasks. Allowed Groups: ${allowedGroups.join(',')} and User Groups: ${groups.join(',')}`);
       next(err);
     }
   } else {
-    const err = new Error(`User does not have permissions to perform administrative tasks. Group: ${process.env.GROUP}. group: ${req.apiGateway.event.requestContext.authorizer.claims['cognito:groups']}`);
+    const err = new Error(`User does not have permissions to perform administrative tasks.`);
     err.statusCode = 403;
     next(err);
   }
+
   next();
 };
 

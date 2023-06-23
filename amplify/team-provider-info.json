@@ -23,7 +23,7 @@
       "function": {
         "AdminQueriesf35eea9e": {
           "deploymentBucketName": "amplify-vocelversion1-vocelenv-120358-deployment",
-          "s3Key": "amplify-builds/AdminQueriesf35eea9e-326b45374a57416d4164-build.zip"
+          "s3Key": "amplify-builds/AdminQueriesf35eea9e-4f5376583233716e3861-build.zip"
         }
       },
       "hosting": {
