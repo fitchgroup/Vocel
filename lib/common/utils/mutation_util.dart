@@ -5,29 +5,30 @@ import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/foundation.dart';
 import 'package:vocel/models/Announcement.dart';
 
-Future<void> createAnnouncement() async {
-  try {
-    final announcement = Announcement(
-        tripName: 'old Trip name',
-        description: '',
-        startDate: TemporalDate(DateTime.now()),
-        endDate: TemporalDate(DateTime.now()),
-        isCompleted: false,
-        isPinned: false);
-    final request = ModelMutations.create(announcement);
-    final response = await Amplify.API.mutate(request: request).response;
-
-    final createdAnnouncement = response.data;
-    if (createdAnnouncement == null) {
-      mutationDebuggingPrint('errors: ${response.errors}');
-      return;
-    }
-    mutationDebuggingPrint(
-        'Mutation result: ${createdAnnouncement.toJson().toString()}');
-  } on ApiException catch (e) {
-    mutationDebuggingPrint('Mutation failed: $e');
-  }
-}
+/// TODO: post instead of announcement?
+// Future<void> createAnnouncement() async {
+//   try {
+//     final announcement = Announcement(
+//         tripName: 'old Trip name',
+//         description: '',
+//         startDate: TemporalDate(DateTime.now()),
+//         endDate: TemporalDate(DateTime.now()),
+//         isCompleted: false,
+//         isPinned: false);
+//     final request = ModelMutations.create(announcement);
+//     final response = await Amplify.API.mutate(request: request).response;
+//
+//     final createdAnnouncement = response.data;
+//     if (createdAnnouncement == null) {
+//       mutationDebuggingPrint('errors: ${response.errors}');
+//       return;
+//     }
+//     mutationDebuggingPrint(
+//         'Mutation result: ${createdAnnouncement.toJson().toString()}');
+//   } on ApiException catch (e) {
+//     mutationDebuggingPrint('Mutation failed: $e');
+//   }
+// }
 
 Future<void> updateAnnouncement(Announcement originalAnnouncement) async {
   final announcementWithNewName =

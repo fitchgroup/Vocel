@@ -150,7 +150,7 @@ Future<void> createVocelNotification({String? possibleId}) async {
     content: NotificationContent(
         id: createUniqueId(),
         channelKey: 'basic_channel',
-        title: 'I need money ${Emojis.money_money_bag}',
+        title: 'Testing Pressed ${Emojis.money_money_bag}',
         body: 'Hello, this is a test reminder 2',
         bigPicture: 'resource://drawable/app_logo',
         // this one will work
