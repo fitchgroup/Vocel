@@ -1,12 +1,19 @@
+import 'dart:io';
+
+import 'package:amplify_core/src/types/temporal/temporal_datetime.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
+import 'package:intl/intl.dart';
 
 class ForumPost extends StatefulWidget {
-  final int index;
+  final callbackLikes;
+  final thisPost;
 
   const ForumPost({
-    super.key, required this.index
-  });
+    Key? key,
+    required this.callbackLikes,
+    required this.thisPost,
+  }) : super(key: key);
 
   @override
   State<ForumPost> createState() => _ForumPostState();
@@ -14,6 +21,7 @@ class ForumPost extends StatefulWidget {
 
 class _ForumPostState extends State<ForumPost> {
   AssetImage? profileImage;
+
   Future<bool> checkProfileImageExists() async {
     try {
       await rootBundle.load('assets/images/profile.png');
@@ -71,42 +79,83 @@ class _ForumPostState extends State<ForumPost> {
               children: [
                 CircleAvatar(
                   radius: 20,
-                  backgroundImage: profileImage
+                  backgroundImage: profileImage,
                 ),
                 const SizedBox(width: 8),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: const [
-                    Text(
-                      'Author',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16,
+                Expanded(
+                  // Wrap the row with Expanded
+                  flex: 1, // Set flex value greater than 1
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        widget.thisPost.postAuthor ?? "unknown",
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                        ),
                       ),
-                    ),
-                    Text(
-                      '1 hour ago',
-                      style: TextStyle(
-                        color: Colors.grey,
-                        fontSize: 12,
+                      Padding(
+                        padding: const EdgeInsets.all(3.0),
+                        child: Text(
+                          (() {
+                            if (widget.thisPost.updatedAt != null &&
+                                widget.thisPost.updatedAt is TemporalDateTime) {
+                              final updatedDate = (widget.thisPost.updatedAt
+                                      as TemporalDateTime)
+                                  .getDateTimeInUtc()
+                                  .toLocal();
+                              final now = DateTime.now().toUtc().toLocal();
+
+                              if (updatedDate.year == now.year &&
+                                  updatedDate.month == now.month &&
+                                  updatedDate.day == now.day) {
+                                // Format as hh:mm for today's date
+                                return DateFormat('HH: mm').format(updatedDate);
+                              } else {
+                                // Calculate the difference in days
+                                final difference =
+                                    now.difference(updatedDate).inDays;
+                                return '${difference.toString()} days ago';
+                              }
+                            } else if (widget.thisPost.createdAt != null &&
+                                widget.thisPost.createdAt is TemporalDateTime) {
+                              final createdDate = (widget.thisPost.createdAt
+                                      as TemporalDateTime)
+                                  .getDateTimeInUtc()
+                                  .toLocal();
+                              final now = DateTime.now().toUtc().toLocal();
+
+                              if (createdDate.year == now.year &&
+                                  createdDate.month == now.month &&
+                                  createdDate.day == now.day) {
+                                // Format as hh:mm for today's date
+                                return DateFormat('HH: mm').format(createdDate);
+                              } else {
+                                // Calculate the difference in days
+                                final difference =
+                                    now.difference(createdDate).inDays;
+                                return '${difference.toString()} days ago';
+                              }
+                            } else {
+                              return "unknown time";
+                            }
+                          })(),
+                          style: TextStyle(
+                            color: Colors.grey[500],
+                            fontSize: 12,
+                          ),
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ],
             ),
             const SizedBox(height: 16),
             Text(
-              'Discussion Thread ${widget.index + 1}',
+              widget.thisPost.postContent,
               style: const TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 18,
-              ),
-            ),
-            const SizedBox(height: 16),
-            const Text(
-              'testing',
-              style: TextStyle(
                 fontSize: 16,
                 color: Colors.grey,
                 height: 1.5,
@@ -118,47 +167,36 @@ class _ForumPostState extends State<ForumPost> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Row(
-                  children: [
-                    IconButton(
-                      onPressed: () {},
-                      icon: const Icon(
-                        Icons.arrow_upward,
-                        color: Colors.grey,
-                        size: 16,
+                Expanded(
+                  flex: 1,
+                  child: Row(
+                    children: [
+                      IconButton(
+                        onPressed: () {
+                          widget.callbackLikes(
+                              widget.thisPost, widget.thisPost.author);
+                        },
+                        icon: const Icon(
+                          Icons.favorite_outline_rounded,
+                          color: Colors.grey,
+                          size: 25,
+                        ),
                       ),
-                    ),
-                    const SizedBox(width: 4),
-                    const Text(
-                      '0',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: Colors.grey,
+                      const SizedBox(width: 25),
+                      IconButton(
+                        onPressed: () {},
+                        icon: const Icon(
+                          Icons.messenger_outline_outlined,
+                          color: Colors.grey,
+                          size: 22,
+                        ),
+                        // icon: ImageIcon(
+                        //   AssetImage('images/vocel_logo.png'),
+                        //   // Replace with the path to your image file
+                        // )
                       ),
-                    ),
-                    const SizedBox(width: 16),
-                    IconButton(
-                      onPressed: () {},
-                      icon: const Icon(
-                        Icons.comment,
-                        color: Colors.grey,
-                        size: 16,
-                      ),
-                    ),
-                    const SizedBox(width: 4),
-                    const Text(
-                      '2',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: Colors.grey,
-                      ),
-                    ),
-                  ],
-                ),
-                const Text(
-                  'Last Updated: 1 hour ago',
-                  style: TextStyle(
-                    color: Colors.grey,
+                      const SizedBox(width: 4),
+                    ],
                   ),
                 ),
               ],

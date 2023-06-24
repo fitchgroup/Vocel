@@ -1,3 +1,4 @@
+import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:vocel/common/utils/manage_user.dart';
 
@@ -32,8 +33,8 @@ class _ChangeGroupDialogState extends State<ChangeGroupDialog> {
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           RadioListTile<String>(
-            title: const Text('Leader'),
-            value: 'leader',
+            title: const Text('STAFF'),
+            value: 'Staffversion1',
             groupValue: selectedGroup,
             onChanged: (value) {
               setState(() {
@@ -42,8 +43,8 @@ class _ChangeGroupDialogState extends State<ChangeGroupDialog> {
             },
           ),
           RadioListTile<String>(
-            title: const Text('Staff'),
-            value: 'staff',
+            title: const Text('BELL'),
+            value: 'Bellversion1',
             groupValue: selectedGroup,
             onChanged: (value) {
               setState(() {
@@ -52,8 +53,18 @@ class _ChangeGroupDialogState extends State<ChangeGroupDialog> {
             },
           ),
           RadioListTile<String>(
-            title: const Text('Parent'),
-            value: 'parent',
+            title: const Text('EETC'),
+            value: 'Eetcversion1',
+            groupValue: selectedGroup,
+            onChanged: (value) {
+              setState(() {
+                selectedGroup = value!;
+              });
+            },
+          ),
+          RadioListTile<String>(
+            title: const Text('VCPA'),
+            value: 'Vcpaversion1',
             groupValue: selectedGroup,
             onChanged: (value) {
               setState(() {
