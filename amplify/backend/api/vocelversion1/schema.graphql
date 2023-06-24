@@ -30,7 +30,11 @@
 #allow: groups, private: Allows specific groups and authenticated users to perform operations.
 #allow: owner, groups: Allows the owner and specific groups to perform operations.
 
-type Announcement @model @auth(rules: [{ allow: owner }]) {
+type Announcement @model @auth(rules: [
+    { allow: owner, operations: [read, update, delete] },
+    { allow: public, operations: [read] }
+])
+{
     id: ID!
     tripName: String!
     description: String!
@@ -38,7 +42,20 @@ type Announcement @model @auth(rules: [{ allow: owner }]) {
     #    endDate: AWSDate!
     isCompleted: Boolean!
     isPinned: Boolean!
+    likes: [String] @auth(rules: [{ allow: public, operations: [read, update] }])
+    comments: [CommentAnnouncement] @hasMany
 }
+
+type CommentAnnouncement @model {
+    id: ID!
+    commentAuthor: String!
+    commentContent: String!
+    announcement: Announcement @belongsTo
+    content: String!
+}
+
+
+
 
 type VocelEvent @model @auth(rules: [{ allow: owner }]) {
     id: ID!
@@ -53,10 +70,34 @@ type VocelEvent @model @auth(rules: [{ allow: owner }]) {
 }
 
 enum ProfileRole {
+    ALL
+    STAFF
     BELL
     EETC
     VCPA
 }
+
+
+type Post @model @auth(rules: [
+    { allow: owner, operations: [read, update, delete] },
+    { allow: public, operations: [read] }
+]) {
+    id: ID!
+    postAuthor: String! @auth(rules: [{ allow: owner, operations: [read, update, delete] }, { allow: public, operations: [read] }])
+    postContent: String! @auth(rules: [{ allow: owner, operations: [read, update, delete] }, { allow: public, operations: [read] }])
+    likes: [String] @auth(rules: [{ allow: public, operations: [read, update] }])
+    comments: [Comment] @hasMany
+}
+
+type Comment @model {
+    id: ID!
+    commentAuthor: String!
+    commentContent: String!
+    post: Post @belongsTo
+    content: String!
+}
+
+
 #
 #type Post @model @auth(rules: [
 #  { allow: owner, operations: [read, update, delete] },
@@ -68,8 +109,6 @@ enum ProfileRole {
 #  likes: [String] @auth(rules: [{ allow: public, operations: [read, update] }])
 #  # comments: [Comment] @hasMany(indexName: "byPost", fields: ["postID"])
 #}
-
-
 
 
 #type Comment @model {

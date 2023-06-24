@@ -23,6 +23,7 @@ import 'ModelProvider.dart';
 import 'package:amplify_core/amplify_core.dart';
 import 'package:flutter/foundation.dart';
 
+
 /** This is an auto generated class representing the VocelEvent type in your schema. */
 @immutable
 class VocelEvent extends Model {
@@ -41,217 +42,170 @@ class VocelEvent extends Model {
 
   @override
   getInstanceType() => classType;
-
-  @Deprecated(
-      '[getId] is being deprecated in favor of custom primary key feature. Use getter [modelIdentifier] to get model identifier.')
+  
+  @Deprecated('[getId] is being deprecated in favor of custom primary key feature. Use getter [modelIdentifier] to get model identifier.')
   @override
   String getId() => id;
-
+  
   VocelEventModelIdentifier get modelIdentifier {
-    return VocelEventModelIdentifier(id: id);
+      return VocelEventModelIdentifier(
+        id: id
+      );
   }
-
+  
   String get eventTitle {
     try {
       return _eventTitle!;
-    } catch (e) {
+    } catch(e) {
       throw new AmplifyCodeGenModelException(
-          AmplifyExceptionMessages
-              .codeGenRequiredFieldForceCastExceptionMessage,
-          recoverySuggestion: AmplifyExceptionMessages
-              .codeGenRequiredFieldForceCastRecoverySuggestion,
-          underlyingException: e.toString());
+          AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
+          recoverySuggestion:
+            AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
+          underlyingException: e.toString()
+          );
     }
   }
-
+  
   String get eventLocation {
     try {
       return _eventLocation!;
-    } catch (e) {
+    } catch(e) {
       throw new AmplifyCodeGenModelException(
-          AmplifyExceptionMessages
-              .codeGenRequiredFieldForceCastExceptionMessage,
-          recoverySuggestion: AmplifyExceptionMessages
-              .codeGenRequiredFieldForceCastRecoverySuggestion,
-          underlyingException: e.toString());
+          AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
+          recoverySuggestion:
+            AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
+          underlyingException: e.toString()
+          );
     }
   }
-
+  
   ProfileRole get eventGroup {
     try {
       return _eventGroup!;
-    } catch (e) {
+    } catch(e) {
       throw new AmplifyCodeGenModelException(
-          AmplifyExceptionMessages
-              .codeGenRequiredFieldForceCastExceptionMessage,
-          recoverySuggestion: AmplifyExceptionMessages
-              .codeGenRequiredFieldForceCastRecoverySuggestion,
-          underlyingException: e.toString());
+          AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
+          recoverySuggestion:
+            AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
+          underlyingException: e.toString()
+          );
     }
   }
-
+  
   String get eventDescription {
     try {
       return _eventDescription!;
-    } catch (e) {
+    } catch(e) {
       throw new AmplifyCodeGenModelException(
-          AmplifyExceptionMessages
-              .codeGenRequiredFieldForceCastExceptionMessage,
-          recoverySuggestion: AmplifyExceptionMessages
-              .codeGenRequiredFieldForceCastRecoverySuggestion,
-          underlyingException: e.toString());
+          AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
+          recoverySuggestion:
+            AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
+          underlyingException: e.toString()
+          );
     }
   }
-
+  
   TemporalDateTime get startTime {
     try {
       return _startTime!;
-    } catch (e) {
+    } catch(e) {
       throw new AmplifyCodeGenModelException(
-          AmplifyExceptionMessages
-              .codeGenRequiredFieldForceCastExceptionMessage,
-          recoverySuggestion: AmplifyExceptionMessages
-              .codeGenRequiredFieldForceCastRecoverySuggestion,
-          underlyingException: e.toString());
+          AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
+          recoverySuggestion:
+            AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
+          underlyingException: e.toString()
+          );
     }
   }
-
+  
   int get duration {
     try {
       return _duration!;
-    } catch (e) {
+    } catch(e) {
       throw new AmplifyCodeGenModelException(
-          AmplifyExceptionMessages
-              .codeGenRequiredFieldForceCastExceptionMessage,
-          recoverySuggestion: AmplifyExceptionMessages
-              .codeGenRequiredFieldForceCastRecoverySuggestion,
-          underlyingException: e.toString());
+          AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
+          recoverySuggestion:
+            AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
+          underlyingException: e.toString()
+          );
     }
   }
-
+  
   String? get eventImageUrl {
     return _eventImageUrl;
   }
-
+  
   String? get eventImageKey {
     return _eventImageKey;
   }
-
+  
   TemporalDateTime? get createdAt {
     return _createdAt;
   }
-
+  
   TemporalDateTime? get updatedAt {
     return _updatedAt;
   }
-
-  const VocelEvent._internal(
-      {required this.id,
-      required eventTitle,
-      required eventLocation,
-      required eventGroup,
-      required eventDescription,
-      required startTime,
-      required duration,
-      eventImageUrl,
-      eventImageKey,
-      createdAt,
-      updatedAt})
-      : _eventTitle = eventTitle,
-        _eventLocation = eventLocation,
-        _eventGroup = eventGroup,
-        _eventDescription = eventDescription,
-        _startTime = startTime,
-        _duration = duration,
-        _eventImageUrl = eventImageUrl,
-        _eventImageKey = eventImageKey,
-        _createdAt = createdAt,
-        _updatedAt = updatedAt;
-
-  factory VocelEvent(
-      {String? id,
-      required String eventTitle,
-      required String eventLocation,
-      required ProfileRole eventGroup,
-      required String eventDescription,
-      required TemporalDateTime startTime,
-      required int duration,
-      String? eventImageUrl,
-      String? eventImageKey}) {
+  
+  const VocelEvent._internal({required this.id, required eventTitle, required eventLocation, required eventGroup, required eventDescription, required startTime, required duration, eventImageUrl, eventImageKey, createdAt, updatedAt}): _eventTitle = eventTitle, _eventLocation = eventLocation, _eventGroup = eventGroup, _eventDescription = eventDescription, _startTime = startTime, _duration = duration, _eventImageUrl = eventImageUrl, _eventImageKey = eventImageKey, _createdAt = createdAt, _updatedAt = updatedAt;
+  
+  factory VocelEvent({String? id, required String eventTitle, required String eventLocation, required ProfileRole eventGroup, required String eventDescription, required TemporalDateTime startTime, required int duration, String? eventImageUrl, String? eventImageKey}) {
     return VocelEvent._internal(
-        id: id == null ? UUID.getUUID() : id,
-        eventTitle: eventTitle,
-        eventLocation: eventLocation,
-        eventGroup: eventGroup,
-        eventDescription: eventDescription,
-        startTime: startTime,
-        duration: duration,
-        eventImageUrl: eventImageUrl,
-        eventImageKey: eventImageKey,
-        createdAt: TemporalDateTime.now());
+      id: id == null ? UUID.getUUID() : id,
+      eventTitle: eventTitle,
+      eventLocation: eventLocation,
+      eventGroup: eventGroup,
+      eventDescription: eventDescription,
+      startTime: startTime,
+      duration: duration,
+      eventImageUrl: eventImageUrl,
+      eventImageKey: eventImageKey);
   }
-
+  
   bool equals(Object other) {
     return this == other;
   }
-
+  
   @override
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
     return other is VocelEvent &&
-        id == other.id &&
-        _eventTitle == other._eventTitle &&
-        _eventLocation == other._eventLocation &&
-        _eventGroup == other._eventGroup &&
-        _eventDescription == other._eventDescription &&
-        _startTime == other._startTime &&
-        _duration == other._duration &&
-        _eventImageUrl == other._eventImageUrl &&
-        _eventImageKey == other._eventImageKey;
+      id == other.id &&
+      _eventTitle == other._eventTitle &&
+      _eventLocation == other._eventLocation &&
+      _eventGroup == other._eventGroup &&
+      _eventDescription == other._eventDescription &&
+      _startTime == other._startTime &&
+      _duration == other._duration &&
+      _eventImageUrl == other._eventImageUrl &&
+      _eventImageKey == other._eventImageKey;
   }
-
+  
   @override
   int get hashCode => toString().hashCode;
-
+  
   @override
   String toString() {
     var buffer = new StringBuffer();
-
+    
     buffer.write("VocelEvent {");
     buffer.write("id=" + "$id" + ", ");
     buffer.write("eventTitle=" + "$_eventTitle" + ", ");
     buffer.write("eventLocation=" + "$_eventLocation" + ", ");
-    buffer.write("eventGroup=" +
-        (_eventGroup != null ? enumToString(_eventGroup)! : "null") +
-        ", ");
+    buffer.write("eventGroup=" + (_eventGroup != null ? enumToString(_eventGroup)! : "null") + ", ");
     buffer.write("eventDescription=" + "$_eventDescription" + ", ");
-    buffer.write("startTime=" +
-        (_startTime != null ? _startTime!.format() : "null") +
-        ", ");
-    buffer.write("duration=" +
-        (_duration != null ? _duration!.toString() : "null") +
-        ", ");
+    buffer.write("startTime=" + (_startTime != null ? _startTime!.format() : "null") + ", ");
+    buffer.write("duration=" + (_duration != null ? _duration!.toString() : "null") + ", ");
     buffer.write("eventImageUrl=" + "$_eventImageUrl" + ", ");
     buffer.write("eventImageKey=" + "$_eventImageKey" + ", ");
-    buffer.write("createdAt=" +
-        (_createdAt != null ? _createdAt!.format() : "null") +
-        ", ");
-    buffer.write(
-        "updatedAt=" + (_updatedAt != null ? _updatedAt!.format() : "null"));
+    buffer.write("createdAt=" + (_createdAt != null ? _createdAt!.format() : "null") + ", ");
+    buffer.write("updatedAt=" + (_updatedAt != null ? _updatedAt!.format() : "null"));
     buffer.write("}");
-
+    
     return buffer.toString();
   }
-
-  VocelEvent copyWith(
-      {String? eventTitle,
-      String? eventLocation,
-      ProfileRole? eventGroup,
-      String? eventDescription,
-      TemporalDateTime? startTime,
-      int? duration,
-      String? eventImageUrl,
-      String? eventImageKey}) {
+  
+  VocelEvent copyWith({String? eventTitle, String? eventLocation, ProfileRole? eventGroup, String? eventDescription, TemporalDateTime? startTime, int? duration, String? eventImageUrl, String? eventImageKey}) {
     return VocelEvent._internal(
       id: id,
       eventTitle: eventTitle ?? this.eventTitle,
@@ -261,156 +215,132 @@ class VocelEvent extends Model {
       startTime: startTime ?? this.startTime,
       duration: duration ?? this.duration,
       eventImageUrl: eventImageUrl ?? this.eventImageUrl,
-      eventImageKey: eventImageKey ?? this.eventImageKey,
-    );
+      eventImageKey: eventImageKey ?? this.eventImageKey);
   }
-
-  VocelEvent.fromJson(Map<String, dynamic> json)
-      : id = json['id'],
-        _eventTitle = json['eventTitle'],
-        _eventLocation = json['eventLocation'],
-        _eventGroup =
-            enumFromString<ProfileRole>(json['eventGroup'], ProfileRole.values),
-        _eventDescription = json['eventDescription'],
-        _startTime = json['startTime'] != null
-            ? TemporalDateTime.fromString(json['startTime'])
-            : null,
-        _duration = (json['duration'] as num?)?.toInt(),
-        _eventImageUrl = json['eventImageUrl'],
-        _eventImageKey = json['eventImageKey'],
-        _createdAt = json['createdAt'] != null
-            ? TemporalDateTime.fromString(json['createdAt'])
-            : null,
-        _updatedAt = json['updatedAt'] != null
-            ? TemporalDateTime.fromString(json['updatedAt'])
-            : null;
-
+  
+  VocelEvent.fromJson(Map<String, dynamic> json)  
+    : id = json['id'],
+      _eventTitle = json['eventTitle'],
+      _eventLocation = json['eventLocation'],
+      _eventGroup = enumFromString<ProfileRole>(json['eventGroup'], ProfileRole.values),
+      _eventDescription = json['eventDescription'],
+      _startTime = json['startTime'] != null ? TemporalDateTime.fromString(json['startTime']) : null,
+      _duration = (json['duration'] as num?)?.toInt(),
+      _eventImageUrl = json['eventImageUrl'],
+      _eventImageKey = json['eventImageKey'],
+      _createdAt = json['createdAt'] != null ? TemporalDateTime.fromString(json['createdAt']) : null,
+      _updatedAt = json['updatedAt'] != null ? TemporalDateTime.fromString(json['updatedAt']) : null;
+  
   Map<String, dynamic> toJson() => {
-        'id': id,
-        'eventTitle': _eventTitle,
-        'eventLocation': _eventLocation,
-        'eventGroup': enumToString(_eventGroup),
-        'eventDescription': _eventDescription,
-        'startTime': _startTime?.format(),
-        'duration': _duration,
-        'eventImageUrl': _eventImageUrl,
-        'eventImageKey': _eventImageKey,
-        'createdAt': _createdAt?.format(),
-        'updatedAt': _updatedAt?.format()
-      };
-
+    'id': id, 'eventTitle': _eventTitle, 'eventLocation': _eventLocation, 'eventGroup': enumToString(_eventGroup), 'eventDescription': _eventDescription, 'startTime': _startTime?.format(), 'duration': _duration, 'eventImageUrl': _eventImageUrl, 'eventImageKey': _eventImageKey, 'createdAt': _createdAt?.format(), 'updatedAt': _updatedAt?.format()
+  };
+  
   Map<String, Object?> toMap() => {
-        'id': id,
-        'eventTitle': _eventTitle,
-        'eventLocation': _eventLocation,
-        'eventGroup': _eventGroup,
-        'eventDescription': _eventDescription,
-        'startTime': _startTime,
-        'duration': _duration,
-        'eventImageUrl': _eventImageUrl,
-        'eventImageKey': _eventImageKey,
-        'createdAt': _createdAt,
-        'updatedAt': _updatedAt
-      };
+    'id': id, 'eventTitle': _eventTitle, 'eventLocation': _eventLocation, 'eventGroup': _eventGroup, 'eventDescription': _eventDescription, 'startTime': _startTime, 'duration': _duration, 'eventImageUrl': _eventImageUrl, 'eventImageKey': _eventImageKey, 'createdAt': _createdAt, 'updatedAt': _updatedAt
+  };
 
-  static final QueryModelIdentifier<VocelEventModelIdentifier>
-      MODEL_IDENTIFIER = QueryModelIdentifier<VocelEventModelIdentifier>();
+  static final QueryModelIdentifier<VocelEventModelIdentifier> MODEL_IDENTIFIER = QueryModelIdentifier<VocelEventModelIdentifier>();
   static final QueryField ID = QueryField(fieldName: "id");
   static final QueryField EVENTTITLE = QueryField(fieldName: "eventTitle");
-  static final QueryField EVENTLOCATION =
-      QueryField(fieldName: "eventLocation");
+  static final QueryField EVENTLOCATION = QueryField(fieldName: "eventLocation");
   static final QueryField EVENTGROUP = QueryField(fieldName: "eventGroup");
-  static final QueryField EVENTDESCRIPTION =
-      QueryField(fieldName: "eventDescription");
+  static final QueryField EVENTDESCRIPTION = QueryField(fieldName: "eventDescription");
   static final QueryField STARTTIME = QueryField(fieldName: "startTime");
   static final QueryField DURATION = QueryField(fieldName: "duration");
-  static final QueryField EVENTIMAGEURL =
-      QueryField(fieldName: "eventImageUrl");
-  static final QueryField EVENTIMAGEKEY =
-      QueryField(fieldName: "eventImageKey");
-  static var schema =
-      Model.defineSchema(define: (ModelSchemaDefinition modelSchemaDefinition) {
+  static final QueryField EVENTIMAGEURL = QueryField(fieldName: "eventImageUrl");
+  static final QueryField EVENTIMAGEKEY = QueryField(fieldName: "eventImageKey");
+  static var schema = Model.defineSchema(define: (ModelSchemaDefinition modelSchemaDefinition) {
     modelSchemaDefinition.name = "VocelEvent";
     modelSchemaDefinition.pluralName = "VocelEvents";
-
+    
     modelSchemaDefinition.authRules = [
       AuthRule(
-          authStrategy: AuthStrategy.OWNER,
-          ownerField: "owner",
-          identityClaim: "cognito:username",
-          provider: AuthRuleProvider.USERPOOLS,
-          operations: [
-            ModelOperation.CREATE,
-            ModelOperation.UPDATE,
-            ModelOperation.DELETE,
-            ModelOperation.READ
-          ])
+        authStrategy: AuthStrategy.OWNER,
+        ownerField: "owner",
+        identityClaim: "cognito:username",
+        provider: AuthRuleProvider.USERPOOLS,
+        operations: [
+          ModelOperation.CREATE,
+          ModelOperation.UPDATE,
+          ModelOperation.DELETE,
+          ModelOperation.READ
+        ])
     ];
-
+    
     modelSchemaDefinition.addField(ModelFieldDefinition.id());
-
+    
     modelSchemaDefinition.addField(ModelFieldDefinition.field(
-        key: VocelEvent.EVENTTITLE,
-        isRequired: true,
-        ofType: ModelFieldType(ModelFieldTypeEnum.string)));
-
+      key: VocelEvent.EVENTTITLE,
+      isRequired: true,
+      ofType: ModelFieldType(ModelFieldTypeEnum.string)
+    ));
+    
     modelSchemaDefinition.addField(ModelFieldDefinition.field(
-        key: VocelEvent.EVENTLOCATION,
-        isRequired: true,
-        ofType: ModelFieldType(ModelFieldTypeEnum.string)));
-
+      key: VocelEvent.EVENTLOCATION,
+      isRequired: true,
+      ofType: ModelFieldType(ModelFieldTypeEnum.string)
+    ));
+    
     modelSchemaDefinition.addField(ModelFieldDefinition.field(
-        key: VocelEvent.EVENTGROUP,
-        isRequired: true,
-        ofType: ModelFieldType(ModelFieldTypeEnum.enumeration)));
-
+      key: VocelEvent.EVENTGROUP,
+      isRequired: true,
+      ofType: ModelFieldType(ModelFieldTypeEnum.enumeration)
+    ));
+    
     modelSchemaDefinition.addField(ModelFieldDefinition.field(
-        key: VocelEvent.EVENTDESCRIPTION,
-        isRequired: true,
-        ofType: ModelFieldType(ModelFieldTypeEnum.string)));
-
+      key: VocelEvent.EVENTDESCRIPTION,
+      isRequired: true,
+      ofType: ModelFieldType(ModelFieldTypeEnum.string)
+    ));
+    
     modelSchemaDefinition.addField(ModelFieldDefinition.field(
-        key: VocelEvent.STARTTIME,
-        isRequired: true,
-        ofType: ModelFieldType(ModelFieldTypeEnum.dateTime)));
-
+      key: VocelEvent.STARTTIME,
+      isRequired: true,
+      ofType: ModelFieldType(ModelFieldTypeEnum.dateTime)
+    ));
+    
     modelSchemaDefinition.addField(ModelFieldDefinition.field(
-        key: VocelEvent.DURATION,
-        isRequired: true,
-        ofType: ModelFieldType(ModelFieldTypeEnum.int)));
-
+      key: VocelEvent.DURATION,
+      isRequired: true,
+      ofType: ModelFieldType(ModelFieldTypeEnum.int)
+    ));
+    
     modelSchemaDefinition.addField(ModelFieldDefinition.field(
-        key: VocelEvent.EVENTIMAGEURL,
-        isRequired: false,
-        ofType: ModelFieldType(ModelFieldTypeEnum.string)));
-
+      key: VocelEvent.EVENTIMAGEURL,
+      isRequired: false,
+      ofType: ModelFieldType(ModelFieldTypeEnum.string)
+    ));
+    
     modelSchemaDefinition.addField(ModelFieldDefinition.field(
-        key: VocelEvent.EVENTIMAGEKEY,
-        isRequired: false,
-        ofType: ModelFieldType(ModelFieldTypeEnum.string)));
-
+      key: VocelEvent.EVENTIMAGEKEY,
+      isRequired: false,
+      ofType: ModelFieldType(ModelFieldTypeEnum.string)
+    ));
+    
     modelSchemaDefinition.addField(ModelFieldDefinition.nonQueryField(
-        fieldName: 'createdAt',
-        isRequired: false,
-        isReadOnly: true,
-        ofType: ModelFieldType(ModelFieldTypeEnum.dateTime)));
-
+      fieldName: 'createdAt',
+      isRequired: false,
+      isReadOnly: true,
+      ofType: ModelFieldType(ModelFieldTypeEnum.dateTime)
+    ));
+    
     modelSchemaDefinition.addField(ModelFieldDefinition.nonQueryField(
-        fieldName: 'updatedAt',
-        isRequired: false,
-        isReadOnly: true,
-        ofType: ModelFieldType(ModelFieldTypeEnum.dateTime)));
+      fieldName: 'updatedAt',
+      isRequired: false,
+      isReadOnly: true,
+      ofType: ModelFieldType(ModelFieldTypeEnum.dateTime)
+    ));
   });
 }
 
 class _VocelEventModelType extends ModelType<VocelEvent> {
   const _VocelEventModelType();
-
+  
   @override
   VocelEvent fromJson(Map<String, dynamic> jsonData) {
     return VocelEvent.fromJson(jsonData);
   }
-
+  
   @override
   String modelName() {
     return 'VocelEvent';
@@ -426,32 +356,37 @@ class VocelEventModelIdentifier implements ModelIdentifier<VocelEvent> {
   final String id;
 
   /** Create an instance of VocelEventModelIdentifier using [id] the primary key. */
-  const VocelEventModelIdentifier({required this.id});
-
+  const VocelEventModelIdentifier({
+    required this.id});
+  
   @override
-  Map<String, dynamic> serializeAsMap() => (<String, dynamic>{'id': id});
-
+  Map<String, dynamic> serializeAsMap() => (<String, dynamic>{
+    'id': id
+  });
+  
   @override
   List<Map<String, dynamic>> serializeAsList() => serializeAsMap()
-      .entries
-      .map((entry) => (<String, dynamic>{entry.key: entry.value}))
-      .toList();
-
+    .entries
+    .map((entry) => (<String, dynamic>{ entry.key: entry.value }))
+    .toList();
+  
   @override
   String serializeAsString() => serializeAsMap().values.join('#');
-
+  
   @override
   String toString() => 'VocelEventModelIdentifier(id: $id)';
-
+  
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) {
       return true;
     }
-
-    return other is VocelEventModelIdentifier && id == other.id;
+    
+    return other is VocelEventModelIdentifier &&
+      id == other.id;
   }
-
+  
   @override
-  int get hashCode => id.hashCode;
+  int get hashCode =>
+    id.hashCode;
 }
