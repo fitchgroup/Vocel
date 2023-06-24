@@ -259,9 +259,6 @@ class _AnnouncementsListPageState extends State<AnnouncementsListPage> {
     await getUserStatus();
     setState(() {
       loading = false;
-      if (kDebugMode) {
-        print("=" * 100 + '\n' + groupEdit + "\n" + "=" * 100);
-      }
       if (adminEdit == true) {
         futureResult = _getUserAttrInTheMap("");
       } else {
@@ -277,7 +274,8 @@ class _AnnouncementsListPageState extends State<AnnouncementsListPage> {
       loading = true;
     });
     if (kDebugMode) {
-      print("${"=" * 100}loading user done${"=" * 100}");
+      print(
+          "${"=" * 100}loading user done in lib/features/announcement/ui/drawer_list${"=" * 100}");
     }
   }
 
