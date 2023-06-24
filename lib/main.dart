@@ -1,21 +1,12 @@
 import 'dart:async';
 
 import 'package:awesome_notifications/awesome_notifications.dart';
-import 'package:devicelocale/devicelocale.dart';
 import 'package:flutter/material.dart';
-import 'package:amplify_flutter/amplify_flutter.dart';
-import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get_it/get_it.dart';
 import 'package:vocel/common/repository/auth_inject.dart';
 import 'package:vocel/common/repository/auth_repository.dart';
-import 'package:vocel/models/Announcement.dart';
-import 'package:vocel/simple_app.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'firebase_options.dart';
-import 'package:amplify_api/amplify_api.dart';
-import './models/ModelProvider.dart'; // <--- Update import to reflect your project
+import 'package:vocel/simple_app.dart'; // <--- Update import to reflect your project
 
 final getIt = GetIt.instance;
 

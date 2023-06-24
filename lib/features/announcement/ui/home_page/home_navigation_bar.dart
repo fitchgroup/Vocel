@@ -33,10 +33,6 @@ class _TopNavigationHomeBarState extends State<TopNavigationHomeBar> {
           GestureDetector(
             onTap: () {
               onClickController("Announcement");
-              if (kDebugMode) {
-                print(
-                    '${"**" * 100}\n${onClickController.toString()}\n${"**" * 100}');
-              }
             },
             child: Padding(
               padding: const EdgeInsets.all(16),
@@ -67,10 +63,6 @@ class _TopNavigationHomeBarState extends State<TopNavigationHomeBar> {
           GestureDetector(
             onTap: () {
               onClickController("Post");
-              if (kDebugMode) {
-                print(
-                    '${"**" * 100}\n${onClickController.toString()}\n${"**" * 100}');
-              }
             },
             child: Padding(
               padding: const EdgeInsets.all(16),

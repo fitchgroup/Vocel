@@ -4,15 +4,18 @@ import 'package:amplify_core/src/types/temporal/temporal_datetime.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:intl/intl.dart';
+import 'package:vocel/models/ModelProvider.dart';
 
 class ForumPost extends StatefulWidget {
   final callbackLikes;
   final thisPost;
+  final currentPerson;
 
   const ForumPost({
     Key? key,
     required this.callbackLikes,
     required this.thisPost,
+    required this.currentPerson,
   }) : super(key: key);
 
   @override
@@ -21,6 +24,8 @@ class ForumPost extends StatefulWidget {
 
 class _ForumPostState extends State<ForumPost> {
   AssetImage? profileImage;
+  bool liked = false;
+  late List<String> likeList;
 
   Future<bool> checkProfileImageExists() async {
     try {
@@ -48,6 +53,21 @@ class _ForumPostState extends State<ForumPost> {
           );
         });
       }
+    });
+    liked = ((widget.thisPost as Post).likes != null &&
+        (widget.thisPost as Post).likes!.contains(widget.currentPerson));
+    likeList = (widget.thisPost as Post).likes != null
+        ? List<String>.from((widget.thisPost as Post).likes!)
+        : [];
+  }
+
+  void changingLikes() {
+    setState(() {
+      liked = ((widget.thisPost as Post).likes != null &&
+          (widget.thisPost as Post).likes!.contains(widget.currentPerson));
+      likeList = (widget.thisPost as Post).likes != null
+          ? List<String>.from((widget.thisPost as Post).likes!)
+          : [];
     });
   }
 
@@ -172,13 +192,18 @@ class _ForumPostState extends State<ForumPost> {
                   child: Row(
                     children: [
                       IconButton(
-                        onPressed: () {
-                          widget.callbackLikes(
-                              widget.thisPost, widget.thisPost.author);
+                        onPressed: () async {
+                          await widget.callbackLikes(
+                              widget.thisPost, widget.currentPerson);
+                          changingLikes();
+                          print(
+                              "*******************************************like*******************************************${(widget.thisPost as Post).likes}");
                         },
-                        icon: const Icon(
-                          Icons.favorite_outline_rounded,
-                          color: Colors.grey,
+                        icon: Icon(
+                          liked
+                              ? Icons.favorite
+                              : Icons.favorite_outline_rounded,
+                          color: liked ? Colors.red : Colors.grey,
                           size: 25,
                         ),
                       ),
@@ -201,6 +226,18 @@ class _ForumPostState extends State<ForumPost> {
                 ),
               ],
             ),
+            if (likeList.isNotEmpty)
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  const SizedBox(height: 16),
+                  Expanded(
+                    flex: 1,
+                    child: Text(
+                        likeList.isEmpty ? "" : likeList.join(",").toString()),
+                  ),
+                ],
+              ),
           ],
         ),
       ),

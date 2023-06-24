@@ -119,7 +119,6 @@ class ForumPage extends HookConsumerWidget {
 
     void likePost(Post likedPost, String editPerson) {
       ref.read(postControllerProvider).editLikes(likedPost, editPerson);
-      Navigator.of(context).pop(false); // Dismiss the dialog and delete
     }
 
     return Center(
@@ -186,7 +185,10 @@ class ForumPage extends HookConsumerWidget {
               ),
               direction: DismissDirection.endToStart,
               // Only allow end to start swipe
-              child: ForumPost(thisPost: post, callbackLikes: likePost),
+              child: ForumPost(
+                  thisPost: post,
+                  callbackLikes: likePost,
+                  currentPerson: userEmail),
             );
           }),
     );
