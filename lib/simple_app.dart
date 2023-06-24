@@ -63,6 +63,7 @@ class _MyAppState extends State<MyApp> {
       },
     );
     unsubscribe();
+    subscribe();
 
     super.initState();
   }

@@ -17,7 +17,7 @@ extension AWSApiPluginConfigHelpers on AWSApiPluginConfig {
       }
     }
 
-    manageUserDebuggingPrint(apiNames.toString());
+    debuggingPrint(apiNames.toString());
     return apiNames;
   }
 }
@@ -80,7 +80,7 @@ Future<void> addVocelUserAttribute(
     await Amplify.Auth.updateUserAttribute(
         userAttributeKey: myKey, value: attrValue);
   } catch (e) {
-    manageUserDebuggingPrint('Error adding user attribute: $e');
+    debuggingPrint('Error adding user attribute: $e');
   }
 }
 
@@ -120,7 +120,7 @@ Future<void> addUserGroup(String desireGroup, {String? email}) async {
       body: myInit["body"],
     );
   } catch (e) {
-    manageUserDebuggingPrint("$e \n ${"*" * 20} addUserGroup Fail ${"=" * 20}");
+    debuggingPrint("$e \n ${"*" * 20} addUserGroup Fail ${"=" * 20}");
   }
 }
 
@@ -159,8 +159,7 @@ Future<void> removeUserGroup(String originalGroup, {String? email}) async {
     );
   } catch (e) {
     // Attribute update failed
-    manageUserDebuggingPrint(
-        "$e \n ${"*" * 20} removeUserGroup Fail ${"=" * 20}");
+    debuggingPrint("$e \n ${"*" * 20} removeUserGroup Fail ${"=" * 20}");
   }
 }
 
@@ -213,8 +212,7 @@ Future<Map<String, dynamic>> listGroupsForUser(
     return jsonMap;
   } catch (e) {
     // Attribute update failed
-    manageUserDebuggingPrint(
-        "$e \n ${"*" * 20} listGroupsForUser Fail ${"=" * 20}");
+    debuggingPrint("$e \n ${"*" * 20} listGroupsForUser Fail ${"=" * 20}");
   }
   return jsonMap;
 }
@@ -254,8 +252,7 @@ Future<dynamic> listUsersInGroup(String groupName) async {
     // String nextToken = responseData['NextToken'] as String;
     return jsonMap;
   } catch (e) {
-    manageUserDebuggingPrint(
-        "$e ${"*" * 20} listUsersInGroup Fail ${"=" * 20}");
+    debuggingPrint("$e ${"*" * 20} listUsersInGroup Fail ${"=" * 20}");
   }
   return null;
 }
@@ -293,12 +290,12 @@ Future<dynamic> listAllUsersInGroup() async {
     // String nextToken = responseData['NextToken'] as String;
     return jsonMap;
   } catch (e) {
-    manageUserDebuggingPrint("$e ${"*" * 20} listUsers Fail ${"=" * 20}");
+    debuggingPrint("$e ${"*" * 20} listUsers Fail ${"=" * 20}");
   }
   return {};
 }
 
-void manageUserDebuggingPrint(String shouldPrint) {
+void debuggingPrint(String shouldPrint) {
   if (kDebugMode) {
     print("--" * 100);
     print(shouldPrint);
@@ -321,8 +318,14 @@ Future<bool> verifyAdminAccess() async {
 Future<String> verifyGroupAccess() async {
   Map<String, dynamic> jsonMap = await listGroupsForUser();
   // any new users into each of the three other profile roles (BELL, EETC, VCPA )
-  List<String> validGroups = ['Bellversion1', 'Eetcversion1', 'Vcpaversion1'];
-  String groupName;
+  List<String> validGroups = [
+    'Staffversion1',
+    'Bellversion1',
+    'Eetcversion1',
+    'Vcpaversion1'
+  ];
+  String groupName = "";
+  if (jsonMap == {}) return "";
   jsonMap["Groups"].forEach((element) {
     String currentGroupName = element['GroupName'].toString();
     if (validGroups.contains(currentGroupName)) {
@@ -330,5 +333,5 @@ Future<String> verifyGroupAccess() async {
       return groupName;
     }
   });
-  return "";
+  return groupName;
 }

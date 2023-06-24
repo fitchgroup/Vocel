@@ -21,19 +21,18 @@
 
 import 'ModelProvider.dart';
 import 'package:amplify_core/amplify_core.dart';
-import 'package:collection/collection.dart';
 import 'package:flutter/foundation.dart';
 
 
-/** This is an auto generated class representing the Post type in your schema. */
+/** This is an auto generated class representing the CommentAnnouncement type in your schema. */
 @immutable
-class Post extends Model {
-  static const classType = const _PostModelType();
+class CommentAnnouncement extends Model {
+  static const classType = const _CommentAnnouncementModelType();
   final String id;
-  final String? _postAuthor;
-  final String? _postContent;
-  final List<String>? _likes;
-  final List<Comment>? _comments;
+  final String? _commentAuthor;
+  final String? _commentContent;
+  final Announcement? _announcement;
+  final String? _content;
   final TemporalDateTime? _createdAt;
   final TemporalDateTime? _updatedAt;
 
@@ -44,15 +43,15 @@ class Post extends Model {
   @override
   String getId() => id;
   
-  PostModelIdentifier get modelIdentifier {
-      return PostModelIdentifier(
+  CommentAnnouncementModelIdentifier get modelIdentifier {
+      return CommentAnnouncementModelIdentifier(
         id: id
       );
   }
   
-  String get postAuthor {
+  String get commentAuthor {
     try {
-      return _postAuthor!;
+      return _commentAuthor!;
     } catch(e) {
       throw new AmplifyCodeGenModelException(
           AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
@@ -63,9 +62,9 @@ class Post extends Model {
     }
   }
   
-  String get postContent {
+  String get commentContent {
     try {
-      return _postContent!;
+      return _commentContent!;
     } catch(e) {
       throw new AmplifyCodeGenModelException(
           AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
@@ -76,12 +75,21 @@ class Post extends Model {
     }
   }
   
-  List<String>? get likes {
-    return _likes;
+  Announcement? get announcement {
+    return _announcement;
   }
   
-  List<Comment>? get comments {
-    return _comments;
+  String get content {
+    try {
+      return _content!;
+    } catch(e) {
+      throw new AmplifyCodeGenModelException(
+          AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
+          recoverySuggestion:
+            AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
+          underlyingException: e.toString()
+          );
+    }
   }
   
   TemporalDateTime? get createdAt {
@@ -92,15 +100,15 @@ class Post extends Model {
     return _updatedAt;
   }
   
-  const Post._internal({required this.id, required postAuthor, required postContent, likes, comments, createdAt, updatedAt}): _postAuthor = postAuthor, _postContent = postContent, _likes = likes, _comments = comments, _createdAt = createdAt, _updatedAt = updatedAt;
+  const CommentAnnouncement._internal({required this.id, required commentAuthor, required commentContent, announcement, required content, createdAt, updatedAt}): _commentAuthor = commentAuthor, _commentContent = commentContent, _announcement = announcement, _content = content, _createdAt = createdAt, _updatedAt = updatedAt;
   
-  factory Post({String? id, required String postAuthor, required String postContent, List<String>? likes, List<Comment>? comments}) {
-    return Post._internal(
+  factory CommentAnnouncement({String? id, required String commentAuthor, required String commentContent, Announcement? announcement, required String content}) {
+    return CommentAnnouncement._internal(
       id: id == null ? UUID.getUUID() : id,
-      postAuthor: postAuthor,
-      postContent: postContent,
-      likes: likes != null ? List<String>.unmodifiable(likes) : likes,
-      comments: comments != null ? List<Comment>.unmodifiable(comments) : comments);
+      commentAuthor: commentAuthor,
+      commentContent: commentContent,
+      announcement: announcement,
+      content: content);
   }
   
   bool equals(Object other) {
@@ -110,12 +118,12 @@ class Post extends Model {
   @override
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
-    return other is Post &&
+    return other is CommentAnnouncement &&
       id == other.id &&
-      _postAuthor == other._postAuthor &&
-      _postContent == other._postContent &&
-      DeepCollectionEquality().equals(_likes, other._likes) &&
-      DeepCollectionEquality().equals(_comments, other._comments);
+      _commentAuthor == other._commentAuthor &&
+      _commentContent == other._commentContent &&
+      _announcement == other._announcement &&
+      _content == other._content;
   }
   
   @override
@@ -125,11 +133,12 @@ class Post extends Model {
   String toString() {
     var buffer = new StringBuffer();
     
-    buffer.write("Post {");
+    buffer.write("CommentAnnouncement {");
     buffer.write("id=" + "$id" + ", ");
-    buffer.write("postAuthor=" + "$_postAuthor" + ", ");
-    buffer.write("postContent=" + "$_postContent" + ", ");
-    buffer.write("likes=" + (_likes != null ? _likes!.toString() : "null") + ", ");
+    buffer.write("commentAuthor=" + "$_commentAuthor" + ", ");
+    buffer.write("commentContent=" + "$_commentContent" + ", ");
+    buffer.write("announcement=" + (_announcement != null ? _announcement!.toString() : "null") + ", ");
+    buffer.write("content=" + "$_content" + ", ");
     buffer.write("createdAt=" + (_createdAt != null ? _createdAt!.format() : "null") + ", ");
     buffer.write("updatedAt=" + (_updatedAt != null ? _updatedAt!.format() : "null"));
     buffer.write("}");
@@ -137,93 +146,71 @@ class Post extends Model {
     return buffer.toString();
   }
   
-  Post copyWith({String? postAuthor, String? postContent, List<String>? likes, List<Comment>? comments}) {
-    return Post._internal(
+  CommentAnnouncement copyWith({String? commentAuthor, String? commentContent, Announcement? announcement, String? content}) {
+    return CommentAnnouncement._internal(
       id: id,
-      postAuthor: postAuthor ?? this.postAuthor,
-      postContent: postContent ?? this.postContent,
-      likes: likes ?? this.likes,
-      comments: comments ?? this.comments);
+      commentAuthor: commentAuthor ?? this.commentAuthor,
+      commentContent: commentContent ?? this.commentContent,
+      announcement: announcement ?? this.announcement,
+      content: content ?? this.content);
   }
   
-  Post.fromJson(Map<String, dynamic> json)  
+  CommentAnnouncement.fromJson(Map<String, dynamic> json)  
     : id = json['id'],
-      _postAuthor = json['postAuthor'],
-      _postContent = json['postContent'],
-      _likes = json['likes']?.cast<String>(),
-      _comments = json['comments'] is List
-        ? (json['comments'] as List)
-          .where((e) => e?['serializedData'] != null)
-          .map((e) => Comment.fromJson(new Map<String, dynamic>.from(e['serializedData'])))
-          .toList()
+      _commentAuthor = json['commentAuthor'],
+      _commentContent = json['commentContent'],
+      _announcement = json['announcement']?['serializedData'] != null
+        ? Announcement.fromJson(new Map<String, dynamic>.from(json['announcement']['serializedData']))
         : null,
+      _content = json['content'],
       _createdAt = json['createdAt'] != null ? TemporalDateTime.fromString(json['createdAt']) : null,
       _updatedAt = json['updatedAt'] != null ? TemporalDateTime.fromString(json['updatedAt']) : null;
   
   Map<String, dynamic> toJson() => {
-    'id': id, 'postAuthor': _postAuthor, 'postContent': _postContent, 'likes': _likes, 'comments': _comments?.map((Comment? e) => e?.toJson()).toList(), 'createdAt': _createdAt?.format(), 'updatedAt': _updatedAt?.format()
+    'id': id, 'commentAuthor': _commentAuthor, 'commentContent': _commentContent, 'announcement': _announcement?.toJson(), 'content': _content, 'createdAt': _createdAt?.format(), 'updatedAt': _updatedAt?.format()
   };
   
   Map<String, Object?> toMap() => {
-    'id': id, 'postAuthor': _postAuthor, 'postContent': _postContent, 'likes': _likes, 'comments': _comments, 'createdAt': _createdAt, 'updatedAt': _updatedAt
+    'id': id, 'commentAuthor': _commentAuthor, 'commentContent': _commentContent, 'announcement': _announcement, 'content': _content, 'createdAt': _createdAt, 'updatedAt': _updatedAt
   };
 
-  static final QueryModelIdentifier<PostModelIdentifier> MODEL_IDENTIFIER = QueryModelIdentifier<PostModelIdentifier>();
+  static final QueryModelIdentifier<CommentAnnouncementModelIdentifier> MODEL_IDENTIFIER = QueryModelIdentifier<CommentAnnouncementModelIdentifier>();
   static final QueryField ID = QueryField(fieldName: "id");
-  static final QueryField POSTAUTHOR = QueryField(fieldName: "postAuthor");
-  static final QueryField POSTCONTENT = QueryField(fieldName: "postContent");
-  static final QueryField LIKES = QueryField(fieldName: "likes");
-  static final QueryField COMMENTS = QueryField(
-    fieldName: "comments",
-    fieldType: ModelFieldType(ModelFieldTypeEnum.model, ofModelName: 'Comment'));
+  static final QueryField COMMENTAUTHOR = QueryField(fieldName: "commentAuthor");
+  static final QueryField COMMENTCONTENT = QueryField(fieldName: "commentContent");
+  static final QueryField ANNOUNCEMENT = QueryField(
+    fieldName: "announcement",
+    fieldType: ModelFieldType(ModelFieldTypeEnum.model, ofModelName: 'Announcement'));
+  static final QueryField CONTENT = QueryField(fieldName: "content");
   static var schema = Model.defineSchema(define: (ModelSchemaDefinition modelSchemaDefinition) {
-    modelSchemaDefinition.name = "Post";
-    modelSchemaDefinition.pluralName = "Posts";
-    
-    modelSchemaDefinition.authRules = [
-      AuthRule(
-        authStrategy: AuthStrategy.OWNER,
-        ownerField: "owner",
-        identityClaim: "cognito:username",
-        provider: AuthRuleProvider.USERPOOLS,
-        operations: [
-          ModelOperation.READ,
-          ModelOperation.UPDATE,
-          ModelOperation.DELETE
-        ]),
-      AuthRule(
-        authStrategy: AuthStrategy.PUBLIC,
-        operations: [
-          ModelOperation.READ
-        ])
-    ];
+    modelSchemaDefinition.name = "CommentAnnouncement";
+    modelSchemaDefinition.pluralName = "CommentAnnouncements";
     
     modelSchemaDefinition.addField(ModelFieldDefinition.id());
     
     modelSchemaDefinition.addField(ModelFieldDefinition.field(
-      key: Post.POSTAUTHOR,
+      key: CommentAnnouncement.COMMENTAUTHOR,
       isRequired: true,
       ofType: ModelFieldType(ModelFieldTypeEnum.string)
     ));
     
     modelSchemaDefinition.addField(ModelFieldDefinition.field(
-      key: Post.POSTCONTENT,
+      key: CommentAnnouncement.COMMENTCONTENT,
       isRequired: true,
       ofType: ModelFieldType(ModelFieldTypeEnum.string)
     ));
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.field(
-      key: Post.LIKES,
+    modelSchemaDefinition.addField(ModelFieldDefinition.belongsTo(
+      key: CommentAnnouncement.ANNOUNCEMENT,
       isRequired: false,
-      isArray: true,
-      ofType: ModelFieldType(ModelFieldTypeEnum.collection, ofModelName: describeEnum(ModelFieldTypeEnum.string))
+      targetNames: ['announcementCommentsId'],
+      ofModelName: 'Announcement'
     ));
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.hasMany(
-      key: Post.COMMENTS,
-      isRequired: false,
-      ofModelName: 'Comment',
-      associatedKey: Comment.POST
+    modelSchemaDefinition.addField(ModelFieldDefinition.field(
+      key: CommentAnnouncement.CONTENT,
+      isRequired: true,
+      ofType: ModelFieldType(ModelFieldTypeEnum.string)
     ));
     
     modelSchemaDefinition.addField(ModelFieldDefinition.nonQueryField(
@@ -242,30 +229,30 @@ class Post extends Model {
   });
 }
 
-class _PostModelType extends ModelType<Post> {
-  const _PostModelType();
+class _CommentAnnouncementModelType extends ModelType<CommentAnnouncement> {
+  const _CommentAnnouncementModelType();
   
   @override
-  Post fromJson(Map<String, dynamic> jsonData) {
-    return Post.fromJson(jsonData);
+  CommentAnnouncement fromJson(Map<String, dynamic> jsonData) {
+    return CommentAnnouncement.fromJson(jsonData);
   }
   
   @override
   String modelName() {
-    return 'Post';
+    return 'CommentAnnouncement';
   }
 }
 
 /**
  * This is an auto generated class representing the model identifier
- * of [Post] in your schema.
+ * of [CommentAnnouncement] in your schema.
  */
 @immutable
-class PostModelIdentifier implements ModelIdentifier<Post> {
+class CommentAnnouncementModelIdentifier implements ModelIdentifier<CommentAnnouncement> {
   final String id;
 
-  /** Create an instance of PostModelIdentifier using [id] the primary key. */
-  const PostModelIdentifier({
+  /** Create an instance of CommentAnnouncementModelIdentifier using [id] the primary key. */
+  const CommentAnnouncementModelIdentifier({
     required this.id});
   
   @override
@@ -283,7 +270,7 @@ class PostModelIdentifier implements ModelIdentifier<Post> {
   String serializeAsString() => serializeAsMap().values.join('#');
   
   @override
-  String toString() => 'PostModelIdentifier(id: $id)';
+  String toString() => 'CommentAnnouncementModelIdentifier(id: $id)';
   
   @override
   bool operator ==(Object other) {
@@ -291,7 +278,7 @@ class PostModelIdentifier implements ModelIdentifier<Post> {
       return true;
     }
     
-    return other is PostModelIdentifier &&
+    return other is CommentAnnouncementModelIdentifier &&
       id == other.id;
   }
   
