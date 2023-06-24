@@ -7,6 +7,7 @@ import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:amplify_push_notifications_pinpoint/amplify_push_notifications_pinpoint.dart';
 import 'package:vocel/models/Announcement.dart';
+import 'package:vocel/models/ModelProvider.dart';
 
 void myFunctionToGracefullyDegradeMyApp([BuildContext? context]) async {
   // Show a dialog to inform the user about the limited functionality without push notifications
@@ -145,6 +146,24 @@ int createUniqueId({String? possibleId}) {
   return DateTime.now().millisecondsSinceEpoch.remainder(10000);
 }
 
+class NotificationSpecificDateTime {
+  final DateTime specificDateTime;
+  final TimeOfDay timeOfDay;
+
+  NotificationSpecificDateTime({
+    required this.specificDateTime,
+    required this.timeOfDay,
+  });
+}
+
+class NotificationSpecificTime {
+  final int dayOfTheWeek;
+  final TimeOfDay timeOfDay;
+
+  NotificationSpecificTime(
+      {required this.dayOfTheWeek, required this.timeOfDay});
+}
+
 Future<void> createVocelNotification({String? possibleId}) async {
   await AwesomeNotifications().createNotification(
     content: NotificationContent(
@@ -187,14 +206,31 @@ Future<void> scheduleSpecificVocelNotification(
   );
 }
 
-class NotificationSpecificDateTime {
-  final DateTime specificDateTime;
-  final TimeOfDay timeOfDay;
+Future<void> scheduleSpecificVocelEventNotification(
+    NotificationSpecificDateTime notificationSchedule,
+    VocelEvent currentVocelEvent) async {
+  DateTime specificDateTime = notificationSchedule.specificDateTime;
+  TimeOfDay timeOfDay = notificationSchedule.timeOfDay;
 
-  NotificationSpecificDateTime({
-    required this.specificDateTime,
-    required this.timeOfDay,
-  });
+  await AwesomeNotifications().createNotification(
+    content: NotificationContent(
+        id: createUniqueId(),
+        channelKey: 'scheduled_channel',
+        title: "currentVocelEvent.eventTitle",
+        body: "currentVocelEvent.eventDescription",
+        notificationLayout: NotificationLayout.Default,
+        showWhen: true,
+        autoCancel: true),
+    schedule: NotificationCalendar(
+        year: specificDateTime.year,
+        month: specificDateTime.month,
+        day: specificDateTime.day,
+        hour: timeOfDay.hour,
+        minute: timeOfDay.minute,
+        second: 0,
+        millisecond: 0,
+        repeats: false),
+  );
 }
 
 Future<void> scheduleVocelNotification(
@@ -216,14 +252,6 @@ Future<void> scheduleVocelNotification(
           second: 0,
           millisecond: 0,
           repeats: false));
-}
-
-class NotificationSpecificTime {
-  final int dayOfTheWeek;
-  final TimeOfDay timeOfDay;
-
-  NotificationSpecificTime(
-      {required this.dayOfTheWeek, required this.timeOfDay});
 }
 
 Future<NotificationSpecificTime?> pickSchedule(BuildContext context) async {
