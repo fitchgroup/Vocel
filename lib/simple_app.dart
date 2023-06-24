@@ -11,11 +11,9 @@ import 'package:vocel/LocalizedInputResolver.dart';
 import 'package:vocel/LocalizedMessageResolver.dart';
 import 'package:vocel/LocalizedTitleResolver.dart';
 import 'package:vocel/common/utils/language_constants.dart';
-import 'package:vocel/common/utils/mutation_util.dart';
 import 'package:vocel/common/utils/notification_util.dart';
 import 'package:vocel/features/announcement/ui/drawer_list/bottom_navigation.dart';
-import 'package:vocel/models/Announcement.dart';
-import 'package:vocel/models/VocelEvent.dart';
+import 'package:vocel/models/ModelProvider.dart';
 
 class MyApp extends StatefulWidget {
   const MyApp({Key? key}) : super(key: key);
@@ -38,57 +36,38 @@ class _MyAppState extends State<MyApp> {
     });
   }
 
-  List<Announcement?> allAnnouncements = [];
+  // List<Announcement?> allAnnouncements = [];
   List<VocelEvent?> allVocelEvents = [];
   SubscriptionStatus prevSubscriptionStatus = SubscriptionStatus.disconnected;
-  StreamSubscription<GraphQLResponse<Announcement>>? subscription;
+
+  // StreamSubscription<GraphQLResponse<Announcement>>? subscription;
   StreamSubscription<GraphQLResponse<VocelEvent>>? subscription2;
 
   @override
   void initState() {
-    /// ...
-
-// Init listeners
+    // Init listeners to vocel event
     Amplify.Hub.listen(
       HubChannel.Api,
       (ApiHubEvent event) {
         if (event is SubscriptionHubEvent) {
           if (prevSubscriptionStatus == SubscriptionStatus.connecting &&
               event.status == SubscriptionStatus.connected) {
-            getAnnouncements(); // refetch todos
-            // getVocelEvents();
+            // getAnnouncements(); // refetch todos
+            getVocelEvents();
           }
           prevSubscriptionStatus = event.status;
         }
       },
     );
-    unsubscribe();
+    // unsubscribe();
+    // subscribe();
 
     super.initState();
   }
 
-  Future<void> getAnnouncements() async {
-    try {
-      final request = ModelQueries.list(Announcement.classType);
-      final response = await Amplify.API.query(request: request).response;
-
-      final todos = response.data?.items ?? [];
-      if (response.errors.isNotEmpty) {
-        testDebuggingPrint('errors: ${response.errors}');
-      }
-
-      setState(() {
-        allAnnouncements = todos;
-      });
-    } on ApiException catch (e) {
-      testDebuggingPrint('Query failed: $e');
-      return;
-    }
-  }
-
-  // Future<void> getVocelEvents() async {
+  // Future<void> getAnnouncements() async {
   //   try {
-  //     final request = ModelQueries.list(VocelEvent.classType);
+  //     final request = ModelQueries.list(Announcement.classType);
   //     final response = await Amplify.API.query(request: request).response;
   //
   //     final todos = response.data?.items ?? [];
@@ -97,7 +76,7 @@ class _MyAppState extends State<MyApp> {
   //     }
   //
   //     setState(() {
-  //       allVocelEvents = todos;
+  //       allAnnouncements = todos;
   //     });
   //   } on ApiException catch (e) {
   //     testDebuggingPrint('Query failed: $e');
@@ -105,59 +84,86 @@ class _MyAppState extends State<MyApp> {
   //   }
   // }
 
+  Future<void> getVocelEvents() async {
+    try {
+      final request = ModelQueries.list(VocelEvent.classType);
+      final response = await Amplify.API.query(request: request).response;
+
+      final todos = response.data?.items ?? [];
+      if (response.errors.isNotEmpty) {
+        testDebuggingPrint('errors: ${response.errors}');
+      }
+
+      setState(() {
+        allVocelEvents = todos;
+      });
+    } on ApiException catch (e) {
+      testDebuggingPrint('Query failed: $e');
+      return;
+    }
+  }
+
   void subscribe() {
     /// GET THE ANNOUNCEMENT DATA
-    final subscriptionRequest =
-        ModelSubscriptions.onCreate(Announcement.classType);
-    final Stream<GraphQLResponse<Announcement>> operation =
+    // final subscriptionRequest =
+    //     ModelSubscriptions.onCreate(Announcement.classType);
+    // final Stream<GraphQLResponse<Announcement>> operation =
+    //     Amplify.API.subscribe(
+    //   subscriptionRequest,
+    //   onEstablished: () => testDebuggingPrint('Subscription established'),
+    // );
+    // subscription = operation.listen(
+    //   (event) {
+    //     setState(() async {
+    //       NotificationSpecificDateTime result = NotificationSpecificDateTime(
+    //         specificDateTime: event.data!.createdAt!.getDateTimeInUtc(),
+    //         timeOfDay: TimeOfDay(
+    //           hour: TimeOfDay.now().hour,
+    //           minute: TimeOfDay.now().minute + 1,
+    //         ),
+    //       );
+    //       allAnnouncements.add(event.data);
+    //       if (event.data != null) {
+    //         scheduleSpecificVocelNotification(result, event.data!);
+    //       }
+    //     });
+    //   },
+    //   onError: (Object e) =>
+    //       testDebuggingPrint('Error in subscription stream: $e'),
+    // );
+
+    /// GET THE VOCELEVENT DATA
+    final subscriptionRequest2 =
+        ModelSubscriptions.onCreate(VocelEvent.classType);
+    final Stream<GraphQLResponse<VocelEvent>> operation2 =
         Amplify.API.subscribe(
-      subscriptionRequest,
+      subscriptionRequest2,
       onEstablished: () => testDebuggingPrint('Subscription established'),
     );
-    subscription = operation.listen(
+    subscription2 = operation2.listen(
       (event) {
         setState(() async {
-          NotificationSpecificDateTime result = NotificationSpecificDateTime(
+          NotificationSpecificDateTime result2 = NotificationSpecificDateTime(
             specificDateTime: event.data!.createdAt!.getDateTimeInUtc(),
             timeOfDay: TimeOfDay(
               hour: TimeOfDay.now().hour,
               minute: TimeOfDay.now().minute + 1,
             ),
           );
-          allAnnouncements.add(event.data);
-          safePrint("=" * 30 + allAnnouncements.length.toString() + "=" * 30);
+          allVocelEvents.add(event.data);
           if (event.data != null) {
-            scheduleSpecificVocelNotification(result, event.data!);
+            scheduleSpecificVocelEventNotification(result2, event.data!);
           }
         });
       },
       onError: (Object e) =>
           testDebuggingPrint('Error in subscription stream: $e'),
     );
-
-    /// GET THE VOCELEVENT DATA
-    // final subscriptionRequest2 =
-    // ModelSubscriptions.onCreate(VocelEvent.classType);
-    // final Stream<GraphQLResponse<VocelEvent>> operation2 =
-    // Amplify.API.subscribe(
-    //   subscriptionRequest2,
-    //   onEstablished: () => testDebuggingPrint('Subscription established'),
-    // );
-    // subscription2 = operation2.listen(
-    //       (event) {
-    //     setState(() {
-    //       allVocelEvents.add(event.data);
-    //       testDebuggingPrint(allVocelEvents.length.toString());
-    //     });
-    //   },
-    //   onError: (Object e) =>
-    //       testDebuggingPrint('Error in subscription stream: $e'),
-    // );
   }
 
   void unsubscribe() {
-    subscription?.cancel();
-    subscription = null;
+    subscription2?.cancel();
+    subscription2 = null;
   }
 
   void testDebuggingPrint(String shouldPrint) {

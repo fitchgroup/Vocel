@@ -58,6 +58,7 @@ class _PeopleListState extends State<PeopleList> {
                           ),
                         );
                       } else if (snapshot.hasError) {
+                        /// TODO: change the implementation if error raised in fetching data
                         return Text('Error: ${snapshot.error}');
                       } else {
                         List<Map<String, String>> dataList =
@@ -259,7 +260,7 @@ Widget peopleInkwell(BuildContext context, String myInfo, String theirEmail,
           child: Text(
             ["Staffversion1", "Bellversion1", "Eetcversion1", "Vcpaversion1"]
                     .contains(title)
-                ? title.substring(0, title.indexOf("version")).capitalized
+                ? title.substring(0, title.indexOf("version")).toUpperCase()
                 : title,
             style: const TextStyle(
               color: Colors.white,

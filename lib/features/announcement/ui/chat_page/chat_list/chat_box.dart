@@ -8,14 +8,17 @@ import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:flutter_chat_ui/flutter_chat_ui.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
-import 'package:intl/date_symbol_data_local.dart';
 import 'package:mime/mime.dart';
 import 'package:open_filex/open_filex.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:uuid/uuid.dart';
+import 'package:vocel/common/utils/colors.dart' as constants;
 
 class ChatPage extends StatefulWidget {
-  const ChatPage({super.key});
+  final myInfo;
+  final theirInfo;
+  final title;
+  const ChatPage({super.key, required String this.myInfo, required String this.theirInfo, required this.title});
 
   @override
   State<ChatPage> createState() => _ChatPage();
@@ -33,6 +36,68 @@ class _ChatPage extends State<ChatPage> {
 
   @override
   Widget build(BuildContext context) => Scaffold(
+    appBar: AppBar(
+      automaticallyImplyLeading: false,
+      leading: SizedBox(
+        height: 60,
+        width: 60,
+        child: FloatingActionButton(
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          child: const Icon(
+            Icons.arrow_back_rounded,
+            color: Colors.white,
+            size: 20,
+          ),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+      ),
+      title: SizedBox(
+        width: MediaQuery.of(context).size.width * 0.7,
+        child: Container(
+          height: 40,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Flexible(
+                fit: FlexFit.tight,
+                flex: 6, // Allocate 65% of the available height
+                child: FittedBox(
+                  fit: BoxFit.scaleDown,
+                  child: Text(
+                    widget.theirInfo,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(
+                      fontSize: 18,
+                      fontFamily: "Pangolin",
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ),
+              Flexible(
+                fit: FlexFit.tight,
+                flex: 4, // Allocate 35% of the available height
+                child: Text(
+                  widget.title,
+                  style: const TextStyle(
+                    fontSize: 14,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+      actions: const [],
+      centerTitle: false,
+      elevation: 2,
+      backgroundColor: const Color(constants.primaryColorDark),
+    ),
     body: Chat(
       messages: _messages,
       onAttachmentPressed: _handleAttachmentPressed,

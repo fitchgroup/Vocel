@@ -1,5 +1,6 @@
 import 'package:amplify_storage_s3/amplify_storage_s3.dart';
 import 'package:aws_common/vm.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -15,18 +16,28 @@ class StorageService {
   });
 
   ValueNotifier<double> uploadProgress = ValueNotifier<double>(0);
+
   Future<String> getImageUrl(String key) async {
-    final result = await Amplify.Storage.getUrl(
-      key: key,
-      options: const StorageGetUrlOptions(
-        accessLevel: StorageAccessLevel.protected,
-        pluginOptions: S3GetUrlPluginOptions(
-          validateObjectExistence: true,
-          expiresIn: Duration(days: 1),
+    try {
+      // if (kDebugMode) {
+      //   print("--" * 200 + key);
+      // }
+      final result = await Amplify.Storage.getUrl(
+        key: key,
+        options: const StorageGetUrlOptions(
+          accessLevel: StorageAccessLevel.guest,
+          pluginOptions: S3GetUrlPluginOptions(
+            validateObjectExistence: false,
+            expiresIn: Duration(days: 1),
+          ),
         ),
-      ),
-    ).result;
-    return result.url.toString();
+      ).result;
+      return result.url.toString();
+    } on StorageException catch (e) {
+      safePrint(
+          '${'${"=" * 100}\n'} Could not get a downloadable URL: ${e.message} ${'\n${"=" * 100}'}');
+      rethrow;
+    }
   }
 
   ValueNotifier<double> getUploadProgress() {
@@ -44,11 +55,25 @@ class StorageService {
           onProgress: (progress) {
             uploadProgress.value = progress.fractionCompleted;
           });
-
       return key;
     } on Exception catch (e) {
       debugPrint(e.toString());
       return null;
+    }
+  }
+
+  Future<void> downloadToMemory(String key) async {
+    try {
+      final result = await Amplify.Storage.downloadData(
+        key: key,
+        onProgress: (progress) {
+          safePrint('Fraction completed: ${progress.fractionCompleted}');
+        },
+      ).result;
+
+      safePrint('Downloaded data: ${result.bytes}');
+    } on StorageException catch (e) {
+      safePrint(e.message);
     }
   }
 
@@ -62,7 +87,7 @@ final storageServiceProvider = Provider<StorageService>((ref) {
 });
 
 final imageUrlProvider =
-FutureProvider.autoDispose.family<String, String>((ref, key) {
+    FutureProvider.autoDispose.family<String, String>((ref, key) {
   final storageService = ref.watch(storageServiceProvider);
   return storageService.getImageUrl(key);
 });

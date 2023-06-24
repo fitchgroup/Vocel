@@ -43,7 +43,7 @@ class configureAmplifySuccess extends AuthRepository {
         AmplifyAuthCognito(),
         AmplifyDataStore(modelProvider: ModelProvider.instance),
         apiPlugin,
-        AmplifyStorageS3()
+        AmplifyStorageS3(),
         // notificationsPlugin,
       ]);
 
