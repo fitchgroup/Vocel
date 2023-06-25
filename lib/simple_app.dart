@@ -11,7 +11,6 @@ import 'package:vocel/LocalizedInputResolver.dart';
 import 'package:vocel/LocalizedMessageResolver.dart';
 import 'package:vocel/LocalizedTitleResolver.dart';
 import 'package:vocel/common/utils/language_constants.dart';
-import 'package:vocel/common/utils/mutation_util.dart';
 import 'package:vocel/common/utils/notification_util.dart';
 import 'package:vocel/features/announcement/ui/drawer_list/bottom_navigation.dart';
 import 'package:vocel/models/Announcement.dart';
@@ -63,6 +62,7 @@ class _MyAppState extends State<MyApp> {
       },
     );
     unsubscribe();
+    // subscribe();
 
     super.initState();
   }
@@ -118,7 +118,8 @@ class _MyAppState extends State<MyApp> {
       (event) {
         setState(() async {
           NotificationSpecificDateTime result = NotificationSpecificDateTime(
-            specificDateTime: event.data!.createdAt!.getDateTimeInUtc(),
+            specificDateTime:
+                event.data!.createdAt!.getDateTimeInUtc().toLocal(),
             timeOfDay: TimeOfDay(
               hour: TimeOfDay.now().hour,
               minute: TimeOfDay.now().minute + 1,
