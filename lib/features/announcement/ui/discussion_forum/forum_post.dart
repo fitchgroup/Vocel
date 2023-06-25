@@ -227,14 +227,59 @@ class _ForumPostState extends State<ForumPost> {
               ],
             ),
             if (likeList.isNotEmpty)
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
+              Wrap(
+                crossAxisAlignment: WrapCrossAlignment.start,
                 children: [
                   const SizedBox(height: 16),
-                  Expanded(
-                    flex: 1,
-                    child: Text(
-                        likeList.isEmpty ? "" : likeList.join(",").toString()),
+                  RichText(
+                    text: TextSpan(
+                      children: [
+                        const TextSpan(
+                          text: 'Liked by ',
+                          style: TextStyle(
+                            color: Colors.black54,
+                            fontWeight: FontWeight.normal,
+                            fontSize: 16,
+                          ),
+                        ),
+                        if (likeList.length <= 3)
+                          TextSpan(
+                            text: likeList.join(", "),
+                            style: const TextStyle(
+                              color: Colors.black87,
+                              fontWeight: FontWeight.w500,
+                              fontSize: 16,
+                            ),
+                          ),
+                        if (likeList.length > 3)
+                          TextSpan(
+                            text: likeList.sublist(0, 3).join(", "),
+                            style: const TextStyle(
+                              color: Colors.black87,
+                              fontWeight: FontWeight.w500,
+                              fontSize: 16,
+                            ),
+                          ),
+                        if (likeList.length > 3)
+                          const TextSpan(
+                            text: ' and',
+                            style: TextStyle(
+                              color: Colors.black54,
+                              fontWeight: FontWeight.normal,
+                              fontSize: 16,
+                            ),
+                          ),
+                        if (likeList.length > 3)
+                          TextSpan(
+                            text: ' ${likeList.length - 3} others',
+                            style: const TextStyle(
+                              color: Colors.black87,
+                              fontWeight: FontWeight.w500,
+                              fontSize: 16,
+                            ),
+                          )
+                      ],
+                    ),
                   ),
                 ],
               ),
