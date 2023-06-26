@@ -1,4 +1,5 @@
 import 'package:add_2_calendar/add_2_calendar.dart';
+import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/src/consumer.dart';
 import 'package:vocel/common/utils/colors.dart' as constants;
@@ -8,6 +9,7 @@ import 'package:table_calendar/table_calendar.dart';
 import 'dart:collection';
 import 'package:vocel/features/announcement/ui/calendar_page/calendar_header.dart';
 import 'package:vocel/models/Announcement.dart';
+import 'package:vocel/models/ProfileRole.dart';
 import 'package:vocel/models/VocelEvent.dart';
 
 // from flutter doc: this file is purely for testing right now
@@ -22,10 +24,11 @@ class CalendarListPage extends StatefulWidget {
   final List<VocelEvent> calendarItemEvent;
   final WidgetRef refFromHook;
 
-  const CalendarListPage({super.key,
-    required this.calendarItemAnnouncement,
-    required this.calendarItemEvent,
-    required this.refFromHook});
+  const CalendarListPage(
+      {super.key,
+      required this.calendarItemAnnouncement,
+      required this.calendarItemEvent,
+      required this.refFromHook});
 
   @override
   _CalendarListPageState createState() => _CalendarListPageState();
@@ -35,7 +38,7 @@ class _CalendarListPageState extends State<CalendarListPage> {
   late final ValueNotifier<List<Announcement>> _selectedAnnouncements;
   late final ValueNotifier<List<VocelEvent>> _selectedEvents;
   final ValueNotifier<DateTime> _currentDateTime =
-  ValueNotifier(DateTime.now()); // get the current datetime
+      ValueNotifier(DateTime.now()); // get the current datetime
   final Set<DateTime> _selectedDays = LinkedHashSet<DateTime>(
     equals: isSameDay,
     hashCode: getHashCode,
@@ -77,24 +80,21 @@ class _CalendarListPageState extends State<CalendarListPage> {
   // see if there are any selected days in the calendar, if yes, then the clear button shows; if not, there the clear button is hidden
   bool get canClearSelection =>
       _selectedDays.isNotEmpty ||
-          _rangeStart != null ||
-          _rangeEnd !=
-              null; // decide whether the clearButton should be displayed
+      _rangeStart != null ||
+      _rangeEnd != null; // decide whether the clearButton should be displayed
 
   /// TODO: CHANGE THE ANNOUNCEMENT TO POST?
   late LinkedHashMap<DateTime, List<Announcement>> calendarRenderMap =
-  LinkedHashMap<DateTime, List<Announcement>>(
+      LinkedHashMap<DateTime, List<Announcement>>(
     equals: isSameDay,
     hashCode: getHashCode,
-  )
-    ..addAll(change());
+  )..addAll(change());
 
   late LinkedHashMap<DateTime, List<VocelEvent>> calendarRenderMap2 =
-  LinkedHashMap<DateTime, List<VocelEvent>>(
+      LinkedHashMap<DateTime, List<VocelEvent>>(
     equals: isSameDay,
     hashCode: getHashCode,
-  )
-    ..addAll(change2());
+  )..addAll(change2());
 
   // this is to create a calendarRenderSource which is a LinkedHashMap<DateTime, List<Announcement>>,
   // and a calendarRenderSource2 which is a LinkedHashMap<DateTime, List<VocelEvent>>
@@ -125,15 +125,9 @@ class _CalendarListPageState extends State<CalendarListPage> {
         List<VocelEvent>>(); // Initialize the variable with the correct type
     for (var item in widget.calendarItemEvent) {
       DateTime dateOnly = DateTime(
-          item.startTime
-              .getDateTimeInUtc()
-              .year,
-          item.startTime
-              .getDateTimeInUtc()
-              .month,
-          item.startTime
-              .getDateTimeInUtc()
-              .day);
+          item.startTime.getDateTimeInUtc().year,
+          item.startTime.getDateTimeInUtc().month,
+          item.startTime.getDateTimeInUtc().day);
       final key = dateOnly;
       if (calendarRenderSource2.containsKey(key)) {
         calendarRenderSource2[key] = [
@@ -301,7 +295,7 @@ class _CalendarListPageState extends State<CalendarListPage> {
               onRangeSelected: _onRangeSelected,
               onCalendarCreated: (controller) => _pageController = controller,
               onPageChanged: (focusedDay) =>
-              _currentDateTime.value = focusedDay,
+                  _currentDateTime.value = focusedDay,
               onFormatChanged: (format) {
                 if (_calendarFormat != format) {
                   setState(() => _calendarFormat = format);
@@ -331,23 +325,27 @@ class _CalendarListPageState extends State<CalendarListPage> {
                             border: Border(
                                 left: BorderSide(
                                     color:
-                                    Color(constants.shiftColor[index % 4]),
+                                        Color(constants.shiftColor[index % 4]),
                                     width: 4.0)),
                             color: Colors.grey[
-                            200], // Add a background color to mimic blockquote style
+                                200], // Add a background color to mimic blockquote style
                           ),
                           padding: const EdgeInsets.all(8.0),
                           // Add some padding to the container
                           child: ListTile(
-                            title: Text(
-                              '$item',
-                              style: TextStyle(
-                                  fontStyle: FontStyle.normal,
-                                  // Make the text italic
-                                  color: Colors.grey[800],
-                                  // Adjust text color to your preference
-                                  fontFamily: "Pangolin",
-                                  fontSize: 16),
+                            title: CalendarEventWidget(
+                              title: (item as VocelEvent).eventTitle,
+                              description:
+                                  (item as VocelEvent).eventDescription,
+                              startTime: (item as VocelEvent)
+                                  .startTime
+                                  .getDateTimeInUtc(),
+                              endTime: (item as VocelEvent)
+                                  .startTime
+                                  .getDateTimeInUtc()
+                                  .add(Duration(minutes: item.duration)),
+                              location: (item as VocelEvent).eventLocation,
+                              eventGroup: (item as VocelEvent).eventGroup,
                             ),
                             subtitle: Row(
                               mainAxisAlignment: MainAxisAlignment.end,
@@ -384,7 +382,7 @@ class _CalendarListPageState extends State<CalendarListPage> {
                                             fontWeight: FontWeight.bold,
                                             fontSize: 13,
                                             fontFamily:
-                                            'Montserrat', // Custom font family
+                                                'Montserrat', // Custom font family
                                           ),
                                         ),
                                       ],
@@ -413,9 +411,7 @@ class _CalendarListPageState extends State<CalendarListPage> {
       description: thisEvent.eventDescription,
       location: thisEvent.eventLocation,
       startDate: thisEvent.startTime.getDateTimeInUtc().toLocal(),
-      timeZone: DateTime
-          .now()
-          .timeZoneName,
+      timeZone: DateTime.now().timeZoneName,
       endDate: thisEvent.startTime
           .getDateTimeInUtc()
           .toLocal()
@@ -431,5 +427,98 @@ class _CalendarListPageState extends State<CalendarListPage> {
       // ),
     );
     Add2Calendar.addEvent2Cal(event);
+  }
+}
+
+class CalendarEventWidget extends StatelessWidget {
+  final String title;
+  final String description;
+  final DateTime startTime;
+  final DateTime endTime;
+  final String location;
+  final ProfileRole eventGroup;
+
+  CalendarEventWidget({
+    required this.title,
+    required this.description,
+    required this.startTime,
+    required this.endTime,
+    required this.location,
+    required this.eventGroup,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.grey[200],
+        borderRadius: BorderRadius.circular(10),
+      ),
+      padding: const EdgeInsets.fromLTRB(5, 5, 0, 0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                '${Emojis.office_calendar} $title',
+                style: const TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                  fontFamily: 'Pangolin',
+                ),
+              ),
+              Text(
+                '    👥 Visible to: ${eventGroup.name}',
+                style: const TextStyle(fontSize: 18, fontFamily: 'Pangolin'),
+              ),
+            ],
+          ),
+          const SizedBox(height: 10),
+          RichText(
+            text: TextSpan(
+              style: const TextStyle(fontSize: 18),
+              children: [
+                const TextSpan(
+                  text: 'Description: ',
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20,
+                      color: Colors.black54,
+                      fontFamily: 'Pangolin'),
+                ),
+                TextSpan(
+                  text: description,
+                  style: TextStyle(fontSize: 18, color: Colors.black54),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 16),
+          Row(
+            children: [
+              const Icon(Icons.access_time),
+              const SizedBox(width: 5),
+              Text(
+                '${startTime.hour}:${startTime.minute} - ${endTime.hour}:${endTime.minute}',
+                style: const TextStyle(fontSize: 18, fontFamily: 'Pangolin'),
+              ),
+            ],
+          ),
+          const SizedBox(height: 10),
+          Row(
+            children: [
+              const Icon(Icons.location_on),
+              const SizedBox(width: 5),
+              Text(
+                location,
+                style: const TextStyle(fontSize: 18, fontFamily: 'Pangolin'),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
   }
 }

@@ -19,7 +19,9 @@
 
 // ignore_for_file: public_member_api_docs, annotate_overrides, dead_code, dead_codepublic_member_api_docs, depend_on_referenced_packages, file_names, library_private_types_in_public_api, no_leading_underscores_for_library_prefixes, no_leading_underscores_for_local_identifiers, non_constant_identifier_names, null_check_on_nullable_type_parameter, prefer_adjacent_string_concatenation, prefer_const_constructors, prefer_if_null_operators, prefer_interpolation_to_compose_strings, slash_for_doc_comments, sort_child_properties_last, unnecessary_const, unnecessary_constructor_name, unnecessary_late, unnecessary_new, unnecessary_null_aware_assignments, unnecessary_nullable_for_final_variable_declarations, unnecessary_string_interpolations, use_build_context_synchronously
 
+import 'ModelProvider.dart';
 import 'package:amplify_core/amplify_core.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter/foundation.dart';
 
 /** This is an auto generated class representing the Announcement type in your schema. */
@@ -31,6 +33,8 @@ class Announcement extends Model {
   final String? _description;
   final bool? _isCompleted;
   final bool? _isPinned;
+  final List<String>? _likes;
+  final List<CommentAnnouncement>? _comments;
   final TemporalDateTime? _createdAt;
   final TemporalDateTime? _updatedAt;
 
@@ -98,6 +102,14 @@ class Announcement extends Model {
     }
   }
 
+  List<String>? get likes {
+    return _likes;
+  }
+
+  List<CommentAnnouncement>? get comments {
+    return _comments;
+  }
+
   TemporalDateTime? get createdAt {
     return _createdAt;
   }
@@ -106,33 +118,41 @@ class Announcement extends Model {
     return _updatedAt;
   }
 
-  const Announcement._internal(
-      {required this.id,
-      required tripName,
-      required description,
-      required isCompleted,
-      required isPinned,
-      createdAt,
-      updatedAt})
+  const Announcement._internal({required this.id,
+    required tripName,
+    required description,
+    required isCompleted,
+    required isPinned,
+    likes,
+    comments,
+    createdAt,
+    updatedAt})
       : _tripName = tripName,
         _description = description,
         _isCompleted = isCompleted,
         _isPinned = isPinned,
+        _likes = likes,
+        _comments = comments,
         _createdAt = createdAt,
         _updatedAt = updatedAt;
 
-  factory Announcement(
-      {String? id,
-      required String tripName,
-      required String description,
-      required bool isCompleted,
-      required bool isPinned}) {
+  factory Announcement({String? id,
+    required String tripName,
+    required String description,
+    required bool isCompleted,
+    required bool isPinned,
+    List<String>? likes,
+    List<CommentAnnouncement>? comments}) {
     return Announcement._internal(
         id: id == null ? UUID.getUUID() : id,
         tripName: tripName,
         description: description,
         isCompleted: isCompleted,
         isPinned: isPinned,
+        likes: likes != null ? List<String>.unmodifiable(likes) : likes,
+        comments: comments != null
+            ? List<CommentAnnouncement>.unmodifiable(comments)
+            : comments,
         createdAt: TemporalDateTime.now());
   }
 
@@ -148,7 +168,9 @@ class Announcement extends Model {
         _tripName == other._tripName &&
         _description == other._description &&
         _isCompleted == other._isCompleted &&
-        _isPinned == other._isPinned;
+        _isPinned == other._isPinned &&
+        DeepCollectionEquality().equals(_likes, other._likes) &&
+        DeepCollectionEquality().equals(_comments, other._comments);
   }
 
   @override
@@ -168,6 +190,8 @@ class Announcement extends Model {
     buffer.write("isPinned=" +
         (_isPinned != null ? _isPinned!.toString() : "null") +
         ", ");
+    buffer.write(
+        "likes=" + (_likes != null ? _likes!.toString() : "null") + ", ");
     buffer.write("createdAt=" +
         (_createdAt != null ? _createdAt!.format() : "null") +
         ", ");
@@ -178,17 +202,20 @@ class Announcement extends Model {
     return buffer.toString();
   }
 
-  Announcement copyWith(
-      {String? tripName,
-      String? description,
-      bool? isCompleted,
-      bool? isPinned}) {
+  Announcement copyWith({String? tripName,
+    String? description,
+    bool? isCompleted,
+    bool? isPinned,
+    List<String>? likes,
+    List<CommentAnnouncement>? comments}) {
     return Announcement._internal(
         id: id,
         tripName: tripName ?? this.tripName,
         description: description ?? this.description,
         isCompleted: isCompleted ?? this.isCompleted,
-        isPinned: isPinned ?? this.isPinned);
+        isPinned: isPinned ?? this.isPinned,
+        likes: likes ?? this.likes,
+        comments: comments ?? this.comments);
   }
 
   Announcement.fromJson(Map<String, dynamic> json)
@@ -197,6 +224,15 @@ class Announcement extends Model {
         _description = json['description'],
         _isCompleted = json['isCompleted'],
         _isPinned = json['isPinned'],
+        _likes = json['likes']?.cast<String>(),
+        _comments = json['comments'] is List
+            ? (json['comments'] as List)
+            .where((e) => e?['serializedData'] != null)
+            .map((e) =>
+            CommentAnnouncement.fromJson(
+                new Map<String, dynamic>.from(e['serializedData'])))
+            .toList()
+            : null,
         _createdAt = json['createdAt'] != null
             ? TemporalDateTime.fromString(json['createdAt'])
             : null,
@@ -204,35 +240,47 @@ class Announcement extends Model {
             ? TemporalDateTime.fromString(json['updatedAt'])
             : null;
 
-  Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() =>
+      {
         'id': id,
         'tripName': _tripName,
         'description': _description,
         'isCompleted': _isCompleted,
         'isPinned': _isPinned,
+        'likes': _likes,
+        'comments':
+        _comments?.map((CommentAnnouncement? e) => e?.toJson()).toList(),
         'createdAt': _createdAt?.format(),
         'updatedAt': _updatedAt?.format()
       };
 
-  Map<String, Object?> toMap() => {
+  Map<String, Object?> toMap() =>
+      {
         'id': id,
         'tripName': _tripName,
         'description': _description,
         'isCompleted': _isCompleted,
         'isPinned': _isPinned,
+        'likes': _likes,
+        'comments': _comments,
         'createdAt': _createdAt,
         'updatedAt': _updatedAt
       };
 
   static final QueryModelIdentifier<AnnouncementModelIdentifier>
-      MODEL_IDENTIFIER = QueryModelIdentifier<AnnouncementModelIdentifier>();
+  MODEL_IDENTIFIER = QueryModelIdentifier<AnnouncementModelIdentifier>();
   static final QueryField ID = QueryField(fieldName: "id");
   static final QueryField TRIPNAME = QueryField(fieldName: "tripName");
   static final QueryField DESCRIPTION = QueryField(fieldName: "description");
   static final QueryField ISCOMPLETED = QueryField(fieldName: "isCompleted");
   static final QueryField ISPINNED = QueryField(fieldName: "isPinned");
+  static final QueryField LIKES = QueryField(fieldName: "likes");
+  static final QueryField COMMENTS = QueryField(
+      fieldName: "comments",
+      fieldType: ModelFieldType(ModelFieldTypeEnum.model,
+          ofModelName: 'CommentAnnouncement'));
   static var schema =
-      Model.defineSchema(define: (ModelSchemaDefinition modelSchemaDefinition) {
+  Model.defineSchema(define: (ModelSchemaDefinition modelSchemaDefinition) {
     modelSchemaDefinition.name = "Announcement";
     modelSchemaDefinition.pluralName = "Announcements";
 
@@ -243,11 +291,12 @@ class Announcement extends Model {
           identityClaim: "cognito:username",
           provider: AuthRuleProvider.USERPOOLS,
           operations: [
-            ModelOperation.CREATE,
+            ModelOperation.READ,
             ModelOperation.UPDATE,
-            ModelOperation.DELETE,
-            ModelOperation.READ
-          ])
+            ModelOperation.DELETE
+          ]),
+      AuthRule(
+          authStrategy: AuthStrategy.PUBLIC, operations: [ModelOperation.READ])
     ];
 
     modelSchemaDefinition.addField(ModelFieldDefinition.id());
@@ -271,6 +320,19 @@ class Announcement extends Model {
         key: Announcement.ISPINNED,
         isRequired: true,
         ofType: ModelFieldType(ModelFieldTypeEnum.bool)));
+
+    modelSchemaDefinition.addField(ModelFieldDefinition.field(
+        key: Announcement.LIKES,
+        isRequired: false,
+        isArray: true,
+        ofType: ModelFieldType(ModelFieldTypeEnum.collection,
+            ofModelName: describeEnum(ModelFieldTypeEnum.string))));
+
+    modelSchemaDefinition.addField(ModelFieldDefinition.hasMany(
+        key: Announcement.COMMENTS,
+        isRequired: false,
+        ofModelName: 'CommentAnnouncement',
+        associatedKey: CommentAnnouncement.ANNOUNCEMENT));
 
     modelSchemaDefinition.addField(ModelFieldDefinition.nonQueryField(
         fieldName: 'createdAt',
@@ -315,10 +377,11 @@ class AnnouncementModelIdentifier implements ModelIdentifier<Announcement> {
   Map<String, dynamic> serializeAsMap() => (<String, dynamic>{'id': id});
 
   @override
-  List<Map<String, dynamic>> serializeAsList() => serializeAsMap()
-      .entries
-      .map((entry) => (<String, dynamic>{entry.key: entry.value}))
-      .toList();
+  List<Map<String, dynamic>> serializeAsList() =>
+      serializeAsMap()
+          .entries
+          .map((entry) => (<String, dynamic>{entry.key: entry.value}))
+          .toList();
 
   @override
   String serializeAsString() => serializeAsMap().values.join('#');
