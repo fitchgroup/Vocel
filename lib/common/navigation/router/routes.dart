@@ -1,5 +1,5 @@
-enum AppRoute {
+enum EventRoute {
   home,
-  trip,
-  edittrip,
+  event,
+  editevent,
 }

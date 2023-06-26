@@ -22,20 +22,22 @@
 import 'package:amplify_core/amplify_core.dart';
 import 'Announcement.dart';
 import 'Comment.dart';
+import 'CommentAnnouncement.dart';
 import 'Post.dart';
 import 'VocelEvent.dart';
 
 export 'Announcement.dart';
 export 'Comment.dart';
+export 'CommentAnnouncement.dart';
 export 'Post.dart';
 export 'ProfileRole.dart';
 export 'VocelEvent.dart';
 
 class ModelProvider implements ModelProviderInterface {
   @override
-  String version = "25d38f805bbc8504494bc39395fd4c15";
+  String version = "faba12fb69b687b7bbdf41520715a7e1";
   @override
-  List<ModelSchema> modelSchemas = [Announcement.schema, Comment.schema, Post.schema, VocelEvent.schema];
+  List<ModelSchema> modelSchemas = [Announcement.schema, Comment.schema, CommentAnnouncement.schema, Post.schema, VocelEvent.schema];
   static final ModelProvider _instance = ModelProvider();
   @override
   List<ModelSchema> customTypeSchemas = [];
@@ -48,6 +50,8 @@ class ModelProvider implements ModelProviderInterface {
         return Announcement.classType;
       case "Comment":
         return Comment.classType;
+      case "CommentAnnouncement":
+        return CommentAnnouncement.classType;
       case "Post":
         return Post.classType;
       case "VocelEvent":

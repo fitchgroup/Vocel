@@ -1,6 +1,6 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:vocel/features/announcement/services/event_datastore.dart';
-import 'package:vocel/models/Event.dart';
+import 'package:vocel/models/VocelEvent.dart';
 
 /// eventsRepositoryProvider: This provider defines the EventsRepository instance
 /// by taking an EventsDataStoreService instance as a dependency. It is responsible
@@ -17,7 +17,7 @@ final eventsRepositoryProvider = Provider<EventsRepository>((ref) {
 /// It depends on the eventsRepositoryProvider and retrieves the events using the getEvents()
 /// method from the EventsRepository.
 
-final eventsListStreamProvider = StreamProvider.autoDispose<List<Event?>>((ref) {
+final eventsListStreamProvider = StreamProvider.autoDispose<List<VocelEvent?>>((ref) {
   final eventsRepository = ref.watch(eventsRepositoryProvider);
   return eventsRepository.getEvents();
 });
@@ -27,7 +27,7 @@ final eventsListStreamProvider = StreamProvider.autoDispose<List<Event?>>((ref) 
 /// method from the EventsRepository.
 
 final pastEventsListStreamProvider =
-StreamProvider.autoDispose<List<Event?>>((ref) {
+StreamProvider.autoDispose<List<VocelEvent?>>((ref) {
   final eventsRepository = ref.watch(eventsRepositoryProvider);
   return eventsRepository.getPastEvents();
 });
@@ -37,7 +37,7 @@ StreamProvider.autoDispose<List<Event?>>((ref) {
 /// from the EventsRepository.
 
 final eventProvider =
-StreamProvider.autoDispose.family<Event?, String>((ref, id) {
+StreamProvider.autoDispose.family<VocelEvent?, String>((ref, id) {
   final eventsRepository = ref.watch(eventsRepositoryProvider);
   return eventsRepository.get(id);
 });
@@ -51,27 +51,27 @@ class EventsRepository {
 
   final EventsDataStoreService eventsDataStoreService;
 
-  Stream<List<Event>> getEvents() {
+  Stream<List<VocelEvent>> getEvents() {
     return eventsDataStoreService.listenToEvents();
   }
 
-  Stream<List<Event>> getPastEvents() {
+  Stream<List<VocelEvent>> getPastEvents() {
     return eventsDataStoreService.listenToPastEvents();
   }
 
-  Future<void> add(Event event) async {
+  Future<void> add(VocelEvent event) async {
     await eventsDataStoreService.addEvent(event);
   }
 
-  Future<void> update(Event updatedEvent) async {
+  Future<void> update(VocelEvent updatedEvent) async {
     await eventsDataStoreService.updateEvent(updatedEvent);
   }
 
-  Future<void> delete(Event deletedEvent) async {
+  Future<void> delete(VocelEvent deletedEvent) async {
     await eventsDataStoreService.deleteEvent(deletedEvent);
   }
 
-  Stream<Event> get(String id) {
+  Stream<VocelEvent> get(String id) {
     return eventsDataStoreService.getEventStream(id);
   }
 }
