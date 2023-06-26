@@ -7,9 +7,9 @@ name: Dart
 
 on:
   push:
-    branches: ["main"]
+    branches: [ "main" ]
   pull_request:
-    branches: ["main"]
+    branches: [ "main" ]
 
 jobs:
   version:
@@ -37,19 +37,21 @@ jobs:
           path: version.txt
   build-ios:
     name: Build and Create release
-    needs: [version]
+    needs: [ version ]
     runs-on: macos-latest
-    steps:      
+    steps:
       - uses: actions/checkout@v3
       - uses: subosito/flutter-action@v2
         with:
           channel: 'stable'
           architecture: x64
       - run: flutter pub get
+      - run: sudo gem install cocoapods
+      - run: pod repo update
       - run: flutter build ipa --debug --no-codesign
   build-android:
     name: Build APK and Create release
-    needs: [version]
+    needs: [ version ]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
@@ -113,7 +115,7 @@ jobs:
           path: build/app/outputs/bundle/release/app-release.aab
   release:
     name: Release app to internal track
-    needs: [build-android]
+    needs: [ build-android ]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
