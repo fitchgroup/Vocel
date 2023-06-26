@@ -271,6 +271,26 @@ amplify/backend/function/AdminQueriesf35eea9e/src/app.js
 
 6. Start the Express application on port 3000.
 
+### There is a file whose path is amplify/#current-cloud-backend/function/AdminQueriesxxxxxxx/AdminQueriesxxxxxxx-cloudformation-template.json
+
+The provided file is an AWS CloudFormation template file. CloudFormation is an AWS service that allows you to describe and provision infrastructure resources in a declarative manner. The CloudFormation template file you shared is used for deploying an AWS Lambda function and its associated resources.
+
+#### Template Breakdown
+
+- **AWSTemplateFormatVersion**: Specifies the version of the CloudFormation template format.
+- **Description**: Provides a description of the CloudFormation template.
+- **Parameters**: Defines the input parameters for the CloudFormation stack.
+- **Conditions**: Defines conditions based on which resources will be created or updated.
+- **Resources**: Specifies the AWS resources to be provisioned, such as the Lambda function and its execution role.
+- **Outputs**: Defines the outputs of the CloudFormation stack, such as the ARN (Amazon Resource Name) of the Lambda function.
+
+In this specific template, it deploys an AWS Lambda function (`LambdaFunction`) along with its execution role (`LambdaExecutionRole`). The Lambda function is written in Node.js 16.x (`Runtime: "nodejs16.x"`) and has a handler function named `index.handler`. The function's code is stored in an S3 bucket (`Code.S3Bucket` and `Code.S3Key`).
+
+The execution role (`LambdaExecutionRole`) is defined with an associated IAM policy (`lambdaexecutionpolicy`) that grants necessary permissions to the Lambda function. The permissions include actions related to logging, as well as various actions on a Cognito user pool (`cognito-idp`) for managing users and groups.
+
+The `Outputs` section defines several outputs that can be useful for referencing the created resources, such as the Lambda function's name, ARN, and the execution role's ARN.
+
+Overall, this CloudFormation template provides a way to deploy the Lambda function and its required resources in a structured and repeatable manner using AWS CloudFormation.
 
 
 <br> 
@@ -420,6 +440,13 @@ Create groups called ...
 1. In your `pubspec.yaml` file, add the `flutter_launcher_icons` package as a dev dependency.
 2. Make sure the spacing and formatting are correct.
 3. Replace the image path in the `flutter_icons` section with the correct file name and location.
+```yaml
+flutter_icons:
+  android: true
+  ios: true
+  # change the icon of the app
+  image_path: "assets/app_logo.png"
+```
 4. Save the `pubspec.yaml` file.
 5. Open the terminal or command line and navigate to your Flutter project's location.
 6. Run the following commands: `flutter clean`, `flutter pub get`
@@ -430,14 +457,17 @@ Create groups called ...
 
 1. In your terminal or command line, activate the `rename` package by running the installation
    command.
-2. Use the `pop global run rename` command to set a new app name.
+```bash
+pub global activate rename
+```
+2. Use the `pop global run rename --appname "Your app name"` command to set a new app name.
 3. Enter your desired app name when prompted.
 4. Check that the Android app name has changed successfully.
 
 The command `pub global run rename --bundleId com.example.myapp` is used to change the bundle
 identifier (package name) of a Flutter app. It helps in rebranding the app or ensuring uniqueness in
 the app stores.
-for example, change it to **pub global run rename --bundleId com.example.myapp**
+for example, change it to **pub global run rename --bundleId com.fitchandvocel.vocel**
 
 Notice: A bundle identifier (bundleId) is not always required for deploying an app. However, it is
 necessary if you want to distribute your app through app stores like Apple App Store or Google Play

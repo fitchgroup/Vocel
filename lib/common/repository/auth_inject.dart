@@ -37,13 +37,12 @@ class configureAmplifySuccess extends AuthRepository {
           retryOptions: RetryOptions(maxAttempts: 10),
         ),
       );
-      // Configure the desired API name
 
       await Amplify.addPlugins([
         AmplifyAuthCognito(),
+        AmplifyAPI(),
         AmplifyDataStore(modelProvider: ModelProvider.instance),
-        apiPlugin,
-        AmplifyStorageS3()
+        AmplifyStorageS3(),
         // notificationsPlugin,
       ]);
 

@@ -47,12 +47,21 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+
+
 	<key>NSCameraUsageDescription</key>
     <string>Some Description</string>
     <key>NSMicrophoneUsageDescription</key>
     <string>Some Description</string>
     <key>NSPhotoLibraryUsageDescription</key>
     <string>Some Description</string>
+    <key>NSCalendarsUsageDescription</key>
+    <string>Some Description</string>
+    <key>CFBundleLocalizations</key>
+    	<array>
+    		<string>en</string>
+    		<string>es</string>
+    	</array>
 
 
     <!-- Enable large icon support for notifications -->
