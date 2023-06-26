@@ -373,3 +373,59 @@ Future<String> verifyGroupAccess() async {
   });
   return groupName;
 }
+
+List<String> desireGroupList = [
+  "Staffversion1",
+  "Bellversion1",
+  "Eetcversion1",
+  "Vcpaversion1"
+];
+
+Future<List<Map<String, String>>> getUserAttrInTheMap(
+    String desireSingleList) async {
+  Map<String, dynamic> listInGroup;
+
+  List<Map<String, String>> outputList = [];
+
+  if (desireSingleList == "") {
+    listInGroup = await listAllUsersInGroup();
+  } else {
+    listInGroup = await listUsersInGroup(desireSingleList);
+  }
+  List<dynamic> userList = listInGroup['Users'];
+  for (var userDict in userList) {
+    Map<String, String> outputMap = {};
+    var attributes = userDict['Attributes'];
+    for (var attributesDict in attributes) {
+      String attributeName = attributesDict["Name"];
+      String attributeValue = attributesDict["Value"].toString();
+      // if (kDebugMode) {
+      //   print("${attributeName}and$attributeValue");
+      // }
+      switch (attributeName) {
+        case 'email':
+          outputMap['email'] = attributeValue;
+
+          if (desireSingleList != "") {
+            outputMap['VocelGroup'] = desireSingleList;
+          }
+          break;
+        case 'custom:name':
+          outputMap['name'] = attributeValue;
+          break;
+        case 'custom:about':
+          outputMap['aboutMe'] = attributeValue;
+          break;
+        case 'custom:region':
+          outputMap['region'] = attributeValue;
+          break;
+      }
+    }
+
+    if (outputMap.isNotEmpty) {
+      outputList.add(outputMap);
+    }
+  }
+
+  return outputList;
+}

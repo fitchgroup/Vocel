@@ -82,13 +82,6 @@ class _AnnouncementsListPageState extends State<AnnouncementsListPage> {
   /// -------------------------------------------------------------- ///
   /// ////////////////////////////////////////////////////////////// ///
 
-  List<String> desireList = [
-    "Staffversion1",
-    "Bellversion1",
-    "Eetcversion1",
-    "Vcpaversion1"
-  ];
-
   // Declare futureResult with a default value
   late Future<List<dynamic>> futureResult = Future.value([]);
   bool loading = false;
@@ -98,75 +91,23 @@ class _AnnouncementsListPageState extends State<AnnouncementsListPage> {
     List<Map<String, String>> mapElement;
     if (element == "") {
       mapElement = [];
-      for (String iterElement in desireList) {
+      for (String iterElement in desireGroupList) {
         List<Map<String, String>> tempMapElement = [];
         tempMapElement = await getUserAttrInTheMap(iterElement);
         mapElement.addAll(tempMapElement);
       }
+      List<Map<String, String>> mapElementWithAllUsers =
+          await getUserAttrInTheMap("");
+      List<String?> listMapElement =
+          mapElement.map((item) => item["email"]).toList();
+      List<Map<String, String>> result = mapElementWithAllUsers
+          .where((item) => !listMapElement.contains(item["email"]))
+          .toList();
+      mapElement.addAll(result);
     } else {
       mapElement = await getUserAttrInTheMap(element);
     }
     return mapElement;
-  }
-
-  Future<List<Map<String, String>>> getUserAttrInTheMap(
-      String desireSingleList) async {
-    Map<String, dynamic> listInGroup;
-
-    List<Map<String, String>> outputList = [];
-
-    if (desireSingleList == "") {
-      listInGroup = await listAllUsersInGroup();
-    } else {
-      listInGroup = await listUsersInGroup(desireSingleList);
-    }
-    List<dynamic> userList = listInGroup['Users'];
-    for (var userDict in userList) {
-      Map<String, String> outputMap = {};
-      var attributes = userDict['Attributes'];
-      for (var attributesDict in attributes) {
-        String attributeName = attributesDict["Name"];
-        String attributeValue = attributesDict["Value"].toString();
-        // if (kDebugMode) {
-        //   print("${attributeName}and$attributeValue");
-        // }
-        switch (attributeName) {
-          case 'email':
-            outputMap['email'] = attributeValue;
-
-            if (desireSingleList != "") {
-              outputMap['VocelGroup'] = desireSingleList;
-            } else {
-              final jsonMap =
-                  await listGroupsForUser(receivedUserName: attributeValue);
-              for (var element in jsonMap['Groups']) {
-                final groupName = element['GroupName'];
-
-                if (!outputMap.containsKey('VocelGroup') &&
-                    desireList.contains(groupName)) {
-                  outputMap['VocelGroup'] = groupName;
-                }
-              }
-            }
-            break;
-          case 'custom:name':
-            outputMap['name'] = attributeValue;
-            break;
-          case 'custom:about':
-            outputMap['aboutMe'] = attributeValue;
-            break;
-          case 'custom:region':
-            outputMap['region'] = attributeValue;
-            break;
-        }
-      }
-
-      if (outputMap.isNotEmpty) {
-        outputList.add(outputMap);
-      }
-    }
-
-    return outputList;
   }
 
   Future<void> settingGroupStates() async {
