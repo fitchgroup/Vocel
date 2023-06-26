@@ -155,5 +155,54 @@
       ]
     }
   },
-  "storage": {}
+  "storage": {
+    "s37a5481e1": {
+      "dependsOn": [
+        {
+          "attributes": [
+            "UserPoolId"
+          ],
+          "category": "auth",
+          "resourceName": "vocelversion10392777d"
+        },
+        {
+          "attributes": [
+            "Staffversion1GroupRole"
+          ],
+          "category": "auth",
+          "resourceName": "userPoolGroups"
+        },
+        {
+          "attributes": [
+            "Bellversion1GroupRole"
+          ],
+          "category": "auth",
+          "resourceName": "userPoolGroups"
+        },
+        {
+          "attributes": [
+            "Eetcversion1GroupRole"
+          ],
+          "category": "auth",
+          "resourceName": "userPoolGroups"
+        },
+        {
+          "attributes": [
+            "Vcpaversion1GroupRole"
+          ],
+          "category": "auth",
+          "resourceName": "userPoolGroups"
+        },
+        {
+          "attributes": [
+            "Unassignedversion1GroupRole"
+          ],
+          "category": "auth",
+          "resourceName": "userPoolGroups"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "S3"
+    }
+  }
 }
