@@ -196,8 +196,6 @@ class _ForumPostState extends State<ForumPost> {
                           await widget.callbackLikes(
                               widget.thisPost, widget.currentPerson);
                           changingLikes();
-                          print(
-                              "*******************************************like*******************************************${(widget.thisPost as Post).likes}");
                         },
                         icon: Icon(
                           liked

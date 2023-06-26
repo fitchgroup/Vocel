@@ -218,76 +218,114 @@ Future<Map<String, dynamic>> listGroupsForUser(
 }
 
 Future<dynamic> listUsersInGroup(String groupName) async {
-  String nextToken = "";
+  String? nextToken = "";
+  String? previousToken = "";
+  Map<String, dynamic> jsonMap = {};
   try {
     const pathListUser = '/listUsersInGroup';
-    final Map<String, String> bodyListUser = {
-      "groupname": groupName,
-      "token": nextToken,
-    };
     // v1
     final session = await Amplify.Auth.getPlugin(
       AmplifyAuthCognito.pluginKey,
     ).fetchAuthSession();
     final accessToken = session.userPoolTokensResult.value.accessToken.toJson();
 
-    final myInit = <String, dynamic>{
-      "queryParameters": bodyListUser, // Convert bodyBytes to Uint8List
-      "path": pathListUser,
-      "headers": {
-        'Content-Type': 'application/json',
-        'Authorization': accessToken,
-      },
-    };
+    do {
+      final Map<String, String> bodyListUser = {
+        "groupname": groupName,
+        "token": nextToken ?? "",
+        "limit": "60"
+      };
+      final myInit = <String, dynamic>{
+        "queryParameters": bodyListUser, // Convert bodyBytes to Uint8List
+        "path": pathListUser,
+        "headers": {
+          'Content-Type': 'application/json',
+          'Authorization': accessToken,
+        },
+      };
 
-    /// sent get request
-    var responseData = await Amplify.API
-        .get(
-          myInit["path"],
-          headers: myInit["headers"],
-          queryParameters: myInit["queryParameters"],
-        )
-        .response;
-    Map<String, dynamic> jsonMap = jsonDecode(responseData.decodeBody());
-    // String nextToken = responseData['NextToken'] as String;
+      /// sent get request
+      var responseData = await Amplify.API
+          .get(
+            myInit["path"],
+            headers: myInit["headers"],
+            queryParameters: myInit["queryParameters"],
+          )
+          .response;
+      Map<String, dynamic> tempJsonMap = jsonDecode(responseData.decodeBody());
+      List<dynamic> userList = tempJsonMap["Users"];
+      if (jsonMap.isNotEmpty) {
+        (jsonMap["Users"] as List).addAll(userList);
+        previousToken = nextToken;
+        jsonMap["NextToken"] = tempJsonMap['NextToken'].toString();
+        nextToken = jsonMap["NextToken"];
+      } else {
+        jsonMap.addAll(tempJsonMap);
+        nextToken = jsonMap["NextToken"];
+      }
+    } while (nextToken != "null" &&
+        nextToken != null &&
+        nextToken != "" &&
+        previousToken != nextToken);
+
     return jsonMap;
   } catch (e) {
     debuggingPrint("$e ${"*" * 20} listUsersInGroup Fail ${"=" * 20}");
   }
-  return null;
+  return {};
 }
 
 Future<dynamic> listAllUsersInGroup() async {
-  String nextToken = "";
+  String? nextToken = "";
+  String? previousToken = "";
+  Map<String, dynamic> jsonMap = {};
   try {
     const pathListUser = '/listUsers';
-    final Map<String, String> bodyListUser = {
-      "token": nextToken,
-    };
     // v1
     final session = await Amplify.Auth.getPlugin(
       AmplifyAuthCognito.pluginKey,
     ).fetchAuthSession();
     final accessToken = session.userPoolTokensResult.value.accessToken.toJson();
-    final myInit = <String, dynamic>{
-      "queryParameters": bodyListUser, // Convert bodyBytes to Uint8List
-      "path": pathListUser,
-      "headers": {
-        'Content-Type': 'application/json',
-        'Authorization': accessToken,
-      },
-    };
 
-    /// sent get request
-    var responseData = await Amplify.API
-        .get(
-          myInit["path"],
-          headers: myInit["headers"],
-          queryParameters: myInit["queryParameters"],
-        )
-        .response;
-    Map<String, dynamic> jsonMap = jsonDecode(responseData.decodeBody());
-    // String nextToken = responseData['NextToken'] as String;
+    do {
+      final Map<String, String> bodyListUser = {
+        "token": nextToken ?? "",
+        "limit": "60",
+      };
+      final myInit = <String, dynamic>{
+        "queryParameters": bodyListUser, // Convert bodyBytes to Uint8List
+        "path": pathListUser,
+        "headers": {
+          'Content-Type': 'application/json',
+          'Authorization': accessToken,
+        },
+      };
+
+      /// sent get request
+      var responseData = await Amplify.API
+          .get(
+            myInit["path"],
+            headers: myInit["headers"],
+            queryParameters: myInit["queryParameters"],
+          )
+          .response;
+      Map<String, dynamic> tempJsonMap = jsonDecode(responseData.decodeBody());
+      List<dynamic> userList = tempJsonMap["Users"];
+      if (jsonMap.isNotEmpty) {
+        (jsonMap["Users"] as List).addAll(userList);
+        previousToken = nextToken;
+        jsonMap["NextToken"] = tempJsonMap['NextToken'].toString();
+        nextToken = jsonMap["NextToken"];
+      } else {
+        jsonMap.addAll(tempJsonMap);
+        nextToken = jsonMap["NextToken"];
+      }
+      // debuggingPrint(
+      //     "******************** testing is: ********************\n ${jsonMap["Users"].length} \n ${previousToken.toString()} \n ${nextToken.toString()}");
+    } while (nextToken != "null" &&
+        nextToken != null &&
+        nextToken != "" &&
+        previousToken != nextToken);
     return jsonMap;
   } catch (e) {
     debuggingPrint("$e ${"*" * 20} listUsers Fail ${"=" * 20}");
