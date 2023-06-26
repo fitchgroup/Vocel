@@ -1,7 +1,8 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:vocel/LocalizedMessageResolver.dart';
 import 'package:vocel/common/utils/colors.dart' as constants;
-// import 'package:vocel/features/announcement/ui/chat_page/chat_list/chat_box.dart';
+import 'package:vocel/features/announcement/ui/chat_page/chat_list/chat_box.dart';
 
 class FriendProfile extends StatefulWidget {
   final String name;
@@ -76,7 +77,16 @@ class _FriendProfileState extends State<FriendProfile> {
                   fit: FlexFit.tight,
                   flex: 4, // Allocate 35% of the available height
                   child: Text(
-                    widget.title,
+                    [
+                      "Staffversion1",
+                      "Bellversion1",
+                      "Eetcversion1",
+                      "Vcpaversion1"
+                    ].contains(widget.title)
+                        ? widget.title
+                            .substring(0, widget.title.indexOf("version"))
+                            .toUpperCase()
+                        : widget.title,
                     style: const TextStyle(
                       fontSize: 14,
                       color: Colors.white,
@@ -141,17 +151,28 @@ class _FriendProfileState extends State<FriendProfile> {
                   const SizedBox(width: 15.0),
                   Container(
                     decoration: BoxDecoration(
-                      color: widget.title == "leader"
+                      color: widget.title == "Staffversion1"
                           ? const Color(constants.primaryDarkTeal)
-                          : widget.title == "staff"
+                          : (widget.title == "Bellversion1" ||
+                                  widget.title == "Eetcversion1" ||
+                                  widget.title == "Vcpaversion1")
                               ? const Color(constants.primaryRegularTeal)
-                              : const Color(constants.primaryLightTeal),
+                              : Colors.grey[350],
                       borderRadius: BorderRadius.circular(20),
                     ),
                     child: Padding(
                       padding: const EdgeInsetsDirectional.fromSTEB(8, 4, 8, 4),
                       child: Text(
-                        widget.title,
+                        [
+                          "Staffversion1",
+                          "Bellversion1",
+                          "Eetcversion1",
+                          "Vcpaversion1"
+                        ].contains(widget.title)
+                            ? widget.title
+                                .substring(0, widget.title.indexOf("version"))
+                                .toUpperCase()
+                            : widget.title,
                         style: const TextStyle(
                           color: Colors.white,
                           fontSize: 16,
@@ -191,11 +212,17 @@ class _FriendProfileState extends State<FriendProfile> {
               Center(
                 child: InkWell(
                   onTap: () async {
-                    // Navigator.push(context, MaterialPageRoute
-                    //   (builder: (context) =>
-                    //   ChatPage(myInfo: widget.myInfo, theirInfo: widget.email, title: widget.title),
-                    //    settings: const RouteSettings(arguments: "")
-                    // ));
+                    if (kDebugMode) {
+                      print("go to friend list");
+                    }
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => ChatPage(
+                                myInfo: widget.myInfo,
+                                theirInfo: widget.email,
+                                title: widget.title),
+                            settings: const RouteSettings(arguments: "")));
                   },
                   child: Container(
                     width: MediaQuery.of(context).size.width * 0.6,
@@ -213,7 +240,6 @@ class _FriendProfileState extends State<FriendProfile> {
                         ),
                       ],
                     ),
-                    // ChatPage(myInfo: myInfo, theirInfo: theirInfo, title: title),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [

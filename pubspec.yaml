@@ -32,13 +32,13 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  amplify_api: ^1.0.0
   amplify_datastore: ^1.0.0-next.8+1
   #  amplify_auth_cognito: ^0.6.0
   #  amplify_flutter: ^0.6.0
   amplify_authenticator: ^1.0.0
   amplify_auth_cognito: ^1.0.0-next.0
   amplify_flutter: ^1.0.0-next.0
+  amplify_api: ^1.0.1
   amplify_push_notifications_pinpoint: ^1.0.0-next.0
   amplify_storage_s3: ^1.0.0
   aws_common: ^0.4.0
@@ -61,7 +61,12 @@ dependencies:
   mime: ^1.0.4
   ffi: ^2.0.1
   open_filex: ^4.3.2
+  # add calendars
+  # https://pub.dev/packages/add_2_calendar/versions/2.2.3
   table_calendar: ^3.0.9
+  add_2_calendar: ^2.1.2
+
+
   injectable: ^1.5.3
   get_it: ^7.2.0
   tinycolor2: ^3.0.1
