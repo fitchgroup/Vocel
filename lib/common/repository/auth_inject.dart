@@ -6,16 +6,6 @@ import 'package:vocel/common/repository/auth_repository.dart';
 import 'package:amplify_api/amplify_api.dart';
 import 'package:amplify_datastore/amplify_datastore.dart';
 import 'package:vocel/models/ModelProvider.dart';
-// import 'package:amplify_push_notifications_pinpoint/amplify_push_notifications_pinpoint.dart';
-
-// Note: This handler does not *need* to be async, but it can be!
-Future<void> myAsyncNotificationReceivedHandler(
-    PushNotificationMessage notification) async {
-  /// TODO: implement myAsyncNotificationReceivedHandler
-  // Process the received push notification message in the background\
-
-  return;
-}
 
 class configureAmplifySuccess extends AuthRepository {
   @override
