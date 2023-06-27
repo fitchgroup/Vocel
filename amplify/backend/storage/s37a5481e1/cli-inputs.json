@@ -1,0 +1,33 @@
+{
+  "resourceName": "s37a5481e1",
+  "policyUUID": "7a5481e1",
+  "bucketName": "vocelversion1project",
+  "storageAccess": "authAndGuest",
+  "guestAccess": [
+    "READ"
+  ],
+  "authAccess": [
+    "CREATE_AND_UPDATE",
+    "READ",
+    "DELETE"
+  ],
+  "groupAccess": {
+    "Staffversion1": [
+      "CREATE_AND_UPDATE",
+      "READ",
+      "DELETE"
+    ],
+    "Bellversion1": [
+      "READ"
+    ],
+    "Eetcversion1": [
+      "READ"
+    ],
+    "Vcpaversion1": [
+      "READ"
+    ],
+    "Unassignedversion1": [
+      "READ"
+    ]
+  }
+}
