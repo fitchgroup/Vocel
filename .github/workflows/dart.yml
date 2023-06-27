@@ -48,7 +48,7 @@ jobs:
       - run: flutter pub get
       - run: sudo gem install cocoapods
       - run: pod repo update
-      #      - run: pod update AWSPluginsCore
+      - run: pod update Amplify
       - run: flutter build ipa --debug --no-codesign
   build-android:
     name: Build APK and Create release
