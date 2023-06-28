@@ -13,9 +13,6 @@ final getIt = GetIt.instance;
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  /// TODO: LINK THE FIREBASE
-  // await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-
   // Might use later to override the translations based on a user's preferences
   // List? languages = await Devicelocale.preferredLanguages;
   // String? locale = await Devicelocale.currentLocale;

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:vocel/common/services/storage_services.dart';
 import 'package:vocel/features/announcement/data/post_repository.dart';
+import 'package:vocel/models/Comment.dart';
 import 'package:vocel/models/Post.dart';
 
 final postControllerProvider = Provider<PostController>((ref) {
@@ -29,8 +30,18 @@ class PostController {
     await postsRepository.delete(deletedPost);
   }
 
+  Future<void> deleteComment(Comment deletedComment) async {
+    final postsRepository = ref.read(postsRepositoryProvider);
+    await postsRepository.deleteComment(deletedComment);
+  }
+
   Future<void> editLikes(Post likedPost, String editPerson) async {
     final postsRepository = ref.read(postsRepositoryProvider);
     await postsRepository.likePost(likedPost, editPerson);
+  }
+
+  Future<void> editComments(Post commentedPost, String editPerson) async {
+    final postsRepository = ref.read(postsRepositoryProvider);
+    await postsRepository.commentPost(commentedPost, editPerson);
   }
 }
