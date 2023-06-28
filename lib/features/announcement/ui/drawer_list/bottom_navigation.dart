@@ -247,7 +247,7 @@ class _AnnouncementsListPageState extends State<AnnouncementsListPage> {
             : Center(
                 child: ForumPage(
                   showEdit: adminEdit,
-                  userEmail: userEmail!,
+                  userEmail: userEmail ?? "",
                   groupOfUser: groupEdit,
                   myName: myName ?? "",
                   onClickController: (String value) {

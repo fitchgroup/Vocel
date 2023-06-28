@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:vocel/LocalizedButtonResolver.dart';
 import 'package:vocel/common/utils/colors.dart' as constants;
@@ -54,7 +53,7 @@ class ForumPage extends HookConsumerWidget {
         ].contains(groupOfUser), // visibilityButton.value,
         child: FloatingActionButton(
           heroTag: "PostFloatingActionButton",
-          backgroundColor: const Color(constants.primaryDarkTeal),
+          backgroundColor: const Color(constants.primaryColorDark),
           onPressed: () async {
             showAddEventDialog(context, userEmail);
           },
@@ -83,12 +82,38 @@ class ForumPage extends HookConsumerWidget {
                   loading: () => const Center(
                         child: CircularProgressIndicator(),
                       )),
+              // commentValue.when(
+              //     data: (event) => event.isEmpty
+              //         ? const Center(
+              //             child: Text("No Comment"),
+              //           )
+              //         : buildComments(
+              //             event.whereType<Comment>().toList(), context, ref),
+              //     error: (e, st) => const Center(
+              //           child: Text('Error Here'),
+              //         ),
+              //     loading: () => const Center(
+              //           child: CircularProgressIndicator(),
+              //         )),
             ],
           ),
         ),
       ),
     );
   }
+
+  // Center buildComments(
+  //     List<Comment> comments, BuildContext context, WidgetRef ref) {
+  //   return Center(
+  //       child: ListView.builder(
+  //           shrinkWrap: true,
+  //           physics: const NeverScrollableScrollPhysics(),
+  //           itemCount: comments.length,
+  //           itemBuilder: (context, index) {
+  //             final comment = comments[index];
+  //             return Text(comment.commentContent);
+  //           }));
+  // }
 
   Center buildPosts(List<Post> posts, BuildContext context, WidgetRef ref) {
     posts.sort((a, b) {
@@ -119,6 +144,10 @@ class ForumPage extends HookConsumerWidget {
 
     void likePost(Post likedPost, String editPerson) {
       ref.read(postControllerProvider).editLikes(likedPost, editPerson);
+    }
+
+    void likeComment(Post commentedPost, String editPerson) {
+      ref.read(postControllerProvider).editComments(commentedPost, editPerson);
     }
 
     return Center(
@@ -185,10 +214,16 @@ class ForumPage extends HookConsumerWidget {
               ),
               direction: DismissDirection.endToStart,
               // Only allow end to start swipe
-              child: ForumPost(
-                  thisPost: post,
-                  callbackLikes: likePost,
-                  currentPerson: userEmail),
+              child: Column(
+                children: [
+                  ForumPost(
+                    thisPost: post,
+                    callbackLikes: likePost,
+                    callbackComments: likeComment,
+                    currentPerson: userEmail,
+                  ),
+                ],
+              ),
             );
           }),
     );

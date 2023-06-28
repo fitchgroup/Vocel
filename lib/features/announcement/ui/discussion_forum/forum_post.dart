@@ -4,19 +4,23 @@ import 'package:amplify_core/src/types/temporal/temporal_datetime.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:intl/intl.dart';
+import 'package:vocel/features/announcement/ui/discussion_forum/add_comment_bottonsheet.dart';
+import 'package:vocel/features/announcement/ui/discussion_forum/forum_comment.dart';
 import 'package:vocel/models/ModelProvider.dart';
 
 class ForumPost extends StatefulWidget {
   final callbackLikes;
+  final callbackComments;
   final thisPost;
   final currentPerson;
 
-  const ForumPost({
-    Key? key,
-    required this.callbackLikes,
-    required this.thisPost,
-    required this.currentPerson,
-  }) : super(key: key);
+  const ForumPost(
+      {Key? key,
+      required this.callbackLikes,
+      required this.thisPost,
+      required this.currentPerson,
+      required this.callbackComments})
+      : super(key: key);
 
   @override
   State<ForumPost> createState() => _ForumPostState();
@@ -24,8 +28,9 @@ class ForumPost extends StatefulWidget {
 
 class _ForumPostState extends State<ForumPost> {
   AssetImage? profileImage;
-  bool liked = false;
+  late ValueNotifier<bool> liked;
   late List<String> likeList;
+  late List<String> commentList;
 
   Future<bool> checkProfileImageExists() async {
     try {
@@ -36,9 +41,26 @@ class _ForumPostState extends State<ForumPost> {
     }
   }
 
+  void showAddCommentDialog(
+      BuildContext context, String userEmail, Post thisPost) async {
+    await showModalBottomSheet<void>(
+      isScrollControlled: true,
+      elevation: 5,
+      context: context,
+      builder: (BuildContext context) {
+        return AddCommentBottomSheet(
+            userEmail: userEmail, relatedPost: thisPost);
+      },
+    );
+  }
+
   @override
   void initState() {
     super.initState();
+    liked = ValueNotifier(
+      (widget.thisPost as Post).likes != null &&
+          (widget.thisPost as Post).likes!.contains(widget.currentPerson),
+    );
     checkProfileImageExists().then((exists) {
       if (exists) {
         setState(() {
@@ -54,19 +76,28 @@ class _ForumPostState extends State<ForumPost> {
         });
       }
     });
-    liked = ((widget.thisPost as Post).likes != null &&
-        (widget.thisPost as Post).likes!.contains(widget.currentPerson));
     likeList = (widget.thisPost as Post).likes != null
         ? List<String>.from((widget.thisPost as Post).likes!)
         : [];
+    commentList = (widget.thisPost as Post).comments != null
+        ? List<String>.from((widget.thisPost as Post).comments!)
+        : [];
   }
 
-  void changingLikes() {
+  void changingLikes() async {
+    final bool newLiked = !liked.value;
+    liked.value = newLiked;
+    if (newLiked) {
+      likeList.add(widget.currentPerson);
+    } else {
+      likeList.remove(widget.currentPerson);
+    }
+  }
+
+  void changingComments() {
     setState(() {
-      liked = ((widget.thisPost as Post).likes != null &&
-          (widget.thisPost as Post).likes!.contains(widget.currentPerson));
-      likeList = (widget.thisPost as Post).likes != null
-          ? List<String>.from((widget.thisPost as Post).likes!)
+      commentList = (widget.thisPost as Post).comments != null
+          ? List<String>.from((widget.thisPost as Post).comments!)
           : [];
     });
   }
@@ -192,31 +223,36 @@ class _ForumPostState extends State<ForumPost> {
                   child: Row(
                     children: [
                       IconButton(
-                        onPressed: () async {
-                          await widget.callbackLikes(
-                              widget.thisPost, widget.currentPerson);
-                          changingLikes();
-                        },
-                        icon: Icon(
-                          liked
-                              ? Icons.favorite
-                              : Icons.favorite_outline_rounded,
-                          color: liked ? Colors.red : Colors.grey,
-                          size: 25,
-                        ),
-                      ),
+                          onPressed: () async {
+                            changingLikes();
+                            await widget.callbackLikes(
+                                widget.thisPost, widget.currentPerson);
+                          },
+                          icon: ValueListenableBuilder<bool>(
+                            valueListenable: liked,
+                            builder: (BuildContext context, bool value,
+                                Widget? child) {
+                              return Icon(
+                                value
+                                    ? Icons.favorite
+                                    : Icons.favorite_outline_rounded,
+                                color: value ? Colors.red : Colors.grey,
+                                size: 25,
+                              );
+                            },
+                          )),
                       const SizedBox(width: 25),
                       IconButton(
-                        onPressed: () {},
+                        onPressed: () async {
+                          showAddCommentDialog(
+                              context, widget.currentPerson, widget.thisPost);
+                          changingComments();
+                        },
                         icon: const Icon(
                           Icons.messenger_outline_outlined,
                           color: Colors.grey,
                           size: 22,
                         ),
-                        // icon: ImageIcon(
-                        //   AssetImage('images/vocel_logo.png'),
-                        //   // Replace with the path to your image file
-                        // )
                       ),
                       const SizedBox(width: 4),
                     ],
@@ -281,6 +317,9 @@ class _ForumPostState extends State<ForumPost> {
                   ),
                 ],
               ),
+            CommentList(
+              postId: widget.thisPost,
+            )
           ],
         ),
       ),
