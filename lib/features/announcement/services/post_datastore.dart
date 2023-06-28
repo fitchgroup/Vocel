@@ -2,6 +2,7 @@ import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:vocel/models/Post.dart';
+import 'package:vocel/models/Comment.dart';
 
 /// The code is an implementation of a EventsDataStoreService class, which serves
 /// as a data access service for managing events using Amplify DataStore.
@@ -125,6 +126,93 @@ class PostsDataStoreService {
       final newPost = oldPost.copyWith(likes: assign);
 
       await Amplify.DataStore.save(newPost);
+    } on Exception catch (error) {
+      debugPrint(error.toString());
+    }
+  }
+
+  Future<List<Comment>> getCommentsForPost(Post post) async {
+    try {
+      final comments = await Amplify.DataStore.query(
+        Comment.classType,
+        where: (Comment.POST.eq(post)),
+      );
+      return comments;
+    } catch (error) {
+      print('Error retrieving comments: $error');
+      return [];
+    }
+  }
+
+  Stream<List<Comment>> listenToComments(Post thisPost) {
+    return Amplify.DataStore.observeQuery(
+      Comment.classType,
+      where: Comment.CONTENT.eq(thisPost.id),
+    ).map((event) => event.items.toList()).handleError(
+      (error) {
+        debugPrint(
+            'listenToComments: A Stream error happened in listenToComments');
+      },
+    );
+  }
+
+  Stream<List<Comment>> listenToPastComments() {
+    return Amplify.DataStore.observeQuery(
+      Comment.classType,
+    ).map((event) => event.items.toList()).handleError(
+      (error) {
+        debugPrint(
+            'listenToComments: A Stream error happened in listenToPastComments');
+      },
+    );
+  }
+
+  Stream<Comment> getCommentStream(String id) {
+    final commentStream = Amplify.DataStore.observeQuery(Comment.classType,
+            where: Comment.ID.eq(id))
+        .map((event) => event.items.toList().single);
+
+    return commentStream;
+  }
+
+  Future<void> addComment(Comment comment) async {
+    try {
+      await Amplify.DataStore.save(comment);
+    } on Exception catch (error) {
+      debugPrint(error.toString());
+    }
+  }
+
+  Future<void> deleteComment(Comment comment) async {
+    try {
+      await Amplify.DataStore.delete(comment);
+    } on Exception catch (error) {
+      debugPrint(error.toString());
+    }
+  }
+
+  Future<void> editComments(Post commentPost, String editPerson) async {
+    try {
+      final postsWithId = await Amplify.DataStore.query(
+        Post.classType,
+        where: Post.ID.eq(commentPost.id),
+      );
+
+      final oldPost = postsWithId.first;
+      List<Comment> assign =
+          oldPost.comments != null ? List<Comment>.from(oldPost.comments!) : [];
+
+      Comment newComment = Comment(
+        commentAuthor: 'testing',
+        commentContent: 'This is a test from datastore',
+        post: commentPost,
+        content: 'Some testing content',
+      );
+      if (oldPost.comments != null) {
+        assign.add(newComment);
+      } else {
+        assign = [newComment];
+      }
     } on Exception catch (error) {
       debugPrint(error.toString());
     }
