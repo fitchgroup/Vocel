@@ -1,6 +1,7 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:vocel/models/Announcement.dart';
 import 'package:vocel/features/announcement/services/announcement_datastore.dart';
+import 'package:vocel/models/CommentAnnouncement.dart';
 
 final tripsRepositoryProvider = Provider<TripsRepository>((ref) {
   TripsDataStoreService tripsDataStoreService =
@@ -8,7 +9,8 @@ final tripsRepositoryProvider = Provider<TripsRepository>((ref) {
   return TripsRepository(tripsDataStoreService);
 });
 
-final tripsListStreamProvider = StreamProvider.autoDispose<List<Announcement?>>((ref) {
+final tripsListStreamProvider =
+StreamProvider.autoDispose<List<Announcement?>>((ref) {
   final tripsRepository = ref.watch(tripsRepositoryProvider);
   return tripsRepository.getTrips();
 });
@@ -25,6 +27,24 @@ StreamProvider.autoDispose.family<Announcement?, String>((ref, id) {
   return tripsRepository.get(id);
 });
 
+final commentsListStreamProvider = StreamProvider.autoDispose
+    .family<List<CommentAnnouncement?>, Announcement>((ref, announcement) {
+  final tripsRepository = ref.watch(tripsRepositoryProvider);
+  return tripsRepository.getComments(announcement);
+});
+
+final pastCommentsListStreamProvider =
+StreamProvider.autoDispose<List<CommentAnnouncement?>>((ref) {
+  final tripsRepository = ref.watch(tripsRepositoryProvider);
+  return tripsRepository.getPastComments();
+});
+
+final commentProvider =
+StreamProvider.autoDispose.family<CommentAnnouncement?, String>((ref, id) {
+  final tripsRepository = ref.watch(tripsRepositoryProvider);
+  return tripsRepository.get2(id);
+});
+
 class TripsRepository {
   TripsRepository(this.tripsDataStoreService);
 
@@ -38,8 +58,20 @@ class TripsRepository {
     return tripsDataStoreService.listenToPastAnnouncements();
   }
 
+  Stream<List<CommentAnnouncement>> getComments(Announcement thisAnnouncement) {
+    return tripsDataStoreService.listenToComments(thisAnnouncement);
+  }
+
+  Stream<List<CommentAnnouncement>> getPastComments() {
+    return tripsDataStoreService.listenToPastComments();
+  }
+
   Future<void> add(Announcement trip) async {
     await tripsDataStoreService.addAnnouncements(trip);
+  }
+
+  Future<void> addComment(CommentAnnouncement event) async {
+    await tripsDataStoreService.addComment(event);
   }
 
   Future<void> update(Announcement updatedTrip) async {
@@ -48,6 +80,15 @@ class TripsRepository {
 
   Future<void> delete(Announcement deletedTrip) async {
     await tripsDataStoreService.deleteAnnouncements(deletedTrip);
+  }
+
+  Future<void> deleteComment(CommentAnnouncement deletedComment) async {
+    await tripsDataStoreService.deleteComment(deletedComment);
+  }
+
+  Future<void> likeAnnouncement(Announcement likedPost,
+      String editPerson) async {
+    await tripsDataStoreService.editLikes(likedPost, editPerson);
   }
 
   Future<void> pinMe(Announcement pinTrip) async {
@@ -60,5 +101,9 @@ class TripsRepository {
 
   Stream<Announcement> get(String id) {
     return tripsDataStoreService.getAnnouncementsStream(id);
+  }
+
+  Stream<CommentAnnouncement> get2(String id) {
+    return tripsDataStoreService.getCommentStream(id);
   }
 }
