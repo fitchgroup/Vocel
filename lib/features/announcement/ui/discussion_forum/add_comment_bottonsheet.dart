@@ -3,7 +3,6 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:vocel/common/utils/colors.dart' as constants;
 import 'package:vocel/features/announcement/controller/post_list_controller.dart';
-import 'package:vocel/models/Post.dart';
 
 class AddCommentBottomSheet extends HookConsumerWidget {
   final userEmail;
