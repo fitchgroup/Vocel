@@ -11,7 +11,7 @@ import 'package:vocel/features/announcement/ui/discussion_forum/forum_page.dart'
 import 'package:vocel/features/announcement/ui/drawer_list/navigation_drawer.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:vocel/features/announcement/ui/chat_page/chat_screen/chat_list.dart';
-import 'package:vocel/features/announcement/ui/home_page/home_list.dart';
+import 'package:vocel/features/announcement/ui/home_page/home_page.dart';
 import 'package:vocel/features/announcement/ui/people_page/group_people_list.dart';
 
 class AnnouncementsListPage extends StatefulWidget {
@@ -235,6 +235,8 @@ class _AnnouncementsListPageState extends State<AnnouncementsListPage> {
             ? Center(
                 child: HomeAnnouncementFeed(
                 showEdit: adminEdit,
+                userEmail: userEmail ?? "",
+                groupOfUser: groupEdit,
                 onClickController: (String value) {
                   setState(() {
                     switching = value;
@@ -281,9 +283,14 @@ class _AnnouncementsListPageState extends State<AnnouncementsListPage> {
         return Center(
             child: HomeAnnouncementFeed(
           showEdit: adminEdit,
+          userEmail: userEmail ?? "",
+          groupOfUser: groupEdit,
           onClickController: (String value) {
             setState(() {
               switching = value;
+              if (kDebugMode) {
+                print('${"=" * 100}\n$switching${"=" * 100}\n');
+              }
             });
           },
         ));
