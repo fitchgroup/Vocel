@@ -70,15 +70,18 @@ class _PeopleListState extends State<PeopleList> {
                         return ListView.builder(
                           itemCount: dataList.length,
                           itemBuilder: (context, index) {
+                            bool visibilityCheck = dataList[index]["email"]!
+                                    .toUpperCase()
+                                    .contains(searching.toUpperCase()) ||
+                                (dataList[index]["VocelGroup"] == null
+                                    ? false
+                                    : dataList[index]["VocelGroup"]!
+                                        .toUpperCase()
+                                        .contains(searching.toUpperCase()));
                             return Column(
                               children: [
                                 Visibility(
-                                  visible: dataList[index]["email"]!
-                                          .contains(searching) ||
-                                      (dataList[index]["VocelGroup"] == null
-                                          ? false
-                                          : dataList[index]["VocelGroup"]!
-                                              .contains(searching)),
+                                  visible: visibilityCheck,
                                   child: Dismissible(
                                     key: Key(index.toString()),
                                     direction: widget.showEdit
@@ -120,7 +123,9 @@ class _PeopleListState extends State<PeopleList> {
                                             "Unassigned"),
                                   ),
                                 ),
-                                peopleListDivider(),
+                                Visibility(
+                                    visible: visibilityCheck,
+                                    child: peopleListDivider()),
                               ],
                             );
                           },
