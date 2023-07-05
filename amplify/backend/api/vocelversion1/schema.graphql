@@ -77,6 +77,28 @@ enum ProfileRole {
     VCPA
 }
 
+#type VocelMessage @model @auth(rules: [
+#    { allow: owner, operations: [read, update, delete] },
+#    { allow: public, operations: [read] }
+#]) {
+#    id: ID!
+#    content: String! @auth(rules: [{ allow: owner, operations: [read, update, delete] }, { allow: public, operations: [read] }])
+#    messageImageUrl: String @auth(rules: [{ allow: owner, operations: [read, update, delete] }, { allow: public, operations: [read] }])
+#    messageImageKey: String @auth(rules: [{ allow: owner, operations: [read, update, delete] }, { allow: public, operations: [read] }])
+#    attachedLink: String @auth(rules: [{ allow: owner, operations: [read, update, delete] }, { allow: public, operations: [read] }])
+#    sender: String! @auth(rules: [{ allow: owner, operations: [read, update, delete] }, { allow: public, operations: [read] }])
+#    receiver: String! @auth(rules: [{ allow: owner, operations: [read, update, delete] }, { allow: public, operations: [read] }])
+#}
+
+type VocelMessage @model @auth(rules: [{ allow: owner }]) {
+    id: ID!
+    content: String!
+    messageImageUrl: String
+    messageImageKey: String
+    attachedLink: String
+    sender: String!
+    receiver: String!
+}
 
 type Post @model @auth(rules: [
     { allow: owner, operations: [read, update, delete] },
@@ -97,18 +119,17 @@ type Comment @model {
     content: String!
 }
 
-type VocelMessage @model @auth(rules: [
-    { allow: owner, operations: [read, update, delete] },
-    { allow: public, operations: [read] }
-]) {
-    id: ID!
-    content: String! @auth(rules: [{ allow: owner, operations: [read, update, delete] }, { allow: public, operations: [read] }])
-    messageImageUrl: String @auth(rules: [{ allow: owner, operations: [read, update, delete] }, { allow: public, operations: [read] }])
-    messageImageKey: String @auth(rules: [{ allow: owner, operations: [read, update, delete] }, { allow: public, operations: [read] }])
-    attachedLink: String @auth(rules: [{ allow: owner, operations: [read, update, delete] }, { allow: public, operations: [read] }])
-    sender: String! @auth(rules: [{ allow: owner, operations: [read, update] }, { allow: public, operations: [read] }])
-    receiver: String! @auth(rules: [{ allow: owner, operations: [read] }, { allow: public, operations: [read] }])
+enum MessageType {
+    audio,
+    custom,
+    file,
+    image,
+    system,
+    text,
+    unsupported,
+    video
 }
+
 
 
 #
