@@ -1,4 +1,3 @@
-import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:vocel/features/announcement/data/message_repository.dart';
 import 'package:vocel/models/VocelMessage.dart';
@@ -20,13 +19,10 @@ class MessagesListController {
     VocelMessage message = VocelMessage(
         content: messageContent,
         sender: messageSender,
-        receiver: messageReceiver
-    );
+        receiver: messageReceiver);
 
     final messagesRepository = ref.read(messagesRepositoryProvider);
 
     await messagesRepository.add(message);
-    await Amplify.DataStore.save(message);
   }
-
 }

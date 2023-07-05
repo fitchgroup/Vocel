@@ -1,4 +1,3 @@
-import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:vocel/features/announcement/data/announcement_repository.dart';
 import 'package:vocel/models/Announcement.dart';
@@ -26,7 +25,6 @@ class TripsListController {
     final tripsRepository = ref.read(tripsRepositoryProvider);
 
     await tripsRepository.add(announcement);
-    await Amplify.DataStore.save(announcement);
   }
 
   Future<void> addComment(
@@ -43,6 +41,5 @@ class TripsListController {
     final announcementsRepository = ref.read(tripsRepositoryProvider);
 
     await announcementsRepository.addComment(comment);
-    await Amplify.DataStore.save(comment);
   }
 }

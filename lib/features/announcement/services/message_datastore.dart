@@ -1,6 +1,7 @@
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:vocel/models/ModelProvider.dart';
 import 'package:vocel/models/VocelMessage.dart';
 
 final messagesDataStoreServiceProvider =
@@ -12,16 +13,23 @@ final messagesDataStoreServiceProvider =
 class MessagesDataStoreService {
   MessagesDataStoreService();
 
+  Stream<List<VocelMessage>> listenToAllMessages(
+      String sender, String receiver) {
+    return Amplify.DataStore.observeQuery(VocelMessage.classType)
+        .map((querySnapshot) => querySnapshot.items
+            .where((message) =>
+                message.sender ==
+                sender /** && message.receiver == receiver **/)
+            .toList())
+        .handleError((error) {
+      debugPrint('listenToAllMessages: $error');
+    });
+  }
+
   Stream<List<VocelMessage>> listenToMessages() {
     return Amplify.DataStore.observeQuery(
       VocelMessage.classType,
-      sortBy: [VocelMessage.CREATEDTIME.ascending()],
-    )
-        .map((message) => message.items
-            .where((element) =>
-                element.createdAt!.getDateTimeInUtc().isAfter(DateTime.now()))
-            .toList())
-        .handleError(
+    ).map((message) => message.items.toList()).handleError(
       (error) {
         debugPrint('listenToMessages: A Stream error happened');
       },
@@ -31,7 +39,7 @@ class MessagesDataStoreService {
   Stream<List<VocelMessage>> listenToPastMessages() {
     return Amplify.DataStore.observeQuery(
       VocelMessage.classType,
-      sortBy: [VocelMessage.CREATEDTIME.ascending()],
+      sortBy: [VocelMessage.CONTENT.ascending()],
     )
         .map((event) => event.items
             .where((element) =>
@@ -54,6 +62,8 @@ class MessagesDataStoreService {
 
   Future<void> addMessage(VocelMessage event) async {
     try {
+      // Post event2 =
+      //     Post(postAuthor: event.receiver, postContent: event.content);
       await Amplify.DataStore.save(event);
     } on Exception catch (error) {
       debugPrint(error.toString());

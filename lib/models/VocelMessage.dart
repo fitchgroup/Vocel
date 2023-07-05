@@ -254,8 +254,6 @@ class VocelMessage extends Model {
   static final QueryField ATTACHEDLINK = QueryField(fieldName: "attachedLink");
   static final QueryField SENDER = QueryField(fieldName: "sender");
   static final QueryField RECEIVER = QueryField(fieldName: "receiver");
-  static final QueryField UPDATEDTIME = QueryField(fieldName: "createdAt");
-  static final QueryField CREATEDTIME = QueryField(fieldName: "updatedAt");
   static var schema =
       Model.defineSchema(define: (ModelSchemaDefinition modelSchemaDefinition) {
     modelSchemaDefinition.name = "VocelMessage";
@@ -268,12 +266,11 @@ class VocelMessage extends Model {
           identityClaim: "cognito:username",
           provider: AuthRuleProvider.USERPOOLS,
           operations: [
-            ModelOperation.READ,
+            ModelOperation.CREATE,
             ModelOperation.UPDATE,
-            ModelOperation.DELETE
-          ]),
-      AuthRule(
-          authStrategy: AuthStrategy.PUBLIC, operations: [ModelOperation.READ])
+            ModelOperation.DELETE,
+            ModelOperation.READ
+          ])
     ];
 
     modelSchemaDefinition.addField(ModelFieldDefinition.id());
