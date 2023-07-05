@@ -162,15 +162,15 @@ class NotificationSpecificTime {
 Future<void> createVocelNotification({String? possibleId}) async {
   await AwesomeNotifications().createNotification(
     content: NotificationContent(
-        id: createUniqueId(),
-        channelKey: 'basic_channel',
-        title: 'Testing Pressed ${Emojis.money_money_bag}',
-        body: 'Hello, this is a test reminder 2',
-        bigPicture: 'resource://drawable/app_logo',
-        // this one will work
-        notificationLayout: NotificationLayout.BigPicture,
-        showWhen: true,
-        autoCancel: true),
+      id: createUniqueId(),
+      channelKey: 'basic_channel',
+      title: 'Testing Pressed ${Emojis.money_money_bag}',
+      body: 'Hello, this is a test reminder 2',
+      bigPicture: 'resource://drawable/app_logo',
+      // this one will work
+      notificationLayout: NotificationLayout.BigPicture,
+      showWhen: true,
+    ),
   );
 }
 
@@ -182,13 +182,13 @@ Future<void> scheduleSpecificVocelNotification(
 
   await AwesomeNotifications().createNotification(
     content: NotificationContent(
-        id: createUniqueId(),
-        channelKey: 'scheduled_channel',
-        title: currentAnnouncement.tripName,
-        body: "currentAnnouncement.description + ${Emojis.animals_panda * 100}",
-        notificationLayout: NotificationLayout.Default,
-        showWhen: true,
-        autoCancel: true),
+      id: createUniqueId(),
+      channelKey: 'scheduled_channel',
+      title: currentAnnouncement.tripName,
+      body: "currentAnnouncement.description + ${Emojis.animals_panda * 100}",
+      notificationLayout: NotificationLayout.Default,
+      showWhen: true,
+    ),
     schedule: NotificationCalendar(
         year: specificDateTime.year,
         month: specificDateTime.month,
@@ -209,13 +209,13 @@ Future<void> scheduleSpecificVocelEventNotification(
 
   await AwesomeNotifications().createNotification(
     content: NotificationContent(
-        id: createUniqueId(),
-        channelKey: 'scheduled_channel',
-        title: "currentVocelEvent.eventTitle",
-        body: "currentVocelEvent.eventDescription",
-        notificationLayout: NotificationLayout.Default,
-        showWhen: true,
-        autoCancel: true),
+      id: createUniqueId(),
+      channelKey: 'scheduled_channel',
+      title: "currentVocelEvent.eventTitle",
+      body: "currentVocelEvent.eventDescription",
+      notificationLayout: NotificationLayout.Default,
+      showWhen: true,
+    ),
     schedule: NotificationCalendar(
         year: specificDateTime.year,
         month: specificDateTime.month,
@@ -233,13 +233,13 @@ Future<void> scheduleVocelNotification(
     {String? possibleId}) async {
   await AwesomeNotifications().createNotification(
       content: NotificationContent(
-          id: createUniqueId(),
-          channelKey: 'scheduled_channel',
-          title: 'This is scheduled ${Emojis.animals_panda}',
-          body: 'testing schedule',
-          notificationLayout: NotificationLayout.Default,
-          showWhen: true,
-          autoCancel: true),
+        id: createUniqueId(),
+        channelKey: 'scheduled_channel',
+        title: 'This is scheduled ${Emojis.animals_panda}',
+        body: 'testing schedule',
+        notificationLayout: NotificationLayout.Default,
+        showWhen: true,
+      ),
       schedule: NotificationCalendar(
           weekday: notificationSchedule.dayOfTheWeek,
           hour: notificationSchedule.timeOfDay.hour,
