@@ -52,6 +52,7 @@ https://catalog.us-east-1.prod.workshops.aws/workshops/8b6f6ff9-b7a5-41b2-a8fa-9
   be prompted to provide a name for your environment, choose your preferred code editor, and set up
   an AWS profile. Follow the prompts and provide the required information.
 -
+
 reference: https://catalog.us-east-1.prod.workshops.aws/workshops/8b6f6ff9-b7a5-41b2-a8fa-9918b5553553/en-US/04-create-a-flutter-app/05-create-an-amplify-backend-for-the-app
 
 #### Checking Amplify Environments after using amplify init
@@ -160,6 +161,7 @@ To regenerate the API backend, follow these steps:
 ### 4. can also add amplify push notification features to this project
 
 -
+
 refereces: https://docs.amplify.aws/lib/push-notifications/getting-started/q/platform/flutter/#set-up-backend-resources
 
 ### 5. To remove Amplify from your local environment and pull a new one, you can:
@@ -171,6 +173,7 @@ refereces: https://docs.amplify.aws/lib/push-notifications/getting-started/q/pla
    ```
 
 ### 6. In this project, I used REST API to get user group information instead of using graphQL. *
+
 Using REST API will require steps:* (reference: https://docs.amplify.aws/cli/auth/admin/)
 
 ## Amplify CLI - Auth Groups
@@ -221,59 +224,67 @@ requirements.
 # Use REST API in this flutter project
 
 ## 1. Exploring the precedence of different roles
+
 ```
 /amplify/backend/auth/userPoolGroups/user-pool-group-precedence.json
 ```
-Each object represents a group and provides information about the group's name ("groupName") and its precedence value ("precedence"). The precedence value indicates the priority or order in which these groups should be considered or processed, with lower numbers indicating higher precedence. You can set it in amplify console
 
-## 2. Define function in this file: 
+Each object represents a group and provides information about the group's name ("groupName") and its
+precedence value ("precedence"). The precedence value indicates the priority or order in which these
+groups should be considered or processed, with lower numbers indicating higher precedence. You can
+set it in amplify console
+
+## 2. Define function in this file:
 
 ```
 amplify/backend/function/AdminQueriesf35eea9e/src/app.js
 ```
 
-
 1. Import required modules and dependencies:
 
-   - `express`: Framework for building web applications.
-   - `body-parser`: Middleware to parse request bodies.
-   - `aws-serverless-express/middleware`: Middleware for AWS Serverless Express integration.
-   - `cognitoActions`: Module containing functions for performing Cognito user management actions.
+    - `express`: Framework for building web applications.
+    - `body-parser`: Middleware to parse request bodies.
+    - `aws-serverless-express/middleware`: Middleware for AWS Serverless Express integration.
+    - `cognitoActions`: Module containing functions for performing Cognito user management actions.
 
 
 2. Configure CORS (Cross-Origin Resource Sharing):
 
-   - Allow cross-origin requests by setting appropriate headers.
+    - Allow cross-origin requests by setting appropriate headers.
 
 3. Define a middleware function to check if the user is in a specific group:
 
-   - The `allowedGroup` variable represents the group name that is allowed to perform administrative tasks.
-   - If the `allowedGroup` is not defined or set to `'NONE'`, all requests are allowed.
-   - If the user is not in the allowed group, an error is returned.
+    - The `allowedGroup` variable represents the group name that is allowed to perform
+      administrative tasks.
+    - If the `allowedGroup` is not defined or set to `'NONE'`, all requests are allowed.
+    - If the user is not in the allowed group, an error is returned.
 
 4. Register endpoint handlers for various user management actions:
 
-   - `/addUserToGroup`: Add a user to a group.
-   - `/removeUserFromGroup`: Remove a user from a group.
-   - `/confirmUserSignUp`: Confirm user sign-up.
-   - `/disableUser`: Disable a user.
-   - `/enableUser`: Enable a user.
-   - `/getUser`: Get user information.
-   - `/listUsers`: List users in the Cognito User Pool.
-   - `/listGroups`: List groups in the Cognito User Pool.
-   - `/listGroupsForUser`: List groups for a specific user.
-   - `/listUsersInGroup`: List users in a specific group.
-   - `/signUserOut`: Sign a user out (requires user verification).
+    - `/addUserToGroup`: Add a user to a group.
+    - `/removeUserFromGroup`: Remove a user from a group.
+    - `/confirmUserSignUp`: Confirm user sign-up.
+    - `/disableUser`: Disable a user.
+    - `/enableUser`: Enable a user.
+    - `/getUser`: Get user information.
+    - `/listUsers`: List users in the Cognito User Pool.
+    - `/listGroups`: List groups in the Cognito User Pool.
+    - `/listGroupsForUser`: List groups for a specific user.
+    - `/listUsersInGroup`: List users in a specific group.
+    - `/signUserOut`: Sign a user out (requires user verification).
 
 5. Define error-handling middleware:
 
-   - Log and handle errors that occur during request processing.
+    - Log and handle errors that occur during request processing.
 
 6. Start the Express application on port 3000.
 
 ### There is a file whose path is amplify/#current-cloud-backend/function/AdminQueriesxxxxxxx/AdminQueriesxxxxxxx-cloudformation-template.json
 
-The provided file is an AWS CloudFormation template file. CloudFormation is an AWS service that allows you to describe and provision infrastructure resources in a declarative manner. The CloudFormation template file you shared is used for deploying an AWS Lambda function and its associated resources.
+The provided file is an AWS CloudFormation template file. CloudFormation is an AWS service that
+allows you to describe and provision infrastructure resources in a declarative manner. The
+CloudFormation template file you shared is used for deploying an AWS Lambda function and its
+associated resources.
 
 #### Template Breakdown
 
@@ -281,16 +292,26 @@ The provided file is an AWS CloudFormation template file. CloudFormation is an A
 - **Description**: Provides a description of the CloudFormation template.
 - **Parameters**: Defines the input parameters for the CloudFormation stack.
 - **Conditions**: Defines conditions based on which resources will be created or updated.
-- **Resources**: Specifies the AWS resources to be provisioned, such as the Lambda function and its execution role.
-- **Outputs**: Defines the outputs of the CloudFormation stack, such as the ARN (Amazon Resource Name) of the Lambda function.
+- **Resources**: Specifies the AWS resources to be provisioned, such as the Lambda function and its
+  execution role.
+- **Outputs**: Defines the outputs of the CloudFormation stack, such as the ARN (Amazon Resource
+  Name) of the Lambda function.
 
-In this specific template, it deploys an AWS Lambda function (`LambdaFunction`) along with its execution role (`LambdaExecutionRole`). The Lambda function is written in Node.js 16.x (`Runtime: "nodejs16.x"`) and has a handler function named `index.handler`. The function's code is stored in an S3 bucket (`Code.S3Bucket` and `Code.S3Key`).
+In this specific template, it deploys an AWS Lambda function (`LambdaFunction`) along with its
+execution role (`LambdaExecutionRole`). The Lambda function is written in Node.js
+16.x (`Runtime: "nodejs16.x"`) and has a handler function named `index.handler`. The function's code
+is stored in an S3 bucket (`Code.S3Bucket` and `Code.S3Key`).
 
-The execution role (`LambdaExecutionRole`) is defined with an associated IAM policy (`lambdaexecutionpolicy`) that grants necessary permissions to the Lambda function. The permissions include actions related to logging, as well as various actions on a Cognito user pool (`cognito-idp`) for managing users and groups.
+The execution role (`LambdaExecutionRole`) is defined with an associated IAM
+policy (`lambdaexecutionpolicy`) that grants necessary permissions to the Lambda function. The
+permissions include actions related to logging, as well as various actions on a Cognito user
+pool (`cognito-idp`) for managing users and groups.
 
-The `Outputs` section defines several outputs that can be useful for referencing the created resources, such as the Lambda function's name, ARN, and the execution role's ARN.
+The `Outputs` section defines several outputs that can be useful for referencing the created
+resources, such as the Lambda function's name, ARN, and the execution role's ARN.
 
-Overall, this CloudFormation template provides a way to deploy the Lambda function and its required resources in a structured and repeatable manner using AWS CloudFormation.
+Overall, this CloudFormation template provides a way to deploy the Lambda function and its required
+resources in a structured and repeatable manner using AWS CloudFormation.
 
 
 <br> 
@@ -440,6 +461,7 @@ Create groups called ...
 1. In your `pubspec.yaml` file, add the `flutter_launcher_icons` package as a dev dependency.
 2. Make sure the spacing and formatting are correct.
 3. Replace the image path in the `flutter_icons` section with the correct file name and location.
+
 ```yaml
 flutter_icons:
   android: true
@@ -447,6 +469,7 @@ flutter_icons:
   # change the icon of the app
   image_path: "assets/app_logo.png"
 ```
+
 4. Save the `pubspec.yaml` file.
 5. Open the terminal or command line and navigate to your Flutter project's location.
 6. Run the following commands: `flutter clean`, `flutter pub get`
@@ -457,9 +480,11 @@ flutter_icons:
 
 1. In your terminal or command line, activate the `rename` package by running the installation
    command.
+
 ```bash
 pub global activate rename
 ```
+
 2. Use the `pop global run rename --appname "Your app name"` command to set a new app name.
 3. Enter your desired app name when prompted.
 4. Check that the Android app name has changed successfully.
@@ -512,3 +537,29 @@ them to the Google Play Store.
   alias, required for signing the app.
 - `upload-keystore.jks` is the keystore file that holds cryptographic keys, including the private
   key used for signing the app.
+
+### Step 4: Change the version number
+
+In Flutter, the version number in the `pubspec.yaml` file follows the semantic versioning
+format: `MAJOR.MINOR.PATCH+BUILD`.
+
+Here's a breakdown of each component:
+
+- `MAJOR`: represents a major release with significant changes.
+- `MINOR`: signifies a minor release with new features or enhancements.
+- `PATCH`: indicates a release with bug fixes or minor updates.
+- `BUILD`: is an optional identifier used to differentiate different builds within the same version.
+
+In the example `version: 1.0.0+100`, it can be interpreted as follows:
+
+- `MAJOR` version is `1`.
+- `MINOR` version is `0`.
+- `PATCH` version is `0`.
+- `BUILD` number is `100`.
+
+The `BUILD` number helps identify different builds of the same version. It's often used internally
+or when releasing multiple builds of the same version to address specific issues.
+
+When releasing an app, platforms like the Google Play Store use the version number and code to track
+and identify different releases.
+

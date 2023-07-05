@@ -19,50 +19,13 @@
 
 // ignore_for_file: public_member_api_docs, annotate_overrides, dead_code, dead_codepublic_member_api_docs, depend_on_referenced_packages, file_names, library_private_types_in_public_api, no_leading_underscores_for_library_prefixes, no_leading_underscores_for_local_identifiers, non_constant_identifier_names, null_check_on_nullable_type_parameter, prefer_adjacent_string_concatenation, prefer_const_constructors, prefer_if_null_operators, prefer_interpolation_to_compose_strings, slash_for_doc_comments, sort_child_properties_last, unnecessary_const, unnecessary_constructor_name, unnecessary_late, unnecessary_new, unnecessary_null_aware_assignments, unnecessary_nullable_for_final_variable_declarations, unnecessary_string_interpolations, use_build_context_synchronously
 
-import 'package:amplify_core/amplify_core.dart';
-import 'Announcement.dart';
-import 'Comment.dart';
-import 'CommentAnnouncement.dart';
-import 'Post.dart';
-import 'VocelEvent.dart';
-import 'VocelMessage.dart';
-
-export 'Announcement.dart';
-export 'Comment.dart';
-export 'CommentAnnouncement.dart';
-export 'MessageType.dart';
-export 'Post.dart';
-export 'ProfileRole.dart';
-export 'VocelEvent.dart';
-export 'VocelMessage.dart';
-
-class ModelProvider implements ModelProviderInterface {
-  @override
-  String version = "15febb378144189e12907f2e4dd28b70";
-  @override
-  List<ModelSchema> modelSchemas = [Announcement.schema, Comment.schema, CommentAnnouncement.schema, Post.schema, VocelEvent.schema, VocelMessage.schema];
-  static final ModelProvider _instance = ModelProvider();
-  @override
-  List<ModelSchema> customTypeSchemas = [];
-
-  static ModelProvider get instance => _instance;
-  
-  ModelType getModelTypeByModelName(String modelName) {
-    switch(modelName) {
-      case "Announcement":
-        return Announcement.classType;
-      case "Comment":
-        return Comment.classType;
-      case "CommentAnnouncement":
-        return CommentAnnouncement.classType;
-      case "Post":
-        return Post.classType;
-      case "VocelEvent":
-        return VocelEvent.classType;
-      case "VocelMessage":
-        return VocelMessage.classType;
-      default:
-        throw Exception("Failed to find model in model provider for model name: " + modelName);
-    }
-  }
+enum MessageType {
+  audio,
+  custom,
+  file,
+  image,
+  system,
+  text,
+  unsupported,
+  video
 }

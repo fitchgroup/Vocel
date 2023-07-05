@@ -1,11 +1,9 @@
 import 'dart:io';
 
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:vocel/common/ui/upload_progress_dialog.dart';
-import 'package:vocel/common/utils/colors.dart' as constants;
 
 import 'package:vocel/features/announcement/controller/event_controller.dart';
 import 'package:vocel/models/ModelProvider.dart';

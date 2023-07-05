@@ -32,6 +32,5 @@ class EventsListController {
     final eventsRepository = ref.read(eventsRepositoryProvider);
 
     await eventsRepository.add(event);
-    await Amplify.DataStore.save(event);
   }
 }
