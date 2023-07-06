@@ -12,6 +12,7 @@
         "mode": "AMAZON_COGNITO_USER_POOLS",
         "cognitoUserPoolId": "authvocelversion10392777d"
       }
-    ]
+    ],
+    "conflictResolution": {}
   }
 }

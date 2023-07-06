@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:vocel/common/utils/colors.dart' as constants;
-import 'package:vocel/features/announcement/controller/post_list_controller.dart';
+import 'package:vocel/features/announcement/controller/announcement_list_controller.dart';
 
-class AddCommentBottomSheet extends HookConsumerWidget {
+class AddAnnouncementCommentBottomSheet extends HookConsumerWidget {
   final userEmail;
-  final relatedPost;
+  final relatedAnnouncement;
 
-  AddCommentBottomSheet(
-      {super.key, required this.userEmail, required this.relatedPost});
+  AddAnnouncementCommentBottomSheet(
+      {super.key, required this.userEmail, required this.relatedAnnouncement});
 
   final formGlobalKey = GlobalKey<FormState>();
 
@@ -96,10 +96,10 @@ class AddCommentBottomSheet extends HookConsumerWidget {
                           return;
                         }
                         if (currentState.validate()) {
-                          ref.read(postsListControllerProvider).addComment(
+                          ref.read(tripsListControllerProvider).addComment(
                               commentAuthor: userEmail,
                               commentContent: contentController.text,
-                              relatedPost: relatedPost);
+                              relatedAnnouncement: relatedAnnouncement);
                           Navigator.of(context).pop();
                         }
                       } //,

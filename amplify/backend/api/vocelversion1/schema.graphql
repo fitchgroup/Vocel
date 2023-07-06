@@ -77,15 +77,38 @@ enum ProfileRole {
     VCPA
 }
 
+#type VocelMessage @model @auth(rules: [
+#    { allow: owner, operations: [read, update, delete] },
+#    { allow: public, operations: [read] }
+#]) {
+#    id: ID!
+#    content: String! @auth(rules: [{ allow: owner, operations: [read, update, delete] }, { allow: public, operations: [read] }])
+#    messageImageUrl: String @auth(rules: [{ allow: owner, operations: [read, update, delete] }, { allow: public, operations: [read] }])
+#    messageImageKey: String @auth(rules: [{ allow: owner, operations: [read, update, delete] }, { allow: public, operations: [read] }])
+#    attachedLink: String @auth(rules: [{ allow: owner, operations: [read, update, delete] }, { allow: public, operations: [read] }])
+#    sender: String! @auth(rules: [{ allow: owner, operations: [read, update, delete] }, { allow: public, operations: [read] }])
+#    receiver: String! @auth(rules: [{ allow: owner, operations: [read, update, delete] }, { allow: public, operations: [read] }])
+#}
+
+type VocelMessage @model @auth(rules: [{ allow: owner }]) {
+    id: ID!
+    content: String!
+    messageImageUrl: String
+    messageImageKey: String
+    attachedLink: String
+    sender: String!
+    receiver: String!
+}
 
 type Post @model @auth(rules: [
-    { allow: owner, operations: [read, update, delete] },
+    { allow: owner, operations: [update, read, create, delete] },
+    { allow: groups, groups: ["Staffversion1"], operations: [create, update, delete, read] },
     { allow: public, operations: [read] }
 ]) {
     id: ID!
-    postAuthor: String! @auth(rules: [{ allow: owner, operations: [read, update, delete] }, { allow: public, operations: [read] }])
-    postContent: String! @auth(rules: [{ allow: owner, operations: [read, update, delete] }, { allow: public, operations: [read] }])
-    likes: [String] @auth(rules: [{ allow: public, operations: [read, update] }])
+    postAuthor: String! @auth(rules: [{ allow: owner, operations: [read, update, delete] }, { allow: public, operations: [read] }, { allow: groups, groups: ["Staffversion1"], operations: [create, update, delete, read] }])
+    postContent: String! @auth(rules: [{ allow: owner, operations: [read, update, delete] }, { allow: public, operations: [read] }, { allow: groups, groups: ["Staffversion1"], operations: [create, update, delete, read] }])
+    likes: [String] @auth(rules: [{ allow: public, operations: [read, update] }, { allow: groups, groups: ["Staffversion1"], operations: [create, update, delete, read] }])
     comments: [Comment] @hasMany
 }
 
@@ -96,6 +119,18 @@ type Comment @model {
     post: Post @belongsTo
     content: String!
 }
+
+enum MessageType {
+    audio,
+    custom,
+    file,
+    image,
+    system,
+    text,
+    unsupported,
+    video
+}
+
 
 
 #
