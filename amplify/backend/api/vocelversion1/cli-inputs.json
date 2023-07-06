@@ -13,10 +13,6 @@
         "cognitoUserPoolId": "authvocelversion10392777d"
       }
     ],
-    "conflictResolution": {
-      "defaultResolutionStrategy": {
-        "type": "AUTOMERGE"
-      }
-    }
+    "conflictResolution": {}
   }
 }
