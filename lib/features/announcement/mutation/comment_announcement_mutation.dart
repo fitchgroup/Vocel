@@ -29,7 +29,7 @@ Future<void> deleteCommentAnnouncement(
 
 /// FETCH DATA
 
-Future<CommentAnnouncement?> queryItem(
+Future<CommentAnnouncement?> queryCommentAnnouncementItem(
     CommentAnnouncement queriedCommentAnnouncement) async {
   try {
     final request = ModelQueries.get(
@@ -50,7 +50,7 @@ Future<CommentAnnouncement?> queryItem(
 
 /// LIST ITEM
 
-Future<List<CommentAnnouncement?>> queryListItems() async {
+Future<List<CommentAnnouncement?>> queryCommentAnnouncementListItems() async {
   try {
     final request = ModelQueries.list(CommentAnnouncement.classType);
     final response = await Amplify.API.query(request: request).response;
@@ -69,7 +69,8 @@ Future<List<CommentAnnouncement?>> queryListItems() async {
 
 const limit = 100;
 
-Future<List<CommentAnnouncement?>> queryPaginatedListItems() async {
+Future<List<CommentAnnouncement?>>
+    queryPaginatedCommentAnnouncementListItems() async {
   final firstRequest = ModelQueries.list<CommentAnnouncement>(
       CommentAnnouncement.classType,
       limit: limit);

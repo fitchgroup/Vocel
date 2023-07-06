@@ -28,7 +28,7 @@ Future<void> deletePost(Post postDelete) async {
 
 /// FETCH DATA
 
-Future<Post?> queryItem(Post queriedPost) async {
+Future<Post?> queryPostItem(Post queriedPost) async {
   try {
     final request = ModelQueries.get(
       Post.classType,
@@ -48,7 +48,7 @@ Future<Post?> queryItem(Post queriedPost) async {
 
 /// LIST ITEM
 
-Future<List<Post?>> queryListItems() async {
+Future<List<Post?>> queryPostListItems() async {
   try {
     final request = ModelQueries.list(Post.classType);
     final response = await Amplify.API.query(request: request).response;
@@ -67,7 +67,7 @@ Future<List<Post?>> queryListItems() async {
 
 const limit = 100;
 
-Future<List<Post?>> queryPaginatedListItems() async {
+Future<List<Post?>> queryPaginatedPostListItems() async {
   final firstRequest = ModelQueries.list<Post>(Post.classType, limit: limit);
   final firstResult = await Amplify.API.query(request: firstRequest).response;
   final firstPageData = firstResult.data;

@@ -35,7 +35,8 @@ Future<void> deleteAnnouncement(Announcement announcementDelete) async {
 
 /// FETCH DATA
 
-Future<Announcement?> queryItem(Announcement queriedAnnouncement) async {
+Future<Announcement?> queryAnnouncementItem(
+    Announcement queriedAnnouncement) async {
   try {
     final request = ModelQueries.get(
       Announcement.classType,
@@ -55,7 +56,7 @@ Future<Announcement?> queryItem(Announcement queriedAnnouncement) async {
 
 /// LIST ITEM
 
-Future<List<Announcement?>> queryListItems() async {
+Future<List<Announcement?>> queryAnnouncementListItems() async {
   try {
     final request = ModelQueries.list(Announcement.classType);
     final response = await Amplify.API.query(request: request).response;
@@ -74,7 +75,7 @@ Future<List<Announcement?>> queryListItems() async {
 
 const limit = 100;
 
-Future<List<Announcement?>> queryPaginatedListItems() async {
+Future<List<Announcement?>> queryPaginatedAnnouncementListItems() async {
   final firstRequest =
       ModelQueries.list<Announcement>(Announcement.classType, limit: limit);
   final firstResult = await Amplify.API.query(request: firstRequest).response;

@@ -28,7 +28,8 @@ Future<void> deleteVocelMessage(VocelMessage vocelMessageDelete) async {
 
 /// FETCH DATA
 
-Future<VocelMessage?> queryItem(VocelMessage queriedVocelMessage) async {
+Future<VocelMessage?> queryVocelMessageItem(
+    VocelMessage queriedVocelMessage) async {
   try {
     final request = ModelQueries.get(
       VocelMessage.classType,
@@ -48,7 +49,7 @@ Future<VocelMessage?> queryItem(VocelMessage queriedVocelMessage) async {
 
 /// LIST ITEM
 
-Future<List<VocelMessage?>> queryListItems() async {
+Future<List<VocelMessage?>> queryVocelMessageListItems() async {
   try {
     final request = ModelQueries.list(VocelMessage.classType);
     final response = await Amplify.API.query(request: request).response;
@@ -67,7 +68,7 @@ Future<List<VocelMessage?>> queryListItems() async {
 
 const limit = 100;
 
-Future<List<VocelMessage?>> queryPaginatedListItems() async {
+Future<List<VocelMessage?>> queryPaginatedVocelMessageListItems() async {
   final firstRequest =
       ModelQueries.list<VocelMessage>(VocelMessage.classType, limit: limit);
   final firstResult = await Amplify.API.query(request: firstRequest).response;
