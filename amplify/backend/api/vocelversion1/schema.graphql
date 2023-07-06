@@ -31,7 +31,8 @@
 #allow: owner, groups: Allows the owner and specific groups to perform operations.
 
 type Announcement @model @auth(rules: [
-    { allow: owner, operations: [read, update, delete] },
+    { allow: owner, operations: [update, read, create, delete] },
+    { allow: groups, groups: ["Staffversion1"], operations: [create, update, delete, read] },
     { allow: public, operations: [read] }
 ])
 {
@@ -57,7 +58,11 @@ type CommentAnnouncement @model {
 
 
 
-type VocelEvent @model @auth(rules: [{ allow: owner }]) {
+type VocelEvent @model @auth(rules: [
+    { allow: owner, operations: [update, read, create, delete] },
+    { allow: groups, groups: ["Staffversion1"], operations: [create, update, delete, read] },
+    { allow: public, operations: [read] }
+]) {
     id: ID!
     eventTitle: String!
     eventLocation: String!
