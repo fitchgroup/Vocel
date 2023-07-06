@@ -17,8 +17,8 @@
         "userPoolGroups": {}
       },
       "api": {
-        "vocelversion1": {},
-        "AdminQueries": {}
+        "AdminQueries": {},
+        "vocelversion1": {}
       },
       "function": {
         "AdminQueriesf35eea9e": {

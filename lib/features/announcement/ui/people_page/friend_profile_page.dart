@@ -212,9 +212,6 @@ class _FriendProfileState extends State<FriendProfile> {
               Center(
                 child: InkWell(
                   onTap: () async {
-                    if (kDebugMode) {
-                      print("go to friend list");
-                    }
                     Navigator.push(
                         context,
                         MaterialPageRoute(
