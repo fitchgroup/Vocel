@@ -4,6 +4,7 @@ import 'package:vocel/LocalizedButtonResolver.dart';
 import 'package:vocel/common/utils/colors.dart' as constants;
 import 'package:vocel/features/announcement/controller/post_controller.dart';
 import 'package:vocel/features/announcement/data/post_repository.dart';
+import 'package:vocel/features/announcement/mutation/post_mutation.dart';
 import 'package:vocel/features/announcement/ui/discussion_forum/add_post_bottomsheet.dart';
 import 'package:vocel/features/announcement/ui/discussion_forum/forum_post.dart';
 import 'package:vocel/features/announcement/ui/home_page/home_navigation_bar.dart';
@@ -181,6 +182,11 @@ class ForumPage extends HookConsumerWidget {
                             child: const Text("Delete"),
                             onPressed: () {
                               ref.read(postControllerProvider).delete(post);
+                              deletePost(post);
+
+                              /// TODO: DELETE CORRESPONDING COMMENT
+                              ///
+
                               Navigator.of(context)
                                   .pop(false); // Dismiss the dialog and delete
                             },

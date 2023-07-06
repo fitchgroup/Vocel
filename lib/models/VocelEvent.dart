@@ -187,7 +187,8 @@ class VocelEvent extends Model {
         startTime: startTime,
         duration: duration,
         eventImageUrl: eventImageUrl,
-        eventImageKey: eventImageKey);
+        eventImageKey: eventImageKey,
+        createdAt: TemporalDateTime.now());
   }
 
   bool equals(Object other) {
@@ -260,8 +261,7 @@ class VocelEvent extends Model {
         startTime: startTime ?? this.startTime,
         duration: duration ?? this.duration,
         eventImageUrl: eventImageUrl ?? this.eventImageUrl,
-        eventImageKey: eventImageKey ?? this.eventImageKey,
-        createdAt: TemporalDateTime.now());
+        eventImageKey: eventImageKey ?? this.eventImageKey);
   }
 
   VocelEvent.fromJson(Map<String, dynamic> json)
@@ -339,11 +339,24 @@ class VocelEvent extends Model {
           identityClaim: "cognito:username",
           provider: AuthRuleProvider.USERPOOLS,
           operations: [
+            ModelOperation.UPDATE,
+            ModelOperation.READ,
+            ModelOperation.CREATE,
+            ModelOperation.DELETE
+          ]),
+      AuthRule(
+          authStrategy: AuthStrategy.GROUPS,
+          groupClaim: "cognito:groups",
+          groups: ["Staffversion1"],
+          provider: AuthRuleProvider.USERPOOLS,
+          operations: [
             ModelOperation.CREATE,
             ModelOperation.UPDATE,
             ModelOperation.DELETE,
             ModelOperation.READ
-          ])
+          ]),
+      AuthRule(
+          authStrategy: AuthStrategy.PUBLIC, operations: [ModelOperation.READ])
     ];
 
     modelSchemaDefinition.addField(ModelFieldDefinition.id());
