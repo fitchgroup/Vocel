@@ -90,13 +90,14 @@ class Post extends Model {
     return _updatedAt;
   }
 
-  const Post._internal({required this.id,
-    required postAuthor,
-    required postContent,
-    likes,
-    comments,
-    createdAt,
-    updatedAt})
+  const Post._internal(
+      {required this.id,
+      required postAuthor,
+      required postContent,
+      likes,
+      comments,
+      createdAt,
+      updatedAt})
       : _postAuthor = postAuthor,
         _postContent = postContent,
         _likes = likes,
@@ -104,18 +105,19 @@ class Post extends Model {
         _createdAt = createdAt,
         _updatedAt = updatedAt;
 
-  factory Post({String? id,
-    required String postAuthor,
-    required String postContent,
-    List<String>? likes,
-    List<Comment>? comments}) {
+  factory Post(
+      {String? id,
+      required String postAuthor,
+      required String postContent,
+      List<String>? likes,
+      List<Comment>? comments}) {
     return Post._internal(
         id: id == null ? UUID.getUUID() : id,
         postAuthor: postAuthor,
         postContent: postContent,
         likes: likes != null ? List<String>.unmodifiable(likes) : likes,
         comments:
-        comments != null ? List<Comment>.unmodifiable(comments) : comments,
+            comments != null ? List<Comment>.unmodifiable(comments) : comments,
         createdAt: TemporalDateTime.now());
   }
 
@@ -157,22 +159,18 @@ class Post extends Model {
     return buffer.toString();
   }
 
-  Post copyWith({String? postAuthor,
-    String? postContent,
-    List<String>? likes,
-    List<Comment>? comments,
-    TemporalDateTime? createdAt,
-    TemporalDateTime? updatedAt
-  }) {
+  Post copyWith(
+      {String? postAuthor,
+      String? postContent,
+      List<String>? likes,
+      List<Comment>? comments}) {
     return Post._internal(
         id: id,
         postAuthor: postAuthor ?? this.postAuthor,
         postContent: postContent ?? this.postContent,
         likes: likes ?? this.likes,
         comments: comments ?? this.comments,
-        createdAt: createdAt ?? this.createdAt,
-        updatedAt: updatedAt ?? this.updatedAt
-    );
+        createdAt: TemporalDateTime.now());
   }
 
   Post.fromJson(Map<String, dynamic> json)
@@ -182,11 +180,10 @@ class Post extends Model {
         _likes = json['likes']?.cast<String>(),
         _comments = json['comments'] is List
             ? (json['comments'] as List)
-            .where((e) => e?['serializedData'] != null)
-            .map((e) =>
-            Comment.fromJson(
-                new Map<String, dynamic>.from(e['serializedData'])))
-            .toList()
+                .where((e) => e?['serializedData'] != null)
+                .map((e) => Comment.fromJson(
+                    new Map<String, dynamic>.from(e['serializedData'])))
+                .toList()
             : null,
         _createdAt = json['createdAt'] != null
             ? TemporalDateTime.fromString(json['createdAt'])
@@ -195,8 +192,7 @@ class Post extends Model {
             ? TemporalDateTime.fromString(json['updatedAt'])
             : null;
 
-  Map<String, dynamic> toJson() =>
-      {
+  Map<String, dynamic> toJson() => {
         'id': id,
         'postAuthor': _postAuthor,
         'postContent': _postContent,
@@ -206,8 +202,7 @@ class Post extends Model {
         'updatedAt': _updatedAt?.format()
       };
 
-  Map<String, Object?> toMap() =>
-      {
+  Map<String, Object?> toMap() => {
         'id': id,
         'postAuthor': _postAuthor,
         'postContent': _postContent,
@@ -218,7 +213,7 @@ class Post extends Model {
       };
 
   static final QueryModelIdentifier<PostModelIdentifier> MODEL_IDENTIFIER =
-  QueryModelIdentifier<PostModelIdentifier>();
+      QueryModelIdentifier<PostModelIdentifier>();
   static final QueryField ID = QueryField(fieldName: "id");
   static final QueryField POSTAUTHOR = QueryField(fieldName: "postAuthor");
   static final QueryField POSTCONTENT = QueryField(fieldName: "postContent");
@@ -226,9 +221,9 @@ class Post extends Model {
   static final QueryField COMMENTS = QueryField(
       fieldName: "comments",
       fieldType:
-      ModelFieldType(ModelFieldTypeEnum.model, ofModelName: 'Comment'));
+          ModelFieldType(ModelFieldTypeEnum.model, ofModelName: 'Comment'));
   static var schema =
-  Model.defineSchema(define: (ModelSchemaDefinition modelSchemaDefinition) {
+      Model.defineSchema(define: (ModelSchemaDefinition modelSchemaDefinition) {
     modelSchemaDefinition.name = "Post";
     modelSchemaDefinition.pluralName = "Posts";
 
@@ -239,9 +234,21 @@ class Post extends Model {
           identityClaim: "cognito:username",
           provider: AuthRuleProvider.USERPOOLS,
           operations: [
-            ModelOperation.READ,
             ModelOperation.UPDATE,
+            ModelOperation.READ,
+            ModelOperation.CREATE,
             ModelOperation.DELETE
+          ]),
+      AuthRule(
+          authStrategy: AuthStrategy.GROUPS,
+          groupClaim: "cognito:groups",
+          groups: ["Staffversion1"],
+          provider: AuthRuleProvider.USERPOOLS,
+          operations: [
+            ModelOperation.CREATE,
+            ModelOperation.UPDATE,
+            ModelOperation.DELETE,
+            ModelOperation.READ
           ]),
       AuthRule(
           authStrategy: AuthStrategy.PUBLIC, operations: [ModelOperation.READ])
@@ -315,11 +322,10 @@ class PostModelIdentifier implements ModelIdentifier<Post> {
   Map<String, dynamic> serializeAsMap() => (<String, dynamic>{'id': id});
 
   @override
-  List<Map<String, dynamic>> serializeAsList() =>
-      serializeAsMap()
-          .entries
-          .map((entry) => (<String, dynamic>{entry.key: entry.value}))
-          .toList();
+  List<Map<String, dynamic>> serializeAsList() => serializeAsMap()
+      .entries
+      .map((entry) => (<String, dynamic>{entry.key: entry.value}))
+      .toList();
 
   @override
   String serializeAsString() => serializeAsMap().values.join('#');

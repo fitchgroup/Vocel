@@ -8,6 +8,7 @@ import 'package:intl/intl.dart';
 import 'package:vocel/common/utils/colors.dart' as constants;
 import 'package:vocel/features/announcement/controller/announcement_controller.dart';
 import 'package:vocel/features/announcement/data/announcement_repository.dart';
+import 'package:vocel/features/announcement/mutation/announcement_mutation.dart';
 import 'package:vocel/features/announcement/ui/home_page/add_announcement_bottomsheet.dart';
 import 'package:vocel/features/announcement/ui/home_page/announcement_card_item.dart';
 import 'package:vocel/features/announcement/ui/home_page/home_navigation_bar.dart';
@@ -230,6 +231,11 @@ class HomeAnnouncementFeed extends HookConsumerWidget {
                                   ref
                                       .read(tripControllerProvider)
                                       .delete(reminder);
+                                  deleteAnnouncement(reminder);
+
+                                  /// TODO: DELETE CORRESPONDING COMMENT
+                                  ///
+
                                   Navigator.of(context).pop(
                                       false); // Dismiss the dialog and delete
                                 },
