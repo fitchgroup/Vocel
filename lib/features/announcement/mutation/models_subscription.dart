@@ -1,6 +1,11 @@
 import 'dart:async';
 import 'package:amplify_api/amplify_api.dart';
 import 'package:amplify_flutter/amplify_flutter.dart';
+import 'package:flutter/foundation.dart';
+import 'package:vocel/features/announcement/services/announcement_datastore.dart';
+import 'package:vocel/features/announcement/services/event_datastore.dart';
+import 'package:vocel/features/announcement/services/message_datastore.dart';
+import 'package:vocel/features/announcement/services/post_datastore.dart';
 import 'package:vocel/models/ModelProvider.dart';
 
 StreamSubscription<GraphQLResponse<Announcement>>? subscriptionAnnouncement;
@@ -12,6 +17,7 @@ StreamSubscription<GraphQLResponse<VocelEvent>>? subscriptionVocelEvent;
 StreamSubscription<GraphQLResponse<VocelMessage>>? subscriptionVocelMessage;
 
 void subscribeAnnouncement() {
+  TripsDataStoreService announcementDataStoreService = TripsDataStoreService();
   final subscriptionRequest =
       ModelSubscriptions.onCreate(Announcement.classType);
   final subscriptionRequest2 =
@@ -28,15 +34,29 @@ void subscribeAnnouncement() {
         safePrint('subscriptionAnnouncement on delete established'),
   );
   subscriptionAnnouncement = operation.listen(
-    (event) {
+    (event) async {
       safePrint('subscriptionAnnouncement event data received: ${event.data}');
+      try {
+        if (event.data != null) {
+          await announcementDataStoreService.addAnnouncements(event.data!);
+        }
+      } catch (e) {
+        safePrint('Error while adding announcement: $e');
+      }
     },
     onError: (Object e) =>
         safePrint('Error in subscriptionAnnouncement stream: $e'),
   );
   subscriptionAnnouncement = operation2.listen(
-    (event) {
+    (event) async {
       safePrint('subscriptionAnnouncement event data received: ${event.data}');
+      try {
+        if (event.data != null) {
+          await announcementDataStoreService.deleteAnnouncements(event.data!);
+        }
+      } catch (e) {
+        safePrint('Error while deleting announcement: $e');
+      }
     },
     onError: (Object e) =>
         safePrint('Error in subscriptionAnnouncement stream: $e'),
@@ -44,6 +64,8 @@ void subscribeAnnouncement() {
 }
 
 void subscribeCommentAnnouncement() {
+  TripsDataStoreService commentAnnouncementDataStoreService =
+      TripsDataStoreService();
   final subscriptionRequest =
       ModelSubscriptions.onCreate(CommentAnnouncement.classType);
   final subscriptionRequest2 =
@@ -61,17 +83,31 @@ void subscribeCommentAnnouncement() {
         safePrint('subscriptionCommentAnnouncement on delete established'),
   );
   subscriptionCommentAnnouncement = operation.listen(
-    (event) {
+    (event) async {
       safePrint(
           'subscriptionCommentAnnouncement event data received: ${event.data}');
+      try {
+        if (event.data != null) {
+          await commentAnnouncementDataStoreService.addComment(event.data!);
+        }
+      } catch (e) {
+        safePrint('Error while adding comment announcement: $e');
+      }
     },
     onError: (Object e) =>
         safePrint('Error in subscriptionCommentAnnouncement stream: $e'),
   );
   subscriptionCommentAnnouncement = operation2.listen(
-    (event) {
+    (event) async {
       safePrint(
           'subscriptionCommentAnnouncement event data received: ${event.data}');
+      try {
+        if (event.data != null) {
+          await commentAnnouncementDataStoreService.deleteComment(event.data!);
+        }
+      } catch (e) {
+        safePrint('Error while deleting comment announcement: $e');
+      }
     },
     onError: (Object e) =>
         safePrint('Error in subscriptionCommentAnnouncement stream: $e'),
@@ -79,6 +115,7 @@ void subscribeCommentAnnouncement() {
 }
 
 void subscribePost() {
+  PostsDataStoreService postsDataStoreService = PostsDataStoreService();
   final subscriptionRequest = ModelSubscriptions.onCreate(Post.classType);
   final subscriptionRequest2 = ModelSubscriptions.onDelete(Post.classType);
   final Stream<GraphQLResponse<Post>> operation = Amplify.API.subscribe(
@@ -90,20 +127,35 @@ void subscribePost() {
     onEstablished: () => safePrint('subscriptionPost on delete established'),
   );
   subscriptionPost = operation.listen(
-    (event) {
+    (event) async {
       safePrint('subscriptionPost event data received: ${event.data}');
+      try {
+        if (event.data != null) {
+          await postsDataStoreService.addPost(event.data!);
+        }
+      } catch (e) {
+        safePrint('Error while adding post: $e');
+      }
     },
     onError: (Object e) => safePrint('Error in subscriptionPost stream: $e'),
   );
   subscriptionPost = operation2.listen(
-    (event) {
+    (event) async {
       safePrint('subscriptionPost event data received: ${event.data}');
+      try {
+        if (event.data != null) {
+          await postsDataStoreService.deletePost(event.data!);
+        }
+      } catch (e) {
+        safePrint('Error while deleting post: $e');
+      }
     },
     onError: (Object e) => safePrint('Error in subscriptionPost stream: $e'),
   );
 }
 
 void subscribeComment() {
+  PostsDataStoreService commentDataStoreService = PostsDataStoreService();
   final subscriptionRequest = ModelSubscriptions.onCreate(Comment.classType);
   final subscriptionRequest2 = ModelSubscriptions.onDelete(Comment.classType);
   final Stream<GraphQLResponse<Comment>> operation = Amplify.API.subscribe(
@@ -115,20 +167,35 @@ void subscribeComment() {
     onEstablished: () => safePrint('subscriptionComment on delete established'),
   );
   subscriptionComment = operation.listen(
-    (event) {
+    (event) async {
       safePrint('subscriptionComment event data received: ${event.data}');
+      try {
+        if (event.data != null) {
+          await commentDataStoreService.addComment(event.data!);
+        }
+      } catch (e) {
+        safePrint('Error while adding comment: $e');
+      }
     },
     onError: (Object e) => safePrint('Error in subscriptionComment stream: $e'),
   );
   subscriptionComment = operation2.listen(
-    (event) {
+    (event) async {
       safePrint('subscriptionComment event data received: ${event.data}');
+      try {
+        if (event.data != null) {
+          await commentDataStoreService.deleteComment(event.data!);
+        }
+      } catch (e) {
+        safePrint('Error while deleting comment: $e');
+      }
     },
     onError: (Object e) => safePrint('Error in subscriptionComment stream: $e'),
   );
 }
 
 void subscribeVocelEvent() {
+  EventsDataStoreService vocelEventDataStoreService = EventsDataStoreService();
   final subscriptionRequest = ModelSubscriptions.onCreate(VocelEvent.classType);
   final subscriptionRequest2 =
       ModelSubscriptions.onDelete(VocelEvent.classType);
@@ -143,15 +210,29 @@ void subscribeVocelEvent() {
         safePrint('subscriptionVocelEvent on delete established'),
   );
   subscriptionVocelEvent = operation.listen(
-    (event) {
+    (event) async {
       safePrint('subscriptionVocelEvent event data received: ${event.data}');
+      try {
+        if (event.data != null) {
+          await vocelEventDataStoreService.addEvent(event.data!);
+        }
+      } catch (e) {
+        safePrint('Error while adding vocel event: $e');
+      }
     },
     onError: (Object e) =>
         safePrint('Error in subscriptionVocelEvent stream: $e'),
   );
   subscriptionVocelEvent = operation2.listen(
-    (event) {
+    (event) async {
       safePrint('subscriptionVocelEvent event data received: ${event.data}');
+      try {
+        if (event.data != null) {
+          await vocelEventDataStoreService.deleteEvent(event.data!);
+        }
+      } catch (e) {
+        safePrint('Error while deleting vocel event: $e');
+      }
     },
     onError: (Object e) =>
         safePrint('Error in subscriptionVocelEvent stream: $e'),
@@ -159,6 +240,8 @@ void subscribeVocelEvent() {
 }
 
 void subscribeVocelMessage() {
+  MessagesDataStoreService vocelMessageDataStoreService =
+      MessagesDataStoreService();
   final subscriptionRequest =
       ModelSubscriptions.onCreate(VocelMessage.classType);
   final subscriptionRequest2 =
@@ -175,22 +258,48 @@ void subscribeVocelMessage() {
         safePrint('subscriptionVocelMessage on delete established'),
   );
   subscriptionVocelMessage = operation.listen(
-    (event) {
+    (event) async {
       safePrint('subscriptionVocelMessage event data received: ${event.data}');
+      try {
+        if (event.data != null) {
+          await vocelMessageDataStoreService.addMessage(event.data!);
+        }
+      } catch (e) {
+        safePrint('Error while adding vocel message: $e');
+      }
     },
     onError: (Object e) =>
         safePrint('Error in subscriptionVocelMessage stream: $e'),
   );
   subscriptionVocelMessage = operation2.listen(
-    (event) {
+    (event) async {
       safePrint('subscriptionVocelMessage event data received: ${event.data}');
+      try {
+        if (event.data != null) {
+          await vocelMessageDataStoreService.deleteMessage(event.data!);
+        }
+      } catch (e) {
+        safePrint('Error while deleting vocel message: $e');
+      }
     },
     onError: (Object e) =>
         safePrint('Error in subscriptionVocelMessage stream: $e'),
   );
 }
 
-void unsubscribe() {
+void subscribeModel() {
+  subscribeAnnouncement();
+  subscribeCommentAnnouncement();
+  subscribePost();
+  subscribeComment();
+  subscribeVocelEvent();
+  subscribeVocelMessage();
+  if (kDebugMode) {
+    print("@" * 100 + '\n' + "Subscribe success\n" + "@" * 100);
+  }
+}
+
+void unsubscribeModel() {
   subscriptionAnnouncement?.cancel();
   subscriptionCommentAnnouncement?.cancel();
   subscriptionPost?.cancel();
