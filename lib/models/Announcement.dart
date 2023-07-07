@@ -218,7 +218,8 @@ class Announcement extends Model {
         isCompleted: isCompleted ?? this.isCompleted,
         isPinned: isPinned ?? this.isPinned,
         likes: likes ?? this.likes,
-        comments: comments ?? this.comments);
+        comments: comments ?? this.comments,
+        createdAt: TemporalDateTime.now());
   }
 
   Announcement.fromJson(Map<String, dynamic> json)

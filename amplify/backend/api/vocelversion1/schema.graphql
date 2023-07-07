@@ -43,11 +43,15 @@ type Announcement @model @auth(rules: [
     #    endDate: AWSDate!
     isCompleted: Boolean!
     isPinned: Boolean!
-    likes: [String] @auth(rules: [{ allow: public, operations: [read, update] }])
+    likes: [String]
     comments: [CommentAnnouncement] @hasMany
 }
 
-type CommentAnnouncement @model {
+type CommentAnnouncement @model @auth(rules: [
+    { allow: owner, operations: [update, read, create, delete] },
+    { allow: groups, groups: ["Staffversion1"], operations: [create, update, delete, read] },
+    { allow: public, operations: [read] }
+]) {
     id: ID!
     commentAuthor: String!
     commentContent: String!
@@ -117,7 +121,11 @@ type Post @model @auth(rules: [
     comments: [Comment] @hasMany
 }
 
-type Comment @model {
+type Comment @model @auth(rules: [
+    { allow: owner, operations: [update, read, create, delete] },
+    { allow: groups, groups: ["Staffversion1"], operations: [create, update, delete, read] },
+    { allow: public, operations: [read] }
+]) {
     id: ID!
     commentAuthor: String!
     commentContent: String!

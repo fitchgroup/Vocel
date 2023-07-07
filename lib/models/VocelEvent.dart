@@ -261,7 +261,8 @@ class VocelEvent extends Model {
         startTime: startTime ?? this.startTime,
         duration: duration ?? this.duration,
         eventImageUrl: eventImageUrl ?? this.eventImageUrl,
-        eventImageKey: eventImageKey ?? this.eventImageKey);
+        eventImageKey: eventImageKey ?? this.eventImageKey,
+        createdAt: TemporalDateTime.now());
   }
 
   VocelEvent.fromJson(Map<String, dynamic> json)
