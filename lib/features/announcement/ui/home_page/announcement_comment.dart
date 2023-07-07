@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:amplify_core/src/types/temporal/temporal_datetime.dart';
 import 'package:vocel/features/announcement/controller/announcement_controller.dart';
 import 'package:vocel/features/announcement/data/announcement_repository.dart';
+import 'package:vocel/features/announcement/mutation/comment_announcement_mutation.dart';
 import 'package:vocel/models/ModelProvider.dart';
 
 class AnnouncementCommentList extends HookConsumerWidget {
@@ -68,6 +69,7 @@ class AnnouncementCommentList extends HookConsumerWidget {
                                             ref
                                                 .read(tripControllerProvider)
                                                 .deleteComment(comment);
+                                            deleteCommentAnnouncement(comment);
                                             Navigator.of(context).pop(false);
                                           },
                                         ),
