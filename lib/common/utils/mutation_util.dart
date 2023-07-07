@@ -124,10 +124,12 @@
 //   subscription = null;
 // }
 //
-// void mutationDebuggingPrint(String shouldPrint) {
-//   if (kDebugMode) {
-//     print("##" * 100);
-//     print(shouldPrint);
-//     print("##" * 100);
-//   }
-// }
+import 'package:flutter/foundation.dart';
+
+void mutationDebuggingPrint(String shouldPrint) {
+  if (kDebugMode) {
+    print("##" * 100);
+    print(shouldPrint);
+    print("##" * 100);
+  }
+}

@@ -1,6 +1,7 @@
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:vocel/features/announcement/data/event_repository.dart';
+import 'package:vocel/features/announcement/mutation/vocelevent_mutation.dart';
 import 'package:vocel/models/ProfileRole.dart';
 import 'package:vocel/models/VocelEvent.dart';
 
@@ -32,5 +33,6 @@ class EventsListController {
     final eventsRepository = ref.read(eventsRepositoryProvider);
 
     await eventsRepository.add(event);
+    await createVocelEvent(event);
   }
 }

@@ -1,4 +1,6 @@
+import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:vocel/features/announcement/mutation/post_mutation.dart';
 import 'package:vocel/features/announcement/services/post_datastore.dart';
 import 'package:vocel/models/Comment.dart';
 import 'package:vocel/models/Post.dart';
@@ -9,9 +11,19 @@ final postsRepositoryProvider = Provider<PostsRepository>((ref) {
   return PostsRepository(postsDataStoreService);
 });
 
-final postsListStreamProvider = StreamProvider.autoDispose<List<Post?>>((ref) {
+/// TODO: using this methods, sync other models
+final postsListStreamProvider =
+    StreamProvider.autoDispose<List<Post?>>((ref) async* {
   final postsRepository = ref.watch(postsRepositoryProvider);
-  return postsRepository.getPosts();
+
+  List<Post?> serverPosts = await queryPostListItems();
+  if (serverPosts.isNotEmpty) {
+    for (var post in serverPosts) {
+      await Amplify.DataStore.save(post!);
+    }
+  }
+
+  yield* postsRepository.getPosts();
 });
 
 final pastPostsListStreamProvider =
