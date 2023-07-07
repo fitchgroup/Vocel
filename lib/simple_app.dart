@@ -54,14 +54,14 @@ class _MyAppState extends State<MyApp> {
         if (event is SubscriptionHubEvent) {
           if (prevSubscriptionStatus == SubscriptionStatus.connecting &&
               event.status == SubscriptionStatus.connected) {
-            getAnnouncements(); // refetch todos
+            // getAnnouncements(); // refetch todos
             // getVocelEvents();
           }
           prevSubscriptionStatus = event.status;
         }
       },
     );
-    unsubscribe();
+    // unsubscribe();
     // subscribe();
 
     super.initState();

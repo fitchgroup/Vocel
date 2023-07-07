@@ -178,7 +178,8 @@ class CommentAnnouncement extends Model {
         commentAuthor: commentAuthor ?? this.commentAuthor,
         commentContent: commentContent ?? this.commentContent,
         announcement: announcement ?? this.announcement,
-        content: content ?? this.content);
+        content: content ?? this.content,
+        createdAt: TemporalDateTime.now());
   }
 
   CommentAnnouncement.fromJson(Map<String, dynamic> json)
@@ -234,6 +235,33 @@ class CommentAnnouncement extends Model {
       Model.defineSchema(define: (ModelSchemaDefinition modelSchemaDefinition) {
     modelSchemaDefinition.name = "CommentAnnouncement";
     modelSchemaDefinition.pluralName = "CommentAnnouncements";
+
+    modelSchemaDefinition.authRules = [
+      AuthRule(
+          authStrategy: AuthStrategy.OWNER,
+          ownerField: "owner",
+          identityClaim: "cognito:username",
+          provider: AuthRuleProvider.USERPOOLS,
+          operations: [
+            ModelOperation.UPDATE,
+            ModelOperation.READ,
+            ModelOperation.CREATE,
+            ModelOperation.DELETE
+          ]),
+      AuthRule(
+          authStrategy: AuthStrategy.GROUPS,
+          groupClaim: "cognito:groups",
+          groups: ["Staffversion1"],
+          provider: AuthRuleProvider.USERPOOLS,
+          operations: [
+            ModelOperation.CREATE,
+            ModelOperation.UPDATE,
+            ModelOperation.DELETE,
+            ModelOperation.READ
+          ]),
+      AuthRule(
+          authStrategy: AuthStrategy.PUBLIC, operations: [ModelOperation.READ])
+    ];
 
     modelSchemaDefinition.addField(ModelFieldDefinition.id());
 
