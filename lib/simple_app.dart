@@ -12,6 +12,7 @@ import 'package:vocel/LocalizedMessageResolver.dart';
 import 'package:vocel/LocalizedTitleResolver.dart';
 import 'package:vocel/common/utils/language_constants.dart';
 import 'package:vocel/common/utils/notification_util.dart';
+import 'package:vocel/features/announcement/mutation/models_subscription.dart';
 import 'package:vocel/features/announcement/ui/drawer_list/bottom_navigation.dart';
 import 'package:vocel/models/Announcement.dart';
 import 'package:vocel/models/VocelEvent.dart';
@@ -54,15 +55,15 @@ class _MyAppState extends State<MyApp> {
         if (event is SubscriptionHubEvent) {
           if (prevSubscriptionStatus == SubscriptionStatus.connecting &&
               event.status == SubscriptionStatus.connected) {
-            getAnnouncements(); // refetch todos
+            // getAnnouncements(); // refetch todos
             // getVocelEvents();
           }
           prevSubscriptionStatus = event.status;
         }
       },
     );
-    unsubscribe();
-    // subscribe();
+    // unsubscribeModel();
+    subscribeModel();
 
     super.initState();
   }
@@ -107,34 +108,34 @@ class _MyAppState extends State<MyApp> {
 
   void subscribe() {
     /// GET THE ANNOUNCEMENT DATA
-    final subscriptionRequest =
-        ModelSubscriptions.onCreate(Announcement.classType);
-    final Stream<GraphQLResponse<Announcement>> operation =
-        Amplify.API.subscribe(
-      subscriptionRequest,
-      onEstablished: () => testDebuggingPrint('Subscription established'),
-    );
-    subscription = operation.listen(
-      (event) {
-        setState(() async {
-          NotificationSpecificDateTime result = NotificationSpecificDateTime(
-            specificDateTime:
-                event.data!.createdAt!.getDateTimeInUtc().toLocal(),
-            timeOfDay: TimeOfDay(
-              hour: TimeOfDay.now().hour,
-              minute: TimeOfDay.now().minute + 1,
-            ),
-          );
-          allAnnouncements.add(event.data);
-          safePrint("=" * 30 + allAnnouncements.length.toString() + "=" * 30);
-          if (event.data != null) {
-            scheduleSpecificVocelNotification(result, event.data!);
-          }
-        });
-      },
-      onError: (Object e) =>
-          testDebuggingPrint('Error in subscription stream: $e'),
-    );
+    // final subscriptionRequest =
+    //     ModelSubscriptions.onCreate(Announcement.classType);
+    // final Stream<GraphQLResponse<Announcement>> operation =
+    //     Amplify.API.subscribe(
+    //   subscriptionRequest,
+    //   onEstablished: () => testDebuggingPrint('Subscription established'),
+    // );
+    // subscription = operation.listen(
+    //   (event) {
+    //     setState(() async {
+    //       NotificationSpecificDateTime result = NotificationSpecificDateTime(
+    //         specificDateTime:
+    //             event.data!.createdAt!.getDateTimeInUtc().toLocal(),
+    //         timeOfDay: TimeOfDay(
+    //           hour: TimeOfDay.now().hour,
+    //           minute: TimeOfDay.now().minute + 1,
+    //         ),
+    //       );
+    //       allAnnouncements.add(event.data);
+    //       safePrint("=" * 30 + allAnnouncements.length.toString() + "=" * 30);
+    //       if (event.data != null) {
+    //         scheduleSpecificVocelNotification(result, event.data!);
+    //       }
+    //     });
+    //   },
+    //   onError: (Object e) =>
+    //       testDebuggingPrint('Error in subscription stream: $e'),
+    // );
 
     /// GET THE VOCELEVENT DATA
     // final subscriptionRequest2 =
@@ -154,11 +155,6 @@ class _MyAppState extends State<MyApp> {
     //   onError: (Object e) =>
     //       testDebuggingPrint('Error in subscription stream: $e'),
     // );
-  }
-
-  void unsubscribe() {
-    subscription?.cancel();
-    subscription = null;
   }
 
   void testDebuggingPrint(String shouldPrint) {
