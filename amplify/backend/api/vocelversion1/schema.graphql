@@ -31,7 +31,8 @@
 #allow: owner, groups: Allows the owner and specific groups to perform operations.
 
 type Announcement @model @auth(rules: [
-    { allow: owner, operations: [read, update, delete] },
+    { allow: owner, operations: [update, read, create, delete] },
+    { allow: groups, groups: ["Staffversion1"], operations: [create, update, delete, read] },
     { allow: public, operations: [read] }
 ])
 {
@@ -42,11 +43,15 @@ type Announcement @model @auth(rules: [
     #    endDate: AWSDate!
     isCompleted: Boolean!
     isPinned: Boolean!
-    likes: [String] @auth(rules: [{ allow: public, operations: [read, update] }])
+    likes: [String]
     comments: [CommentAnnouncement] @hasMany
 }
 
-type CommentAnnouncement @model {
+type CommentAnnouncement @model @auth(rules: [
+    { allow: owner, operations: [update, read, create, delete] },
+    { allow: groups, groups: ["Staffversion1"], operations: [create, update, delete, read] },
+    { allow: public, operations: [read] }
+]) {
     id: ID!
     commentAuthor: String!
     commentContent: String!
@@ -57,7 +62,11 @@ type CommentAnnouncement @model {
 
 
 
-type VocelEvent @model @auth(rules: [{ allow: owner }]) {
+type VocelEvent @model @auth(rules: [
+    { allow: owner, operations: [update, read, create, delete] },
+    { allow: groups, groups: ["Staffversion1"], operations: [create, update, delete, read] },
+    { allow: public, operations: [read] }
+]) {
     id: ID!
     eventTitle: String!
     eventLocation: String!
@@ -75,6 +84,7 @@ enum ProfileRole {
     BELL
     EETC
     VCPA
+    UNASSIGNED
 }
 
 #type VocelMessage @model @auth(rules: [
@@ -103,16 +113,22 @@ type VocelMessage @model @auth(rules: [{ allow: owner }]) {
 type Post @model @auth(rules: [
     { allow: owner, operations: [update, read, create, delete] },
     { allow: groups, groups: ["Staffversion1"], operations: [create, update, delete, read] },
+    { allow: groups, groups: ["Bellversion1", "Eetcversion1", "Vcpaversion1"], operations: [create, delete, read] },
     { allow: public, operations: [read] }
 ]) {
     id: ID!
-    postAuthor: String! @auth(rules: [{ allow: owner, operations: [read, update, delete] }, { allow: public, operations: [read] }, { allow: groups, groups: ["Staffversion1"], operations: [create, update, delete, read] }])
-    postContent: String! @auth(rules: [{ allow: owner, operations: [read, update, delete] }, { allow: public, operations: [read] }, { allow: groups, groups: ["Staffversion1"], operations: [create, update, delete, read] }])
-    likes: [String] @auth(rules: [{ allow: public, operations: [read, update] }, { allow: groups, groups: ["Staffversion1"], operations: [create, update, delete, read] }])
+    postAuthor: String! @auth(rules: [{ allow: owner, operations: [create, read, update, delete] }, { allow: public, operations: [read] }, { allow: groups, groups: ["Staffversion1"], operations: [create, update, delete, read] }, { allow: groups, groups: ["Bellversion1", "Eetcversion1", "Vcpaversion1"], operations: [create, delete, read] }])
+    postContent: String! @auth(rules: [{ allow: owner, operations: [create, read, update, delete] }, { allow: public, operations: [read] }, { allow: groups, groups: ["Staffversion1"], operations: [create, update, delete, read] }, { allow: groups, groups: ["Bellversion1", "Eetcversion1", "Vcpaversion1"], operations: [create, delete, read] }])
+    postGroup: ProfileRole!
+    likes: [String] @auth(rules: [{ allow: public, operations: [read, update] }, { allow: groups, groups: ["Staffversion1"], operations: [create, update, delete, read] }, { allow: groups, groups: ["Bellversion1", "Eetcversion1", "Vcpaversion1"], operations: [create, delete, read] }])
     comments: [Comment] @hasMany
 }
 
-type Comment @model {
+type Comment @model @auth(rules: [
+    { allow: owner, operations: [update, read, create, delete] },
+    { allow: groups, groups: ["Staffversion1"], operations: [create, update, delete, read] },
+    { allow: public, operations: [read] }
+]) {
     id: ID!
     commentAuthor: String!
     commentContent: String!

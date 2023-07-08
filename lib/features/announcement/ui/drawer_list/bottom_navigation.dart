@@ -181,18 +181,18 @@ class _AnnouncementsListPageState extends State<AnnouncementsListPage> {
                 ));
       }
     });
-    AwesomeNotifications().actionStream.listen((notification) {
-      if (notification.channelKey == "basic_channel" && Platform.isIOS) {
-        AwesomeNotifications().getGlobalBadgeCounter().then(
-              (value) =>
-                  AwesomeNotifications().setGlobalBadgeCounter(value - 1),
-            );
-      }
-      Navigator.pushAndRemoveUntil(
-          context,
-          MaterialPageRoute(builder: (_) => const CalendarHook()),
-          (route) => route.isFirst);
-    });
+    // AwesomeNotifications().actionStream.listen((notification) {
+    //   if (notification.channelKey == "basic_channel" && Platform.isIOS) {
+    //     AwesomeNotifications().getGlobalBadgeCounter().then(
+    //           (value) =>
+    //               AwesomeNotifications().setGlobalBadgeCounter(value - 1),
+    //         );
+    //   }
+    //   Navigator.pushAndRemoveUntil(
+    //       context,
+    //       MaterialPageRoute(builder: (_) => const CalendarHook()),
+    //       (route) => route.isFirst);
+    // });
   }
 
   @override

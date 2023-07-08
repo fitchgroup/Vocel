@@ -201,7 +201,8 @@ class VocelMessage extends Model {
         messageImageKey: messageImageKey ?? this.messageImageKey,
         attachedLink: attachedLink ?? this.attachedLink,
         sender: sender ?? this.sender,
-        receiver: receiver ?? this.receiver);
+        receiver: receiver ?? this.receiver,
+        createdAt: TemporalDateTime.now());
   }
 
   VocelMessage.fromJson(Map<String, dynamic> json)

@@ -1,5 +1,7 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:vocel/features/announcement/data/announcement_repository.dart';
+import 'package:vocel/features/announcement/mutation/announcement_mutation.dart';
+import 'package:vocel/features/announcement/mutation/comment_announcement_mutation.dart';
 import 'package:vocel/models/Announcement.dart';
 import 'package:vocel/models/CommentAnnouncement.dart';
 
@@ -25,6 +27,7 @@ class TripsListController {
     final tripsRepository = ref.read(tripsRepositoryProvider);
 
     await tripsRepository.add(announcement);
+    await createAnnouncement(announcement);
   }
 
   Future<void> addComment(
@@ -41,5 +44,6 @@ class TripsListController {
     final announcementsRepository = ref.read(tripsRepositoryProvider);
 
     await announcementsRepository.addComment(comment);
+    await createCommentAnnouncement(comment);
   }
 }
