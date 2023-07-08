@@ -95,7 +95,19 @@ class ForumPage extends HookConsumerWidget {
                           child: Text("No Post"),
                         )
                       : buildPosts(
-                          event.whereType<Post>().toList(), context, ref),
+                          event
+                              .whereType<Post>()
+                              .where((thisEvent) =>
+                                  thisEvent.postGroup == ProfileRole.STAFF
+                                      ? true
+                                      : thisEvent.postGroup.name ==
+                                          groupOfUser
+                                              .toString()
+                                              .split("version1")[0]
+                                              .toUpperCase())
+                              .toList(),
+                          context,
+                          ref),
                   error: (e, st) => const Center(
                         child: Text('Error Here'),
                       ),
