@@ -4,9 +4,11 @@ import 'package:vocel/LocalizedButtonResolver.dart';
 import 'package:vocel/common/utils/colors.dart' as constants;
 import 'package:vocel/features/announcement/controller/post_controller.dart';
 import 'package:vocel/features/announcement/data/post_repository.dart';
+import 'package:vocel/features/announcement/mutation/post_mutation.dart';
 import 'package:vocel/features/announcement/ui/discussion_forum/add_post_bottomsheet.dart';
 import 'package:vocel/features/announcement/ui/discussion_forum/forum_post.dart';
 import 'package:vocel/features/announcement/ui/home_page/home_navigation_bar.dart';
+import 'package:vocel/models/ModelProvider.dart';
 import 'package:vocel/models/Post.dart';
 
 class ForumPage extends HookConsumerWidget {
@@ -25,15 +27,15 @@ class ForumPage extends HookConsumerWidget {
       required this.groupOfUser})
       : super(key: key);
 
-  void showAddEventDialog(BuildContext context, String userEmail) async {
+  void showAddEventDialog(
+      BuildContext context, String userEmail, ProfileRole currentGroup) async {
     await showModalBottomSheet<void>(
       isScrollControlled: true,
       elevation: 5,
       context: context,
       builder: (BuildContext context) {
         return AddPostBottomSheet(
-          userEmail: userEmail,
-        );
+            userEmail: userEmail, currentGroup: currentGroup);
       },
     );
   }
@@ -55,7 +57,25 @@ class ForumPage extends HookConsumerWidget {
           heroTag: "PostFloatingActionButton",
           backgroundColor: const Color(constants.primaryColorDark),
           onPressed: () async {
-            showAddEventDialog(context, userEmail);
+            late ProfileRole myRole;
+            switch (groupOfUser.toString()) {
+              case "Staffversion1":
+                myRole = ProfileRole.STAFF;
+                break;
+              case "Bellversion1":
+                myRole = ProfileRole.BELL;
+                break;
+              case "Vcpaversion1":
+                myRole = ProfileRole.VCPA;
+                break;
+              case "Eetcversion1":
+                myRole = ProfileRole.EETC;
+                break;
+              default:
+                myRole = ProfileRole.UNASSIGNED;
+                break;
+            }
+            showAddEventDialog(context, userEmail, myRole);
           },
           child: const Icon(Icons.add),
         ),
@@ -181,6 +201,11 @@ class ForumPage extends HookConsumerWidget {
                             child: const Text("Delete"),
                             onPressed: () {
                               ref.read(postControllerProvider).delete(post);
+                              deletePost(post);
+
+                              /// TODO: DELETE CORRESPONDING COMMENT
+                              ///
+
                               Navigator.of(context)
                                   .pop(false); // Dismiss the dialog and delete
                             },
@@ -212,7 +237,9 @@ class ForumPage extends HookConsumerWidget {
                   color: Colors.white,
                 ),
               ),
-              direction: DismissDirection.endToStart,
+              direction: (showEdit || post.postAuthor == userEmail)
+                  ? DismissDirection.endToStart
+                  : DismissDirection.none,
               // Only allow end to start swipe
               child: Column(
                 children: [
