@@ -1,11 +1,13 @@
+import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:vocel/common/utils/sender_receiver.dart';
+import 'package:vocel/features/announcement/mutation/vocelmessage_mutation.dart';
 import 'package:vocel/features/announcement/services/message_datastore.dart';
 import 'package:vocel/models/VocelMessage.dart';
 
 final messagesRepositoryProvider = Provider<MessagesRepository>((ref) {
   MessagesDataStoreService messagesDataStoreService =
-      ref.read(messagesDataStoreServiceProvider);
+  ref.read(messagesDataStoreServiceProvider);
   return MessagesRepository(messagesDataStoreService);
 });
 
@@ -16,19 +18,27 @@ final messageAllListStreamProvider = StreamProvider.autoDispose
 });
 
 final messageListStreamProvider =
-    StreamProvider.autoDispose<List<VocelMessage?>>((ref) {
+StreamProvider.autoDispose<List<VocelMessage?>>((ref) async* {
   final messagesRepository = ref.watch(messagesRepositoryProvider);
-  return messagesRepository.getMessages();
+
+  List<VocelMessage?> serverMessages = await queryVocelMessageListItems();
+  if (serverMessages.isNotEmpty) {
+    for (var message in serverMessages) {
+      await Amplify.DataStore.save(message!);
+    }
+  }
+
+  yield* messagesRepository.getMessages();
 });
 
 final pastMessagesListStreamProvider =
-    StreamProvider.autoDispose<List<VocelMessage?>>((ref) {
+StreamProvider.autoDispose<List<VocelMessage?>>((ref) {
   final messagesRepository = ref.watch(messagesRepositoryProvider);
   return messagesRepository.getPastMessages();
 });
 
 final messageProvider =
-    StreamProvider.autoDispose.family<VocelMessage?, String>((ref, id) {
+StreamProvider.autoDispose.family<VocelMessage?, String>((ref, id) {
   final messagesRepository = ref.watch(messagesRepositoryProvider);
   return messagesRepository.get(id);
 });

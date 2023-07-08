@@ -49,9 +49,18 @@ Future<VocelMessage?> queryVocelMessageItem(
 
 /// LIST ITEM
 
-Future<List<VocelMessage?>> queryVocelMessageListItems() async {
+Future<List<VocelMessage?>> queryVocelMessageListItems(
+    {String? userEmail}) async {
   try {
-    final request = ModelQueries.list(VocelMessage.classType);
+    QueryPredicate predicate;
+    if (userEmail != null) {
+      predicate = VocelMessage.SENDER.eq(userEmail) |
+          VocelMessage.RECEIVER.eq(userEmail);
+    } else {
+      predicate = QueryPredicate.all;
+    }
+
+    final request = ModelQueries.list(VocelMessage.classType, where: predicate);
     final response = await Amplify.API.query(request: request).response;
 
     final vocelMessages = response.data?.items;
@@ -68,9 +77,17 @@ Future<List<VocelMessage?>> queryVocelMessageListItems() async {
 
 const limit = 100;
 
-Future<List<VocelMessage?>> queryPaginatedVocelMessageListItems() async {
-  final firstRequest =
-      ModelQueries.list<VocelMessage>(VocelMessage.classType, limit: limit);
+Future<List<VocelMessage?>> queryPaginatedVocelMessageListItems(
+    {String? userEmail}) async {
+  QueryPredicate predicate;
+  if (userEmail != null) {
+    predicate =
+        VocelMessage.SENDER.eq(userEmail) | VocelMessage.RECEIVER.eq(userEmail);
+  } else {
+    predicate = QueryPredicate.all;
+  }
+  final firstRequest = ModelQueries.list<VocelMessage>(VocelMessage.classType,
+      limit: limit, where: predicate);
   final firstResult = await Amplify.API.query(request: firstRequest).response;
   final firstPageData = firstResult.data;
 
