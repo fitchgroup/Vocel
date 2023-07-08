@@ -62,8 +62,6 @@ class _MyAppState extends State<MyApp> {
         }
       },
     );
-    // unsubscribe();
-    // subscribe();
     // unsubscribeModel();
     subscribeModel();
 

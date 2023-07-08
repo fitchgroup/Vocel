@@ -218,7 +218,9 @@ class ForumPage extends HookConsumerWidget {
                   color: Colors.white,
                 ),
               ),
-              direction: DismissDirection.endToStart,
+              direction: (showEdit || post.postAuthor == userEmail)
+                  ? DismissDirection.endToStart
+                  : DismissDirection.none,
               // Only allow end to start swipe
               child: Column(
                 children: [

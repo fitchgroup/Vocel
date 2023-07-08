@@ -305,7 +305,9 @@ class HomeAnnouncementFeed extends HookConsumerWidget {
                       color: Colors.white,
                     ),
                   ),
-                  direction: DismissDirection.horizontal,
+                  direction: showEdit
+                      ? DismissDirection.horizontal
+                      : DismissDirection.none,
                   child: AnnouncementCard(
                       thisAnnouncement: reminder,
                       callbackLikes: likeAnnouncement,

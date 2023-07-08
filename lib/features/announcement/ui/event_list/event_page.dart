@@ -154,7 +154,9 @@ class EventPage extends HookConsumerWidget {
                   color: Colors.white,
                 ),
               ),
-              direction: DismissDirection.endToStart,
+              direction: showEdit
+                  ? DismissDirection.endToStart
+                  : DismissDirection.none,
               child: Column(
                 children: [
                   EventCard(event: event),
