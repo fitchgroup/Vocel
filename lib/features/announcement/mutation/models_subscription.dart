@@ -287,7 +287,7 @@ void subscribeVocelMessage() {
   );
 }
 
-void subscribeModel() {
+Future<void> subscribeModel() async {
   subscribeAnnouncement();
   subscribeCommentAnnouncement();
   subscribePost();
@@ -299,7 +299,7 @@ void subscribeModel() {
   }
 }
 
-void unsubscribeModel() {
+Future<void> unsubscribeModel() async {
   subscriptionAnnouncement?.cancel();
   subscriptionCommentAnnouncement?.cancel();
   subscriptionPost?.cancel();

@@ -62,10 +62,14 @@ class _MyAppState extends State<MyApp> {
         }
       },
     );
-    // unsubscribeModel();
-    subscribeModel();
+    subscribe();
 
     super.initState();
+  }
+
+  Future<void> subscribe() async {
+    await unsubscribeModel();
+    await subscribeModel();
   }
 
   Future<void> getAnnouncements() async {
@@ -106,7 +110,7 @@ class _MyAppState extends State<MyApp> {
   //   }
   // }
 
-  void subscribe() {
+  void subscribeTemp() {
     /// GET THE ANNOUNCEMENT DATA
     // final subscriptionRequest =
     //     ModelSubscriptions.onCreate(Announcement.classType);

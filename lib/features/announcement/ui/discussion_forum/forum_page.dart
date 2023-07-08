@@ -97,14 +97,19 @@ class ForumPage extends HookConsumerWidget {
                       : buildPosts(
                           event
                               .whereType<Post>()
-                              .where((thisEvent) =>
-                                  thisEvent.postGroup == ProfileRole.STAFF
-                                      ? true
-                                      : thisEvent.postGroup.name ==
+                              .where((thisEvent) => groupOfUser
+                                          .toString()
+                                          .split("version1")[0]
+                                          .toUpperCase() ==
+                                      ProfileRole.STAFF.name
+                                  ? true
+                                  : (thisEvent.postGroup.name ==
                                           groupOfUser
                                               .toString()
                                               .split("version1")[0]
-                                              .toUpperCase())
+                                              .toUpperCase() ||
+                                      thisEvent.postGroup.name ==
+                                          ProfileRole.STAFF.name))
                               .toList(),
                           context,
                           ref),
