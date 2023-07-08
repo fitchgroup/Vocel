@@ -76,6 +76,7 @@ class _PeopleListState extends State<PeopleList> {
                                 (dataList[index]["VocelGroup"] == null
                                     ? false
                                     : dataList[index]["VocelGroup"]!
+                                        .split("version1")[0]
                                         .toUpperCase()
                                         .contains(searching.toUpperCase()));
                             return Column(

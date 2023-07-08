@@ -84,6 +84,7 @@ enum ProfileRole {
     BELL
     EETC
     VCPA
+    UNASSIGNED
 }
 
 #type VocelMessage @model @auth(rules: [
@@ -117,6 +118,7 @@ type Post @model @auth(rules: [
     id: ID!
     postAuthor: String! @auth(rules: [{ allow: owner, operations: [read, update, delete] }, { allow: public, operations: [read] }, { allow: groups, groups: ["Staffversion1"], operations: [create, update, delete, read] }])
     postContent: String! @auth(rules: [{ allow: owner, operations: [read, update, delete] }, { allow: public, operations: [read] }, { allow: groups, groups: ["Staffversion1"], operations: [create, update, delete, read] }])
+    postGroup: ProfileRole!
     likes: [String] @auth(rules: [{ allow: public, operations: [read, update] }, { allow: groups, groups: ["Staffversion1"], operations: [create, update, delete, read] }])
     comments: [Comment] @hasMany
 }

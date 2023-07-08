@@ -31,6 +31,7 @@ class Post extends Model {
   final String id;
   final String? _postAuthor;
   final String? _postContent;
+  final ProfileRole? _postGroup;
   final List<String>? _likes;
   final List<Comment>? _comments;
   final TemporalDateTime? _createdAt;
@@ -74,6 +75,19 @@ class Post extends Model {
     }
   }
 
+  ProfileRole get postGroup {
+    try {
+      return _postGroup!;
+    } catch (e) {
+      throw new AmplifyCodeGenModelException(
+          AmplifyExceptionMessages
+              .codeGenRequiredFieldForceCastExceptionMessage,
+          recoverySuggestion: AmplifyExceptionMessages
+              .codeGenRequiredFieldForceCastRecoverySuggestion,
+          underlyingException: e.toString());
+    }
+  }
+
   List<String>? get likes {
     return _likes;
   }
@@ -94,12 +108,14 @@ class Post extends Model {
       {required this.id,
       required postAuthor,
       required postContent,
+      required postGroup,
       likes,
       comments,
       createdAt,
       updatedAt})
       : _postAuthor = postAuthor,
         _postContent = postContent,
+        _postGroup = postGroup,
         _likes = likes,
         _comments = comments,
         _createdAt = createdAt,
@@ -109,12 +125,14 @@ class Post extends Model {
       {String? id,
       required String postAuthor,
       required String postContent,
+      required ProfileRole postGroup,
       List<String>? likes,
       List<Comment>? comments}) {
     return Post._internal(
         id: id == null ? UUID.getUUID() : id,
         postAuthor: postAuthor,
         postContent: postContent,
+        postGroup: postGroup,
         likes: likes != null ? List<String>.unmodifiable(likes) : likes,
         comments:
             comments != null ? List<Comment>.unmodifiable(comments) : comments,
@@ -132,6 +150,7 @@ class Post extends Model {
         id == other.id &&
         _postAuthor == other._postAuthor &&
         _postContent == other._postContent &&
+        _postGroup == other._postGroup &&
         DeepCollectionEquality().equals(_likes, other._likes) &&
         DeepCollectionEquality().equals(_comments, other._comments);
   }
@@ -147,6 +166,9 @@ class Post extends Model {
     buffer.write("id=" + "$id" + ", ");
     buffer.write("postAuthor=" + "$_postAuthor" + ", ");
     buffer.write("postContent=" + "$_postContent" + ", ");
+    buffer.write("postGroup=" +
+        (_postGroup != null ? enumToString(_postGroup)! : "null") +
+        ", ");
     buffer.write(
         "likes=" + (_likes != null ? _likes!.toString() : "null") + ", ");
     buffer.write("createdAt=" +
@@ -162,12 +184,14 @@ class Post extends Model {
   Post copyWith(
       {String? postAuthor,
       String? postContent,
+      ProfileRole? postGroup,
       List<String>? likes,
       List<Comment>? comments}) {
     return Post._internal(
         id: id,
         postAuthor: postAuthor ?? this.postAuthor,
         postContent: postContent ?? this.postContent,
+        postGroup: postGroup ?? this.postGroup,
         likes: likes ?? this.likes,
         comments: comments ?? this.comments,
         createdAt: TemporalDateTime.now());
@@ -177,6 +201,8 @@ class Post extends Model {
       : id = json['id'],
         _postAuthor = json['postAuthor'],
         _postContent = json['postContent'],
+        _postGroup =
+            enumFromString<ProfileRole>(json['postGroup'], ProfileRole.values),
         _likes = json['likes']?.cast<String>(),
         _comments = json['comments'] is List
             ? (json['comments'] as List)
@@ -196,6 +222,7 @@ class Post extends Model {
         'id': id,
         'postAuthor': _postAuthor,
         'postContent': _postContent,
+        'postGroup': enumToString(_postGroup),
         'likes': _likes,
         'comments': _comments?.map((Comment? e) => e?.toJson()).toList(),
         'createdAt': _createdAt?.format(),
@@ -206,6 +233,7 @@ class Post extends Model {
         'id': id,
         'postAuthor': _postAuthor,
         'postContent': _postContent,
+        'postGroup': _postGroup,
         'likes': _likes,
         'comments': _comments,
         'createdAt': _createdAt,
@@ -217,6 +245,7 @@ class Post extends Model {
   static final QueryField ID = QueryField(fieldName: "id");
   static final QueryField POSTAUTHOR = QueryField(fieldName: "postAuthor");
   static final QueryField POSTCONTENT = QueryField(fieldName: "postContent");
+  static final QueryField POSTGROUP = QueryField(fieldName: "postGroup");
   static final QueryField LIKES = QueryField(fieldName: "likes");
   static final QueryField COMMENTS = QueryField(
       fieldName: "comments",
@@ -265,6 +294,11 @@ class Post extends Model {
         key: Post.POSTCONTENT,
         isRequired: true,
         ofType: ModelFieldType(ModelFieldTypeEnum.string)));
+
+    modelSchemaDefinition.addField(ModelFieldDefinition.field(
+        key: Post.POSTGROUP,
+        isRequired: true,
+        ofType: ModelFieldType(ModelFieldTypeEnum.enumeration)));
 
     modelSchemaDefinition.addField(ModelFieldDefinition.field(
         key: Post.LIKES,
