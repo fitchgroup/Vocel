@@ -1,4 +1,6 @@
+import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:vocel/features/announcement/mutation/announcement_mutation.dart';
 import 'package:vocel/models/Announcement.dart';
 import 'package:vocel/features/announcement/services/announcement_datastore.dart';
 import 'package:vocel/models/CommentAnnouncement.dart';
@@ -10,9 +12,17 @@ final tripsRepositoryProvider = Provider<TripsRepository>((ref) {
 });
 
 final tripsListStreamProvider =
-StreamProvider.autoDispose<List<Announcement?>>((ref) {
+StreamProvider.autoDispose<List<Announcement?>>((ref) async* {
   final tripsRepository = ref.watch(tripsRepositoryProvider);
-  return tripsRepository.getTrips();
+
+  List<Announcement?> serverAnnouncement = await queryAnnouncementListItems();
+  if (serverAnnouncement.isNotEmpty) {
+    for (var announcement in serverAnnouncement) {
+      await Amplify.DataStore.save(announcement!);
+    }
+  }
+
+  yield* tripsRepository.getTrips();
 });
 
 final pastTripsListStreamProvider =

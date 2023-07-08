@@ -1,5 +1,6 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:vocel/features/announcement/data/message_repository.dart';
+import 'package:vocel/features/announcement/mutation/vocelmessage_mutation.dart';
 import 'package:vocel/models/VocelMessage.dart';
 
 final messagesListControllerProvider = Provider<MessagesListController>((ref) {
@@ -24,5 +25,6 @@ class MessagesListController {
     final messagesRepository = ref.read(messagesRepositoryProvider);
 
     await messagesRepository.add(message);
+    await createVocelMessage(message);
   }
 }

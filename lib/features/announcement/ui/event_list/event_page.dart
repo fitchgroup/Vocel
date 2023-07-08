@@ -6,6 +6,7 @@ import 'package:vocel/common/utils/colors.dart' as constants;
 import 'package:vocel/common/utils/manage_user.dart';
 import 'package:vocel/features/announcement/controller/event_controller.dart';
 import 'package:vocel/features/announcement/data/event_repository.dart';
+import 'package:vocel/features/announcement/mutation/vocelevent_mutation.dart';
 import 'package:vocel/features/announcement/ui/event_list/add_event_bottomsheet.dart';
 import 'package:vocel/features/announcement/ui/event_list/event_card.dart';
 import 'package:vocel/models/VocelEvent.dart';
@@ -121,6 +122,7 @@ class EventPage extends HookConsumerWidget {
                             child: const Text("Delete"),
                             onPressed: () {
                               ref.read(eventControllerProvider).delete(event);
+                              deleteVocelEvent(event);
                               Navigator.of(context)
                                   .pop(false); // Dismiss the dialog and delete
                             },
@@ -152,7 +154,9 @@ class EventPage extends HookConsumerWidget {
                   color: Colors.white,
                 ),
               ),
-              direction: DismissDirection.endToStart,
+              direction: showEdit
+                  ? DismissDirection.endToStart
+                  : DismissDirection.none,
               child: Column(
                 children: [
                   EventCard(event: event),

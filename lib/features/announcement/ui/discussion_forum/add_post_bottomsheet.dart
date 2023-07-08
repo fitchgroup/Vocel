@@ -6,8 +6,10 @@ import 'package:vocel/features/announcement/controller/post_list_controller.dart
 
 class AddPostBottomSheet extends HookConsumerWidget {
   final userEmail;
+  final currentGroup;
 
-  AddPostBottomSheet({super.key, required this.userEmail});
+  AddPostBottomSheet(
+      {super.key, required this.userEmail, required this.currentGroup});
 
   final formGlobalKey = GlobalKey<FormState>();
 
@@ -79,6 +81,7 @@ class AddPostBottomSheet extends HookConsumerWidget {
                       ref.read(postsListControllerProvider).add(
                             postAuthor: userEmail,
                             postContent: contentController.text,
+                            postGroup: currentGroup,
                           );
                       Navigator.of(context).pop();
                     }
