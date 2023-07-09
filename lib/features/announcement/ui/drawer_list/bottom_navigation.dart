@@ -106,6 +106,9 @@ class _AnnouncementsListPageState extends State<AnnouncementsListPage> {
       mapElement.addAll(result);
     } else {
       mapElement = await getUserAttrInTheMap(element);
+      List<Map<String, String>> mapStaffElement =
+          await getUserAttrInTheMap("Staffversion1");
+      mapElement.addAll(mapStaffElement);
     }
     return mapElement;
   }
