@@ -38,7 +38,7 @@ export 'VocelMessage.dart';
 
 class ModelProvider implements ModelProviderInterface {
   @override
-  String version = "15febb378144189e12907f2e4dd28b70";
+  String version = "8aeb0ea4eb9fb491d9f3968dbd550e02";
   @override
   List<ModelSchema> modelSchemas = [Announcement.schema, Comment.schema, CommentAnnouncement.schema, Post.schema, VocelEvent.schema, VocelMessage.schema];
   static final ModelProvider _instance = ModelProvider();

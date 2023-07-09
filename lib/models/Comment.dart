@@ -176,7 +176,8 @@ class Comment extends Model {
         commentAuthor: commentAuthor ?? this.commentAuthor,
         commentContent: commentContent ?? this.commentContent,
         post: post ?? this.post,
-        content: content ?? this.content);
+        content: content ?? this.content,
+        createdAt: TemporalDateTime.now());
   }
 
   Comment.fromJson(Map<String, dynamic> json)
@@ -230,6 +231,33 @@ class Comment extends Model {
       Model.defineSchema(define: (ModelSchemaDefinition modelSchemaDefinition) {
     modelSchemaDefinition.name = "Comment";
     modelSchemaDefinition.pluralName = "Comments";
+
+    modelSchemaDefinition.authRules = [
+      AuthRule(
+          authStrategy: AuthStrategy.OWNER,
+          ownerField: "owner",
+          identityClaim: "cognito:username",
+          provider: AuthRuleProvider.USERPOOLS,
+          operations: [
+            ModelOperation.UPDATE,
+            ModelOperation.READ,
+            ModelOperation.CREATE,
+            ModelOperation.DELETE
+          ]),
+      AuthRule(
+          authStrategy: AuthStrategy.GROUPS,
+          groupClaim: "cognito:groups",
+          groups: ["Staffversion1"],
+          provider: AuthRuleProvider.USERPOOLS,
+          operations: [
+            ModelOperation.CREATE,
+            ModelOperation.UPDATE,
+            ModelOperation.DELETE,
+            ModelOperation.READ
+          ]),
+      AuthRule(
+          authStrategy: AuthStrategy.PUBLIC, operations: [ModelOperation.READ])
+    ];
 
     modelSchemaDefinition.addField(ModelFieldDefinition.id());
 

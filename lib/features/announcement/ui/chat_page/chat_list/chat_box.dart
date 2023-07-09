@@ -119,8 +119,10 @@ class ChatPage extends HookConsumerWidget {
                         thisMessages
                             .whereType<VocelMessage>()
                             .where((message) =>
-                                message.sender == myInfo &&
-                                message.receiver == theirInfo)
+                                (message.sender == myInfo &&
+                                    message.receiver == theirInfo) ||
+                                (message.sender == theirInfo) &&
+                                    message.receiver == myInfo)
                             .toList(),
                         context,
                         ref),
