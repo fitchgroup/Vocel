@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:vocel/features/announcement/data/post_repository.dart';
+import 'package:vocel/features/announcement/mutation/comment_mutation.dart';
 import 'package:vocel/models/Comment.dart';
 import 'package:vocel/models/Post.dart';
 import 'package:amplify_core/src/types/temporal/temporal_datetime.dart';
@@ -68,6 +69,7 @@ class CommentList extends HookConsumerWidget {
                                             ref
                                                 .read(postControllerProvider)
                                                 .deleteComment(comment);
+                                            deleteComment(comment);
                                             Navigator.of(context).pop(false);
                                           },
                                         ),

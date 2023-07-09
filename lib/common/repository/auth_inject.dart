@@ -10,7 +10,6 @@ import 'package:vocel/models/ModelProvider.dart';
 class configureAmplifySuccess extends AuthRepository {
   @override
   Future<String> configureApp() async {
-    // TODO: implement configureApp
     try {
       // // notification plugin
       // final notificationsPlugin = AmplifyPushNotificationsPinpoint();
@@ -19,19 +18,17 @@ class configureAmplifySuccess extends AuthRepository {
       // notificationsPlugin.onNotificationReceivedInBackground(
       //     myAsyncNotificationReceivedHandler);
 
-      // api plugin
-      final apiPlugin = AmplifyAPI(
-        modelProvider: ModelProvider.instance,
-        // Optional config
-        subscriptionOptions: const GraphQLSubscriptionOptions(
-          retryOptions: RetryOptions(maxAttempts: 10),
-        ),
-      );
-
       await Amplify.addPlugins([
         AmplifyAuthCognito(),
+        AmplifyAPI(
+          modelProvider: ModelProvider.instance,
+          // Optional config
+          subscriptionOptions: const GraphQLSubscriptionOptions(
+            retryOptions: RetryOptions(maxAttempts: 10),
+          ),
+        ),
         AmplifyDataStore(modelProvider: ModelProvider.instance),
-        AmplifyAPI(modelProvider: ModelProvider.instance),
+        // AmplifyAPI(modelProvider: ModelProvider.instance),
         AmplifyStorageS3(),
         // notificationsPlugin,
       ]);

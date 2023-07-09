@@ -114,8 +114,8 @@ class ReceivedMessageWidget extends StatelessWidget {
             horizontal: 10.0,
             vertical: 8.0,
           ),
-          decoration: const BoxDecoration(
-            color: Color(constants.primaryColorDark),
+          decoration: BoxDecoration(
+            color: Colors.grey.shade300,
             borderRadius: BorderRadius.only(
               topLeft: Radius.circular(20.0),
               topRight: Radius.circular(20.0),
@@ -131,7 +131,7 @@ class ReceivedMessageWidget extends StatelessWidget {
                 child: Text(
                   body,
                   style: const TextStyle(
-                    color: Colors.white,
+                    color: Colors.black87,
                     fontSize: 20.0,
                   ),
                 ),
@@ -207,7 +207,7 @@ class SentMessageWidget extends StatelessWidget {
                 child: Text(
                   body,
                   style: const TextStyle(
-                    color: Colors.black,
+                    color: Colors.black87,
                     fontSize: 20.0,
                   ),
                 ),
@@ -229,7 +229,7 @@ class SentMessageWidget extends StatelessWidget {
                       Text(
                         linkDescription,
                         style: const TextStyle(
-                          color: Colors.white,
+                          color: Colors.black54,
                           fontSize: 18.0,
                         ),
                       ),
