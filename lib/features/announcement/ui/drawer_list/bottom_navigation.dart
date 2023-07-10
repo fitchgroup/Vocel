@@ -266,8 +266,10 @@ class _AnnouncementsListPageState extends State<AnnouncementsListPage> {
                 ),
               );
       case 1:
-        return const Center(
-          child: ChatList(),
+        return Center(
+          child: ChatList(
+            myInfo: userEmail,
+          ),
         );
       case 2:
         return Center(

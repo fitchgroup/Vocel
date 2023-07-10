@@ -2,7 +2,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:vocel/common/utils/colors.dart' as constants;
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:vocel/common/utils/sender_receiver.dart';
 import 'package:vocel/features/announcement/data/message_repository.dart';
 import 'package:vocel/features/announcement/ui/chat_page/chat_list/chat_message.dart';
 import 'package:vocel/features/announcement/ui/chat_page/chat_list/texting_bar.dart';
@@ -121,8 +120,8 @@ class ChatPage extends HookConsumerWidget {
                             .where((message) =>
                                 (message.sender == myInfo &&
                                     message.receiver == theirInfo) ||
-                                (message.sender == theirInfo) &&
-                                    message.receiver == myInfo)
+                                (message.sender == theirInfo &&
+                                    message.receiver == myInfo))
                             .toList(),
                         context,
                         ref),
@@ -141,7 +140,7 @@ class ChatPage extends HookConsumerWidget {
     );
   }
 
-  Center buildMessages(
+  ListView buildMessages(
       List<VocelMessage> messages, BuildContext context, WidgetRef ref) {
     messages.sort((a, b) {
       DateTime? comparedTimeFromA;
@@ -169,22 +168,20 @@ class ChatPage extends HookConsumerWidget {
       }
     });
 
-    return Center(
-      child: ListView.builder(
-        shrinkWrap: true,
-        physics: const NeverScrollableScrollPhysics(),
-        itemCount: messages.length,
-        itemBuilder: (context, index) {
-          final messageNeedRender = messages[index];
-          return ChatCard(
-              me: myInfo,
-              sender: messageNeedRender.sender,
-              receiver: messageNeedRender.receiver,
-              content: messageNeedRender.content,
-              index: index,
-              messageTime: messageNeedRender.createdAt);
-        },
-      ),
+    return ListView.builder(
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
+      itemCount: messages.length,
+      itemBuilder: (context, index) {
+        final messageNeedRender = messages[index];
+        return ChatCard(
+            me: myInfo,
+            sender: messageNeedRender.sender,
+            receiver: messageNeedRender.receiver,
+            content: messageNeedRender.content,
+            index: index,
+            messageTime: messageNeedRender.createdAt);
+      },
     );
   }
 }

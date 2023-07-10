@@ -7,7 +7,7 @@ import 'package:vocel/models/VocelMessage.dart';
 
 final messagesRepositoryProvider = Provider<MessagesRepository>((ref) {
   MessagesDataStoreService messagesDataStoreService =
-  ref.read(messagesDataStoreServiceProvider);
+      ref.read(messagesDataStoreServiceProvider);
   return MessagesRepository(messagesDataStoreService);
 });
 
@@ -18,7 +18,7 @@ final messageAllListStreamProvider = StreamProvider.autoDispose
 });
 
 final messageListStreamProvider =
-StreamProvider.autoDispose<List<VocelMessage?>>((ref) async* {
+    StreamProvider.autoDispose<List<VocelMessage?>>((ref) async* {
   final messagesRepository = ref.watch(messagesRepositoryProvider);
 
   List<VocelMessage?> serverMessages = await queryVocelMessageListItems();
@@ -32,13 +32,13 @@ StreamProvider.autoDispose<List<VocelMessage?>>((ref) async* {
 });
 
 final pastMessagesListStreamProvider =
-StreamProvider.autoDispose<List<VocelMessage?>>((ref) {
+    StreamProvider.autoDispose<List<VocelMessage?>>((ref) {
   final messagesRepository = ref.watch(messagesRepositoryProvider);
   return messagesRepository.getPastMessages();
 });
 
 final messageProvider =
-StreamProvider.autoDispose.family<VocelMessage?, String>((ref, id) {
+    StreamProvider.autoDispose.family<VocelMessage?, String>((ref, id) {
   final messagesRepository = ref.watch(messagesRepositoryProvider);
   return messagesRepository.get(id);
 });

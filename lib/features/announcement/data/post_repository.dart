@@ -11,7 +11,6 @@ final postsRepositoryProvider = Provider<PostsRepository>((ref) {
   return PostsRepository(postsDataStoreService);
 });
 
-/// TODO: using this methods, sync other models
 final postsListStreamProvider =
     StreamProvider.autoDispose<List<Post?>>((ref) async* {
   final postsRepository = ref.watch(postsRepositoryProvider);

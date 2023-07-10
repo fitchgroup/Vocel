@@ -1,5 +1,6 @@
 import 'package:amplify_api/amplify_api.dart';
 import 'package:amplify_flutter/amplify_flutter.dart';
+import 'package:vocel/common/utils/manage_user.dart';
 import 'package:vocel/common/utils/mutation_util.dart';
 import 'package:vocel/models/ModelProvider.dart';
 
@@ -49,9 +50,10 @@ Future<VocelMessage?> queryVocelMessageItem(
 
 /// LIST ITEM
 
-Future<List<VocelMessage?>> queryVocelMessageListItems(
-    {String? userEmail}) async {
+Future<List<VocelMessage?>> queryVocelMessageListItems() async {
   try {
+    Map<String, String> stringMap = await getUserAttributes();
+    String? userEmail = stringMap["email"];
     QueryPredicate predicate;
     if (userEmail != null) {
       predicate = VocelMessage.SENDER.eq(userEmail) |
