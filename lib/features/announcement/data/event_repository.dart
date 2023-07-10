@@ -1,4 +1,6 @@
+import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:vocel/features/announcement/mutation/vocelevent_mutation.dart';
 import 'package:vocel/features/announcement/services/event_datastore.dart';
 import 'package:vocel/models/VocelEvent.dart';
 
@@ -17,9 +19,18 @@ final eventsRepositoryProvider = Provider<EventsRepository>((ref) {
 /// It depends on the eventsRepositoryProvider and retrieves the events using the getEvents()
 /// method from the EventsRepository.
 
-final eventsListStreamProvider = StreamProvider.autoDispose<List<VocelEvent?>>((ref) {
+final eventsListStreamProvider =
+StreamProvider.autoDispose<List<VocelEvent?>>((ref) async* {
   final eventsRepository = ref.watch(eventsRepositoryProvider);
-  return eventsRepository.getEvents();
+
+  List<VocelEvent?> serverVocelEvent = await queryVocelEventListItems();
+  if (serverVocelEvent.isNotEmpty) {
+    for (var event in serverVocelEvent) {
+      await Amplify.DataStore.save(event!);
+    }
+  }
+
+  yield* eventsRepository.getEvents();
 });
 
 /// pastEventsListStreamProvider: This provider creates a stream of a list of past events (List<Event?>).

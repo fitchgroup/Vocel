@@ -118,15 +118,16 @@ class Announcement extends Model {
     return _updatedAt;
   }
 
-  const Announcement._internal({required this.id,
-    required tripName,
-    required description,
-    required isCompleted,
-    required isPinned,
-    likes,
-    comments,
-    createdAt,
-    updatedAt})
+  const Announcement._internal(
+      {required this.id,
+      required tripName,
+      required description,
+      required isCompleted,
+      required isPinned,
+      likes,
+      comments,
+      createdAt,
+      updatedAt})
       : _tripName = tripName,
         _description = description,
         _isCompleted = isCompleted,
@@ -136,13 +137,14 @@ class Announcement extends Model {
         _createdAt = createdAt,
         _updatedAt = updatedAt;
 
-  factory Announcement({String? id,
-    required String tripName,
-    required String description,
-    required bool isCompleted,
-    required bool isPinned,
-    List<String>? likes,
-    List<CommentAnnouncement>? comments}) {
+  factory Announcement(
+      {String? id,
+      required String tripName,
+      required String description,
+      required bool isCompleted,
+      required bool isPinned,
+      List<String>? likes,
+      List<CommentAnnouncement>? comments}) {
     return Announcement._internal(
         id: id == null ? UUID.getUUID() : id,
         tripName: tripName,
@@ -202,12 +204,13 @@ class Announcement extends Model {
     return buffer.toString();
   }
 
-  Announcement copyWith({String? tripName,
-    String? description,
-    bool? isCompleted,
-    bool? isPinned,
-    List<String>? likes,
-    List<CommentAnnouncement>? comments}) {
+  Announcement copyWith(
+      {String? tripName,
+      String? description,
+      bool? isCompleted,
+      bool? isPinned,
+      List<String>? likes,
+      List<CommentAnnouncement>? comments}) {
     return Announcement._internal(
         id: id,
         tripName: tripName ?? this.tripName,
@@ -215,7 +218,8 @@ class Announcement extends Model {
         isCompleted: isCompleted ?? this.isCompleted,
         isPinned: isPinned ?? this.isPinned,
         likes: likes ?? this.likes,
-        comments: comments ?? this.comments);
+        comments: comments ?? this.comments,
+        createdAt: TemporalDateTime.now());
   }
 
   Announcement.fromJson(Map<String, dynamic> json)
@@ -227,11 +231,10 @@ class Announcement extends Model {
         _likes = json['likes']?.cast<String>(),
         _comments = json['comments'] is List
             ? (json['comments'] as List)
-            .where((e) => e?['serializedData'] != null)
-            .map((e) =>
-            CommentAnnouncement.fromJson(
-                new Map<String, dynamic>.from(e['serializedData'])))
-            .toList()
+                .where((e) => e?['serializedData'] != null)
+                .map((e) => CommentAnnouncement.fromJson(
+                    new Map<String, dynamic>.from(e['serializedData'])))
+                .toList()
             : null,
         _createdAt = json['createdAt'] != null
             ? TemporalDateTime.fromString(json['createdAt'])
@@ -240,8 +243,7 @@ class Announcement extends Model {
             ? TemporalDateTime.fromString(json['updatedAt'])
             : null;
 
-  Map<String, dynamic> toJson() =>
-      {
+  Map<String, dynamic> toJson() => {
         'id': id,
         'tripName': _tripName,
         'description': _description,
@@ -249,13 +251,12 @@ class Announcement extends Model {
         'isPinned': _isPinned,
         'likes': _likes,
         'comments':
-        _comments?.map((CommentAnnouncement? e) => e?.toJson()).toList(),
+            _comments?.map((CommentAnnouncement? e) => e?.toJson()).toList(),
         'createdAt': _createdAt?.format(),
         'updatedAt': _updatedAt?.format()
       };
 
-  Map<String, Object?> toMap() =>
-      {
+  Map<String, Object?> toMap() => {
         'id': id,
         'tripName': _tripName,
         'description': _description,
@@ -268,7 +269,7 @@ class Announcement extends Model {
       };
 
   static final QueryModelIdentifier<AnnouncementModelIdentifier>
-  MODEL_IDENTIFIER = QueryModelIdentifier<AnnouncementModelIdentifier>();
+      MODEL_IDENTIFIER = QueryModelIdentifier<AnnouncementModelIdentifier>();
   static final QueryField ID = QueryField(fieldName: "id");
   static final QueryField TRIPNAME = QueryField(fieldName: "tripName");
   static final QueryField DESCRIPTION = QueryField(fieldName: "description");
@@ -280,7 +281,7 @@ class Announcement extends Model {
       fieldType: ModelFieldType(ModelFieldTypeEnum.model,
           ofModelName: 'CommentAnnouncement'));
   static var schema =
-  Model.defineSchema(define: (ModelSchemaDefinition modelSchemaDefinition) {
+      Model.defineSchema(define: (ModelSchemaDefinition modelSchemaDefinition) {
     modelSchemaDefinition.name = "Announcement";
     modelSchemaDefinition.pluralName = "Announcements";
 
@@ -291,9 +292,21 @@ class Announcement extends Model {
           identityClaim: "cognito:username",
           provider: AuthRuleProvider.USERPOOLS,
           operations: [
-            ModelOperation.READ,
             ModelOperation.UPDATE,
+            ModelOperation.READ,
+            ModelOperation.CREATE,
             ModelOperation.DELETE
+          ]),
+      AuthRule(
+          authStrategy: AuthStrategy.GROUPS,
+          groupClaim: "cognito:groups",
+          groups: ["Staffversion1"],
+          provider: AuthRuleProvider.USERPOOLS,
+          operations: [
+            ModelOperation.CREATE,
+            ModelOperation.UPDATE,
+            ModelOperation.DELETE,
+            ModelOperation.READ
           ]),
       AuthRule(
           authStrategy: AuthStrategy.PUBLIC, operations: [ModelOperation.READ])
@@ -377,11 +390,10 @@ class AnnouncementModelIdentifier implements ModelIdentifier<Announcement> {
   Map<String, dynamic> serializeAsMap() => (<String, dynamic>{'id': id});
 
   @override
-  List<Map<String, dynamic>> serializeAsList() =>
-      serializeAsMap()
-          .entries
-          .map((entry) => (<String, dynamic>{entry.key: entry.value}))
-          .toList();
+  List<Map<String, dynamic>> serializeAsList() => serializeAsMap()
+      .entries
+      .map((entry) => (<String, dynamic>{entry.key: entry.value}))
+      .toList();
 
   @override
   String serializeAsString() => serializeAsMap().values.join('#');
