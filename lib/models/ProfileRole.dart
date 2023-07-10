@@ -24,5 +24,6 @@ enum ProfileRole {
   STAFF,
   BELL,
   EETC,
-  VCPA
+  VCPA,
+  UNASSIGNED
 }

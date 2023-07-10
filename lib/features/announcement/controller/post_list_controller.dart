@@ -1,7 +1,10 @@
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:vocel/features/announcement/data/post_repository.dart';
+import 'package:vocel/features/announcement/mutation/comment_mutation.dart';
+import 'package:vocel/features/announcement/mutation/post_mutation.dart';
 import 'package:vocel/models/Comment.dart';
+import 'package:vocel/models/ModelProvider.dart';
 import 'package:vocel/models/Post.dart';
 
 final postsListControllerProvider = Provider<PostsListController>((ref) {
@@ -13,19 +16,20 @@ class PostsListController {
 
   final Ref ref;
 
-  Future<void> add({
-    required String postAuthor,
-    required String postContent,
-  }) async {
+  Future<void> add(
+      {required String postAuthor,
+      required String postContent,
+      required ProfileRole postGroup}) async {
     Post post = Post(
       postAuthor: postAuthor,
       postContent: postContent,
+      postGroup: postGroup,
     );
 
     final postsRepository = ref.read(postsRepositoryProvider);
 
     await postsRepository.add(post);
-    await Amplify.DataStore.save(post);
+    await createPost(post);
   }
 
   Future<void> addComment(
@@ -42,6 +46,6 @@ class PostsListController {
     final postsRepository = ref.read(postsRepositoryProvider);
 
     await postsRepository.addComment(comment);
-    await Amplify.DataStore.save(comment);
+    await createComment(comment);
   }
 }
