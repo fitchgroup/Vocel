@@ -3,18 +3,19 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:vocel/LocalizedMessageResolver.dart';
 import 'package:vocel/common/utils/colors.dart' as constants;
-import 'package:vocel/common/utils/manage_user.dart';
 import 'package:vocel/features/announcement/controller/event_controller.dart';
 import 'package:vocel/features/announcement/data/event_repository.dart';
 import 'package:vocel/features/announcement/mutation/vocelevent_mutation.dart';
 import 'package:vocel/features/announcement/ui/event_list/add_event_bottomsheet.dart';
 import 'package:vocel/features/announcement/ui/event_list/event_card.dart';
+import 'package:vocel/models/ProfileRole.dart';
 import 'package:vocel/models/VocelEvent.dart';
-import 'package:amplify_core/amplify_core.dart';
 
 class EventPage extends HookConsumerWidget {
-  const EventPage({Key? key, required this.showEdit}) : super(key: key);
+  const EventPage({Key? key, required this.showEdit, required this.groupOfUser})
+      : super(key: key);
   final bool showEdit;
+  final groupOfUser;
 
   void showAddEventDialog(BuildContext context) async {
     await showModalBottomSheet<void>(
@@ -76,7 +77,24 @@ class EventPage extends HookConsumerWidget {
               ? const Center(
                   child: Text("No Event"),
                 )
-              : buildEvents(event.whereType<VocelEvent>().toList(), ref),
+              : buildEvents(
+                  event
+                      .whereType<VocelEvent>()
+                      .where((thisEvent) => groupOfUser
+                                  .toString()
+                                  .split("version1")[0]
+                                  .toUpperCase() ==
+                              ProfileRole.STAFF.name
+                          ? true
+                          : (thisEvent.eventGroup.name ==
+                                  groupOfUser
+                                      .toString()
+                                      .split("version1")[0]
+                                      .toUpperCase() ||
+                              thisEvent.eventGroup.name ==
+                                  ProfileRole.STAFF.name))
+                      .toList(),
+                  ref),
           error: (e, st) => const Center(
                 child: Text('Error Here'),
               ),
