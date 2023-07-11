@@ -13,6 +13,7 @@ import 'package:provider/provider.dart';
 import 'package:palette_generator/palette_generator.dart';
 import 'package:vocel/common/utils/colors.dart' as constants;
 import 'package:vocel/common/utils/manage_user.dart';
+import 'package:vocel/features/announcement/ui/profile_page/selected_profile_image.dart';
 
 class EditProfileWidget extends StatefulWidget {
   const EditProfileWidget({super.key});
@@ -67,68 +68,6 @@ class _EditProfileWidgetState extends State<EditProfileWidget> {
       backColor.add(paletteGenerator.lightVibrantColor);
     }
     setState(() {});
-  }
-
-  Future chooseImage(ImageSource source) async {
-    try {
-      final image = await ImagePicker().pickImage(source: source);
-      if (image == null) return;
-      final imageStore = await savePathImage(image.path);
-      setState(() => this.image = imageStore);
-    } on Exception catch (e) {
-// TODO
-      if (kDebugMode) {
-        print(e.toString());
-        print("Fail to add image");
-      }
-    }
-  }
-
-  Future<File> savePathImage(String imagePath) async {
-    final directory = await getApplicationDocumentsDirectory();
-    final name = basename(imagePath);
-    debuggingPrint(directory.path);
-    final image = File('${directory.path}/$name');
-
-    return File(imagePath).copy(image.path);
-  }
-
-  Future<ImageSource?> showImageSource(BuildContext context) async {
-    if (Platform.isIOS) {
-      return showCupertinoModalPopup(
-          context: context,
-          builder: (context) => CupertinoActionSheet(
-                actions: [
-                  CupertinoActionSheetAction(
-                      onPressed: () =>
-                          Navigator.of(context).pop(ImageSource.camera),
-                      child: const Text('Camera')),
-                  CupertinoActionSheetAction(
-                      onPressed: () =>
-                          Navigator.of(context).pop(ImageSource.gallery),
-                      child: const Text('Gallery')),
-                ],
-              ));
-    } else {
-      //if(Platform.isAndroid){
-      return showModalBottomSheet(
-          context: context,
-          builder: (context) => Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  ListTile(
-                    leading: const Icon(Icons.camera_alt),
-                    title: const Text('Camera'),
-                    onTap: () => Navigator.of(context).pop(ImageSource.camera),
-                  ),
-                  ListTile(
-                    leading: const Icon(Icons.image),
-                    title: const Text('Gallery'),
-                    onTap: () => Navigator.of(context).pop(ImageSource.gallery),
-                  ),
-                ],
-              ));
-    }
   }
 
   final userNameController = TextEditingController();
@@ -234,52 +173,7 @@ class _EditProfileWidgetState extends State<EditProfileWidget> {
                 ),
                 Positioned(
                     top: coverHeight - profileHeight / 2 * 1.5,
-                    child: image != null
-                        ? ClipOval(
-                            child: Container(
-                              child: InkWell(
-                                onTap: () async {
-                                  final source = await showImageSource(context);
-                                  if (source == null) return;
-                                  chooseImage(source);
-                                },
-                                child: Image.file(
-                                  image!,
-                                  height: profileHeight * 1.5,
-                                  width: profileHeight * 1.5,
-                                ),
-                              ),
-                            ),
-                          )
-                        : ClipOval(
-                            child: Container(
-                              padding: const EdgeInsets.all(5),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(2.0),
-                                color: Colors.grey[100],
-                              ),
-                              child: ClipOval(
-                                child: InkWell(
-                                  onTap: () async {
-                                    final source =
-                                        await showImageSource(context);
-                                    if (source == null) return;
-                                    chooseImage(source);
-                                  },
-                                  child: const Image(
-                                    fit: BoxFit.cover,
-                                    height: profileHeight * 1.5,
-                                    width: profileHeight * 1.5,
-                                    image: AssetImage('images/vocel_logo.png'
-// 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTcZsL6PVn0SNiabAKz7js0QknS2ilJam19QQ&usqp=CAU'
-// 'https://www.computerhope.com/jargon/g/guest-user.png',
-//'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQIWzldjAy2NDfNAE8FAlKVMsoKIGU1B6CormNCp8RM1isll9a5x0fyXuhbejfdD2Lam4A&usqp=CAU',
-                                        ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ))
+                    child: ProfilePic(profileHeight: profileHeight.toString()))
               ],
             ),
             Column(

@@ -155,7 +155,7 @@ class Announcement extends Model {
         comments: comments != null
             ? List<CommentAnnouncement>.unmodifiable(comments)
             : comments,
-        createdAt: TemporalDateTime.now());
+        createdAt: TemporalDateTime(TemporalDateTime.now().getDateTimeInUtc()));
   }
 
   bool equals(Object other) {
@@ -219,7 +219,7 @@ class Announcement extends Model {
         isPinned: isPinned ?? this.isPinned,
         likes: likes ?? this.likes,
         comments: comments ?? this.comments,
-        createdAt: TemporalDateTime.now());
+        createdAt: TemporalDateTime(TemporalDateTime.now().getDateTimeInUtc()));
   }
 
   Announcement.fromJson(Map<String, dynamic> json)

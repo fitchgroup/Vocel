@@ -1,5 +1,6 @@
 import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 import 'package:amplify_flutter/amplify_flutter.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:vocel/LocalizedButtonResolver.dart';
 import 'package:vocel/LocalizedMessageResolver.dart';
@@ -22,6 +23,10 @@ class _VocelProfileState extends State<VocelProfile> {
   late String? theEmail;
   late String? theName;
 
+  /// Get it from parent;
+  late String? avatarKey = "";
+  late String? avatarUrl = "";
+
   @override
   void initState() {
     // TODO: implement initState
@@ -37,6 +42,14 @@ class _VocelProfileState extends State<VocelProfile> {
       if (entry.key == "custom:name") {
         setState(() {
           theName = entry.value;
+        });
+      } else if (entry.key == "custom:avatarkey") {
+        setState(() {
+          avatarKey = entry.value;
+        });
+      } else if (entry.key == "custom:avatarurl") {
+        setState(() {
+          avatarUrl = entry.value;
         });
       } else {
         continue;
@@ -150,19 +163,38 @@ class _VocelProfileState extends State<VocelProfile> {
                                           alignment:
                                               const AlignmentDirectional(0, 0),
                                           child: Container(
+                                            width: 163,
+                                            height: 163,
+                                            decoration: BoxDecoration(
+                                              shape: BoxShape.circle,
+                                              color: Colors.grey.shade200,
+                                            ),
+                                            padding: const EdgeInsets.all(5.0),
+                                            // Adjust this value for border thickness
+                                            child: Container(
                                               width: 160,
                                               height: 160,
                                               clipBehavior: Clip.antiAlias,
-                                              decoration: const BoxDecoration(
-                                                shape: BoxShape.circle,
-                                              ),
-                                              child:
-                                                  // Image.network(
-                                                  //   'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTcZsL6PVn0SNiabAKz7js0QknS2ilJam19QQ&usqp=CAU',
-                                                  //   fit: BoxFit.fill,
-                                                  // ),
-                                                  Image.asset(
-                                                      'images/vocel_logo.png')),
+
+                                              /// TODO: apply this to all the avatar
+                                              decoration: BoxDecoration(
+                                                  shape: BoxShape.circle,
+                                                  image: avatarUrl != "" &&
+                                                          false
+                                                      ? DecorationImage(
+                                                          image:
+                                                              CachedNetworkImageProvider(
+                                                            avatarUrl!,
+                                                            cacheKey: avatarKey,
+                                                          ),
+                                                          fit: BoxFit.cover,
+                                                        )
+                                                      : const DecorationImage(
+                                                          image: AssetImage(
+                                                              'images/vocel_logo.png'),
+                                                          fit: BoxFit.cover)),
+                                            ),
+                                          ),
                                         ),
                                         Align(
                                           alignment: const AlignmentDirectional(
@@ -381,7 +413,8 @@ class _VocelProfileState extends State<VocelProfile> {
                     ),
                   ],
                 ),
-              ), // My account
+              ),
+              // My account
               Padding(
                 padding: const EdgeInsetsDirectional.fromSTEB(0, 10, 0, 0),
                 child: Row(
@@ -490,7 +523,8 @@ class _VocelProfileState extends State<VocelProfile> {
                     ),
                   ],
                 ),
-              ), // edit profile
+              ),
+              // edit profile
               Padding(
                 padding: const EdgeInsetsDirectional.fromSTEB(0, 12, 0, 0),
                 child: Material(
@@ -579,7 +613,8 @@ class _VocelProfileState extends State<VocelProfile> {
                     ),
                   ), //
                 ),
-              ), // sign in preferences
+              ),
+              // sign in preferences
             ],
           ),
         ),

@@ -305,7 +305,8 @@ class _AnnouncementsListPageState extends State<AnnouncementsListPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: VocelNavigationDrawer(userEmail: userEmail, showEdit: adminEdit),
+      drawer: VocelNavigationDrawer(
+          userEmail: userEmail, showEdit: adminEdit, groupOfUser: groupEdit),
       appBar: AppBar(
         leading: Builder(
           builder: (BuildContext context) {

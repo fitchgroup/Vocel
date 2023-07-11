@@ -18,16 +18,24 @@
       "DELETE"
     ],
     "Bellversion1": [
-      "READ"
+      "CREATE_AND_UPDATE",
+      "READ",
+      "DELETE"
     ],
     "Eetcversion1": [
-      "READ"
+      "CREATE_AND_UPDATE",
+      "READ",
+      "DELETE"
     ],
     "Vcpaversion1": [
-      "READ"
+      "CREATE_AND_UPDATE",
+      "READ",
+      "DELETE"
     ],
     "Unassignedversion1": [
-      "READ"
+      "CREATE_AND_UPDATE",
+      "READ",
+      "DELETE"
     ]
   }
 }
