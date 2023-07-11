@@ -138,8 +138,7 @@ class Post extends Model {
         likes: likes != null ? List<String>.unmodifiable(likes) : likes,
         comments:
             comments != null ? List<Comment>.unmodifiable(comments) : comments,
-        createdAt: TemporalDateTime.fromString(
-            DateFormat("yyyy-MM-dd'T'HH:mm:ss").format(DateTime.now())));
+        createdAt: TemporalDateTime(TemporalDateTime.now().getDateTimeInUtc()));
   }
 
   bool equals(Object other) {
@@ -197,8 +196,7 @@ class Post extends Model {
         postGroup: postGroup ?? this.postGroup,
         likes: likes ?? this.likes,
         comments: comments ?? this.comments,
-        createdAt: TemporalDateTime.fromString(
-            DateFormat("yyyy-MM-dd'T'HH:mm:ss").format(DateTime.now())));
+        createdAt: TemporalDateTime(TemporalDateTime.now().getDateTimeInUtc()));
   }
 
   Post.fromJson(Map<String, dynamic> json)

@@ -127,8 +127,7 @@ class Comment extends Model {
         commentContent: commentContent,
         post: post,
         content: content,
-        createdAt: TemporalDateTime.fromString(
-            DateFormat("yyyy-MM-dd'T'HH:mm:ss").format(DateTime.now())));
+        createdAt: TemporalDateTime(TemporalDateTime.now().getDateTimeInUtc()));
   }
 
   bool equals(Object other) {
@@ -180,8 +179,7 @@ class Comment extends Model {
         commentContent: commentContent ?? this.commentContent,
         post: post ?? this.post,
         content: content ?? this.content,
-        createdAt: TemporalDateTime.fromString(
-            DateFormat("yyyy-MM-dd'T'HH:mm:ss").format(DateTime.now())));
+        createdAt: TemporalDateTime(TemporalDateTime.now().getDateTimeInUtc()));
   }
 
   Comment.fromJson(Map<String, dynamic> json)

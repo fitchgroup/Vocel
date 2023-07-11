@@ -143,8 +143,7 @@ class VocelMessage extends Model {
         attachedLink: attachedLink,
         sender: sender,
         receiver: receiver,
-        createdAt: TemporalDateTime.fromString(
-            DateFormat("yyyy-MM-dd'T'HH:mm:ss").format(DateTime.now())));
+        createdAt: TemporalDateTime(TemporalDateTime.now().getDateTimeInUtc()));
   }
 
   bool equals(Object other) {
@@ -204,8 +203,7 @@ class VocelMessage extends Model {
         attachedLink: attachedLink ?? this.attachedLink,
         sender: sender ?? this.sender,
         receiver: receiver ?? this.receiver,
-        createdAt: TemporalDateTime.fromString(
-            DateFormat("yyyy-MM-dd'T'HH:mm:ss").format(DateTime.now())));
+        createdAt: TemporalDateTime(TemporalDateTime.now().getDateTimeInUtc()));
   }
 
   VocelMessage.fromJson(Map<String, dynamic> json)

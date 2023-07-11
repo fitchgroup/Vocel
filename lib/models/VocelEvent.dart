@@ -190,8 +190,7 @@ class VocelEvent extends Model {
         duration: duration,
         eventImageUrl: eventImageUrl,
         eventImageKey: eventImageKey,
-        createdAt: TemporalDateTime.fromString(
-            DateFormat("yyyy-MM-dd'T'HH:mm:ss").format(DateTime.now())));
+        createdAt: TemporalDateTime(TemporalDateTime.now().getDateTimeInUtc()));
   }
 
   bool equals(Object other) {
@@ -265,8 +264,7 @@ class VocelEvent extends Model {
         duration: duration ?? this.duration,
         eventImageUrl: eventImageUrl ?? this.eventImageUrl,
         eventImageKey: eventImageKey ?? this.eventImageKey,
-        createdAt: TemporalDateTime.fromString(
-            DateFormat("yyyy-MM-dd'T'HH:mm:ss").format(DateTime.now())));
+        createdAt: TemporalDateTime(TemporalDateTime.now().getDateTimeInUtc()));
   }
 
   VocelEvent.fromJson(Map<String, dynamic> json)
