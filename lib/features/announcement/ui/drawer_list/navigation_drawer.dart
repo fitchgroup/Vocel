@@ -11,9 +11,13 @@ import 'package:vocel/features/announcement/ui/event_list/event_page.dart';
 class VocelNavigationDrawer extends StatefulWidget {
   final String? userEmail;
   final bool showEdit;
+  final groupOfUser;
 
   const VocelNavigationDrawer(
-      {super.key, this.userEmail, required this.showEdit});
+      {super.key,
+      this.userEmail,
+      required this.showEdit,
+      required this.groupOfUser});
 
   @override
   State<VocelNavigationDrawer> createState() => _VocelNavigationDrawerState();
@@ -71,7 +75,9 @@ class _VocelNavigationDrawerState extends State<VocelNavigationDrawer> {
                   name: const LocalizedButtonResolver().events(context),
                   leadingIcon: Icons.event,
                   onPressedFunction: () => itemPressed(context,
-                      index: 1, showEdit: widget.showEdit)),
+                      index: 1,
+                      showEdit: widget.showEdit,
+                      groupOfUser: widget.groupOfUser)),
               const SizedBox(
                 height: 6,
               ),
@@ -117,7 +123,11 @@ class _VocelNavigationDrawerState extends State<VocelNavigationDrawer> {
 }
 
 itemPressed(BuildContext context,
-    {required int index, String? userEmail, bool? showEdit, String? myName}) {
+    {required int index,
+    String? userEmail,
+    bool? showEdit,
+    String? myName,
+    String? groupOfUser}) {
   Navigator.pop(context);
   switch (index) {
     case 0:
@@ -132,7 +142,10 @@ itemPressed(BuildContext context,
       Navigator.push(
           context,
           MaterialPageRoute(
-              builder: (context) => EventPage(showEdit: showEdit ?? false),
+              builder: (context) => EventPage(
+                    showEdit: showEdit ?? false,
+                    groupOfUser: groupOfUser,
+                  ),
               settings: const RouteSettings(arguments: "settings page")));
       break;
     // case 2:
