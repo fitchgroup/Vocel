@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:vocel/models/VocelEvent.dart';
 
-
 /// The code is an implementation of a EventsDataStoreService class, which serves
 /// as a data access service for managing events using Amplify DataStore.
 
@@ -25,11 +24,16 @@ class EventsDataStoreService {
       sortBy: [VocelEvent.STARTTIME.ascending()],
     )
         .map((event) => event.items
-        .where((element) =>
-        element.startTime.getDateTimeInUtc().isAfter(DateTime.now()))
-        .toList())
+            .where((element) =>
+
+                /// purge events after the event pass three months
+                element.startTime.getDateTimeInUtc().isAfter(DateTime(
+                    DateTime.now().year,
+                    DateTime.now().month - 3,
+                    DateTime.now().day)))
+            .toList())
         .handleError(
-          (error) {
+      (error) {
         debugPrint('listenToEvents: A Stream error happened');
       },
     );
@@ -45,11 +49,11 @@ class EventsDataStoreService {
       sortBy: [VocelEvent.STARTTIME.ascending()],
     )
         .map((event) => event.items
-        .where((element) =>
-        element.startTime.getDateTimeInUtc().isBefore(DateTime.now()))
-        .toList())
+            .where((element) =>
+                element.startTime.getDateTimeInUtc().isBefore(DateTime.now()))
+            .toList())
         .handleError(
-          (error) {
+      (error) {
         debugPrint('listenToEvents: A Stream error happened');
       },
     );
@@ -59,8 +63,8 @@ class EventsDataStoreService {
   /// It uses the observeQuery method to observe changes to the event in the DataStore.
 
   Stream<VocelEvent> getEventStream(String id) {
-    final eventStream =
-    Amplify.DataStore.observeQuery(VocelEvent.classType, where: VocelEvent.ID.eq(id))
+    final eventStream = Amplify.DataStore.observeQuery(VocelEvent.classType,
+            where: VocelEvent.ID.eq(id))
         .map((event) => event.items.toList().single);
 
     return eventStream;
