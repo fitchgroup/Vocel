@@ -1,7 +1,6 @@
 import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:amplify_storage_s3/amplify_storage_s3.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:vocel/common/repository/auth_repository.dart';
 import 'package:amplify_api/amplify_api.dart';
 import 'package:amplify_datastore/amplify_datastore.dart';
@@ -18,27 +17,27 @@ class configureAmplifySuccess extends AuthRepository {
       // notificationsPlugin.onNotificationReceivedInBackground(
       //     myAsyncNotificationReceivedHandler);
 
-      await Amplify.addPlugins([
-        AmplifyAuthCognito(),
-        AmplifyAPI(
-          modelProvider: ModelProvider.instance,
-          // Optional config
-          subscriptionOptions: const GraphQLSubscriptionOptions(
-            retryOptions: RetryOptions(maxAttempts: 10),
+      if (!Amplify.isConfigured) {
+        await Amplify.addPlugins([
+          AmplifyAuthCognito(),
+          AmplifyDataStore(modelProvider: ModelProvider.instance),
+          AmplifyAPI(
+            modelProvider: ModelProvider.instance,
+            // Optional config
+            subscriptionOptions: const GraphQLSubscriptionOptions(
+              retryOptions: RetryOptions(maxAttempts: 30),
+            ),
           ),
-        ),
-        AmplifyDataStore(modelProvider: ModelProvider.instance),
-        // AmplifyAPI(modelProvider: ModelProvider.instance),
-        AmplifyStorageS3(),
-        // notificationsPlugin,
-      ]);
+          AmplifyStorageS3(),
+          // notificationsPlugin,
+        ]);
 
-      const String amplifyConfig = String.fromEnvironment('VERSION');
-      await Amplify.configure(amplifyConfig);
+        const String amplifyConfig = String.fromEnvironment('VERSION');
+        await Amplify.configure(amplifyConfig);
+      }
       return "Successfully configured";
     } on Exception catch (e) {
-      debugPrint('${"=" * 50}\nError configuring Amplify: $e\n${"=" * 50}');
-      return 'Error configuring Amplify: $e';
+      return 'Error configuring Amplify: $e\n';
     }
   }
 }

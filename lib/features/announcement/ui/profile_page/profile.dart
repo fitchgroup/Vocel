@@ -525,95 +525,96 @@ class _VocelProfileState extends State<VocelProfile> {
                 ),
               ),
               // edit profile
-              Padding(
-                padding: const EdgeInsetsDirectional.fromSTEB(0, 12, 0, 0),
-                child: Material(
-                  child: Container(
-                    width: MediaQuery.of(context).size.width * 0.9,
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(8),
-                      border: Border.all(
-                        color: Colors.grey.shade500,
-                        width: 1,
-                      ),
-                    ),
-                    child: ExpansionTile(
-                      title: Row(
-                        mainAxisSize: MainAxisSize.max,
-                        children: [
-                          Expanded(
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsetsDirectional.fromSTEB(
-                                      0, 0, 6, 0),
-                                  child: Icon(
-                                    Icons.lock_outline,
-                                    color: Colors.grey.shade700,
-                                    size: 24,
-                                  ),
-                                ),
-                                Expanded(
-                                  child: Text(
-                                    "Sign-in preferences",
-                                    style: TextStyle(
-                                      color: Colors.grey[800],
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                      initiallyExpanded: false,
-                      children: signInTiles
-                          .map(
-                            (signInTiles) => InkWell(
-                              onTap: () {
-                                debuggingPrint("we are in the $signInTiles");
-                              },
-                              child: Row(
-                                mainAxisSize: MainAxisSize.max,
-                                children: [
-                                  Expanded(
-                                    child: Padding(
-                                      padding:
-                                          const EdgeInsetsDirectional.fromSTEB(
-                                              26, 0, 10, 0),
-                                      child: Expanded(
-                                        child: Text(
-                                          signInTiles,
-                                          style: TextStyle(
-                                            color: Colors.grey[800],
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(right: 5),
-                                    child: SizedBox(
-                                      height: 46,
-                                      width: 46,
-                                      child: Icon(
-                                        Icons.chevron_right_rounded,
-                                        color: Colors.grey.shade700,
-                                        size: 25,
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          )
-                          .toList(),
-                    ),
-                  ), //
-                ),
-              ),
+              /// ADD MORE FEATURES, LIKE SIGN IN METHOD
+              // Padding(
+              //   padding: const EdgeInsetsDirectional.fromSTEB(0, 12, 0, 0),
+              //   child: Material(
+              //     child: Container(
+              //       width: MediaQuery.of(context).size.width * 0.9,
+              //       decoration: BoxDecoration(
+              //         color: Colors.white,
+              //         borderRadius: BorderRadius.circular(8),
+              //         border: Border.all(
+              //           color: Colors.grey.shade500,
+              //           width: 1,
+              //         ),
+              //       ),
+              //       child: ExpansionTile(
+              //         title: Row(
+              //           mainAxisSize: MainAxisSize.max,
+              //           children: [
+              //             Expanded(
+              //               child: Row(
+              //                 mainAxisAlignment: MainAxisAlignment.start,
+              //                 children: [
+              //                   Padding(
+              //                     padding: const EdgeInsetsDirectional.fromSTEB(
+              //                         0, 0, 6, 0),
+              //                     child: Icon(
+              //                       Icons.lock_outline,
+              //                       color: Colors.grey.shade700,
+              //                       size: 24,
+              //                     ),
+              //                   ),
+              //                   Expanded(
+              //                     child: Text(
+              //                       "Sign-in preferences",
+              //                       style: TextStyle(
+              //                         color: Colors.grey[800],
+              //                       ),
+              //                     ),
+              //                   ),
+              //                 ],
+              //               ),
+              //             ),
+              //           ],
+              //         ),
+              //         initiallyExpanded: false,
+              //         children: signInTiles
+              //             .map(
+              //               (signInTiles) => InkWell(
+              //                 onTap: () {
+              //                   debuggingPrint("we are in the $signInTiles");
+              //                 },
+              //                 child: Row(
+              //                   mainAxisSize: MainAxisSize.max,
+              //                   children: [
+              //                     Expanded(
+              //                       child: Padding(
+              //                         padding:
+              //                             const EdgeInsetsDirectional.fromSTEB(
+              //                                 26, 0, 10, 0),
+              //                         child: Expanded(
+              //                           child: Text(
+              //                             signInTiles,
+              //                             style: TextStyle(
+              //                               color: Colors.grey[800],
+              //                             ),
+              //                           ),
+              //                         ),
+              //                       ),
+              //                     ),
+              //                     Padding(
+              //                       padding: const EdgeInsets.only(right: 5),
+              //                       child: SizedBox(
+              //                         height: 46,
+              //                         width: 46,
+              //                         child: Icon(
+              //                           Icons.chevron_right_rounded,
+              //                           color: Colors.grey.shade700,
+              //                           size: 25,
+              //                         ),
+              //                       ),
+              //                     ),
+              //                   ],
+              //                 ),
+              //               ),
+              //             )
+              //             .toList(),
+              //       ),
+              //     ), //
+              //   ),
+              // ),
               // sign in preferences
             ],
           ),

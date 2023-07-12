@@ -1,5 +1,4 @@
-import 'dart:async';
-
+import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -16,15 +15,22 @@ Future<void> main() async {
   // Might use later to override the translations based on a user's preferences
   // List? languages = await Devicelocale.preferredLanguages;
   // String? locale = await Devicelocale.currentLocale;
+  bool isAmplifySuccessfullyConfigured = false;
+  try {
+    /// Use the global `getIt` instance to register `AuthRepository`
+    getIt.registerSingleton<AuthRepository>(configureAmplifySuccess());
+    AuthRepository conf = configureAmplifySuccess();
 
-  /// Use the global `getIt` instance to register `AuthRepository`
-  getIt.registerSingleton<AuthRepository>(configureAmplifySuccess());
-  AuthRepository conf = configureAmplifySuccess();
-
-  /// pass the conf to App() widget, creating
-  /// loose coupling between App() and configureAmplifySuccess,
-  /// which contains the amplifyconfiguration.dart
-  conf.configureApp();
+    /// pass the conf to App() widget, creating
+    /// loose coupling between App() and configureAmplifySuccess,
+    /// which contains the amplifyconfiguration.dart
+    String returnMessage = await conf.configureApp();
+    debugPrint("${"==" * 100} \n $returnMessage \n ${"==" * 100}");
+    isAmplifySuccessfullyConfigured = true;
+  } on AmplifyAlreadyConfiguredException {
+    debugPrint(
+        "${"==" * 100} \n Amplify configuration failed \n ${"==" * 100}");
+  }
 
   AwesomeNotifications().initialize(
     'resource://drawable/app_logo',
@@ -50,8 +56,9 @@ Future<void> main() async {
   );
 
   runApp(
-    const ProviderScope(
-      child: MyApp(),
+    ProviderScope(
+      child: MyApp(
+          isAmplifySuccessfullyConfigured: isAmplifySuccessfullyConfigured),
     ),
   );
 }
