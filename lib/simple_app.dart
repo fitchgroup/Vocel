@@ -11,14 +11,16 @@ import 'package:vocel/LocalizedInputResolver.dart';
 import 'package:vocel/LocalizedMessageResolver.dart';
 import 'package:vocel/LocalizedTitleResolver.dart';
 import 'package:vocel/common/utils/language_constants.dart';
-import 'package:vocel/common/utils/notification_util.dart';
 import 'package:vocel/features/announcement/mutation/models_subscription.dart';
 import 'package:vocel/features/announcement/ui/drawer_list/bottom_navigation.dart';
 import 'package:vocel/models/Announcement.dart';
 import 'package:vocel/models/VocelEvent.dart';
 
 class MyApp extends StatefulWidget {
-  const MyApp({Key? key}) : super(key: key);
+  final bool isAmplifySuccessfullyConfigured;
+
+  const MyApp({Key? key, required this.isAmplifySuccessfullyConfigured})
+      : super(key: key);
 
   @override
   State<MyApp> createState() => _MyAppState();
@@ -62,14 +64,13 @@ class _MyAppState extends State<MyApp> {
         }
       },
     );
-    subscribe();
 
     super.initState();
   }
 
   Future<void> subscribe() async {
-    await unsubscribeModel();
-    await subscribeModel();
+    // await unsubscribeModel();
+    // await subscribeModel();
   }
 
   Future<void> getAnnouncements() async {
@@ -89,76 +90,6 @@ class _MyAppState extends State<MyApp> {
       testDebuggingPrint('Query failed: $e');
       return;
     }
-  }
-
-  // Future<void> getVocelEvents() async {
-  //   try {
-  //     final request = ModelQueries.list(VocelEvent.classType);
-  //     final response = await Amplify.API.query(request: request).response;
-  //
-  //     final todos = response.data?.items ?? [];
-  //     if (response.errors.isNotEmpty) {
-  //       testDebuggingPrint('errors: ${response.errors}');
-  //     }
-  //
-  //     setState(() {
-  //       allVocelEvents = todos;
-  //     });
-  //   } on ApiException catch (e) {
-  //     testDebuggingPrint('Query failed: $e');
-  //     return;
-  //   }
-  // }
-
-  void subscribeTemp() {
-    /// GET THE ANNOUNCEMENT DATA
-    // final subscriptionRequest =
-    //     ModelSubscriptions.onCreate(Announcement.classType);
-    // final Stream<GraphQLResponse<Announcement>> operation =
-    //     Amplify.API.subscribe(
-    //   subscriptionRequest,
-    //   onEstablished: () => testDebuggingPrint('Subscription established'),
-    // );
-    // subscription = operation.listen(
-    //   (event) {
-    //     setState(() async {
-    //       NotificationSpecificDateTime result = NotificationSpecificDateTime(
-    //         specificDateTime:
-    //             event.data!.createdAt!.getDateTimeInUtc().toLocal(),
-    //         timeOfDay: TimeOfDay(
-    //           hour: TimeOfDay.now().hour,
-    //           minute: TimeOfDay.now().minute + 1,
-    //         ),
-    //       );
-    //       allAnnouncements.add(event.data);
-    //       safePrint("=" * 30 + allAnnouncements.length.toString() + "=" * 30);
-    //       if (event.data != null) {
-    //         scheduleSpecificVocelNotification(result, event.data!);
-    //       }
-    //     });
-    //   },
-    //   onError: (Object e) =>
-    //       testDebuggingPrint('Error in subscription stream: $e'),
-    // );
-
-    /// GET THE VOCELEVENT DATA
-    // final subscriptionRequest2 =
-    // ModelSubscriptions.onCreate(VocelEvent.classType);
-    // final Stream<GraphQLResponse<VocelEvent>> operation2 =
-    // Amplify.API.subscribe(
-    //   subscriptionRequest2,
-    //   onEstablished: () => testDebuggingPrint('Subscription established'),
-    // );
-    // subscription2 = operation2.listen(
-    //       (event) {
-    //     setState(() {
-    //       allVocelEvents.add(event.data);
-    //       testDebuggingPrint(allVocelEvents.length.toString());
-    //     });
-    //   },
-    //   onError: (Object e) =>
-    //       testDebuggingPrint('Error in subscription stream: $e'),
-    // );
   }
 
   void testDebuggingPrint(String shouldPrint) {
@@ -185,8 +116,19 @@ class _MyAppState extends State<MyApp> {
         one is called before the state loads its dependencies and the other is called a few
         moments after the state loads its dependencies. **/
 
-    getLocale().then((locale) => setLocale(locale.languageCode));
     super.didChangeDependencies();
+    getLocale().then((locale) => setLocale(locale.languageCode));
+    // This condition ensures we only run our async operations once.
+
+    if (subscriptionVocelEvent == null) {
+      subscribeVocelEvent();
+    }
+    if (subscriptionPost == null) {
+      subscribePost();
+    }
+    if (subscriptionAnnouncement == null) {
+      subscribeAnnouncement();
+    }
   }
 
   @override

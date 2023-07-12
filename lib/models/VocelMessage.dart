@@ -21,6 +21,7 @@
 
 import 'package:amplify_core/amplify_core.dart';
 import 'package:flutter/foundation.dart';
+import 'package:intl/intl.dart';
 
 /** This is an auto generated class representing the VocelMessage type in your schema. */
 @immutable
@@ -142,7 +143,7 @@ class VocelMessage extends Model {
         attachedLink: attachedLink,
         sender: sender,
         receiver: receiver,
-        createdAt: TemporalDateTime.now());
+        createdAt: TemporalDateTime(TemporalDateTime.now().getDateTimeInUtc()));
   }
 
   bool equals(Object other) {
@@ -202,7 +203,7 @@ class VocelMessage extends Model {
         attachedLink: attachedLink ?? this.attachedLink,
         sender: sender ?? this.sender,
         receiver: receiver ?? this.receiver,
-        createdAt: TemporalDateTime.now());
+        createdAt: TemporalDateTime(TemporalDateTime.now().getDateTimeInUtc()));
   }
 
   VocelMessage.fromJson(Map<String, dynamic> json)
