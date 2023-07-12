@@ -97,12 +97,18 @@ class _ChatListState extends State<ChatList> {
     super.dispose();
   }
 
+  String searching = "";
+
   @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        ChatSearchBar(onClickController: onClickController),
+        ChatSearchBar(onClickController: (String value) {
+          setState(() {
+            searching = value;
+          });
+        }),
         // ElevatedButton(
         //   onPressed: () async {
         //     createVocelNotification();
@@ -119,7 +125,11 @@ class _ChatListState extends State<ChatList> {
         //   },
         //   child: const Text('Pick Schedule'),
         // ),
-        Expanded(child: ExistingChatList(myInfo: widget.myInfo))
+        Expanded(
+            child: ExistingChatList(
+          myInfo: widget.myInfo,
+          searching: searching,
+        ))
       ],
     );
   }

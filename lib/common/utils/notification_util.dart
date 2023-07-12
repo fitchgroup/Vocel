@@ -1,6 +1,7 @@
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:vocel/models/Announcement.dart';
 import 'package:vocel/models/ModelProvider.dart';
 
@@ -174,7 +175,7 @@ Future<void> createVocelNotification({String? possibleId}) async {
   );
 }
 
-Future<void> scheduleSpecificVocelNotification(
+Future<void> scheduleSpecificVocelAnnoucementNotification(
     NotificationSpecificDateTime notificationSchedule,
     Announcement currentAnnouncement) async {
   DateTime specificDateTime = notificationSchedule.specificDateTime;
@@ -184,15 +185,53 @@ Future<void> scheduleSpecificVocelNotification(
     content: NotificationContent(
       id: createUniqueId(),
       channelKey: 'scheduled_channel',
-      title: currentAnnouncement.tripName,
-      body: "currentAnnouncement.description + ${Emojis.animals_panda * 100}",
+      title: "${Emojis.sound_megaphone} ${currentAnnouncement.tripName}",
+      body: "${Emojis.office_clipboard} ${currentAnnouncement.description}",
       notificationLayout: NotificationLayout.Default,
       showWhen: true,
     ),
     schedule: NotificationCalendar(
-        year: specificDateTime.year,
-        month: specificDateTime.month,
-        day: specificDateTime.day,
+        year: DateTime.now().year,
+
+        ///  specificDateTime.year,
+        month: DateTime.now().month,
+
+        /// specificDateTime.month,
+        day: DateTime.now().day,
+
+        /// specificDateTime.day,
+        hour: timeOfDay.hour,
+        minute: timeOfDay.minute,
+        second: 0,
+        millisecond: 0,
+        repeats: false),
+  );
+}
+
+Future<void> scheduleSpecificVocelPostNotification(
+    NotificationSpecificDateTime notificationSchedule, Post currentPost) async {
+  DateTime specificDateTime = notificationSchedule.specificDateTime;
+  TimeOfDay timeOfDay = notificationSchedule.timeOfDay;
+
+  await AwesomeNotifications().createNotification(
+    content: NotificationContent(
+      id: createUniqueId(),
+      channelKey: 'scheduled_channel',
+      title: currentPost.postAuthor,
+      body: "${Emojis.office_memo} ${currentPost.postContent}",
+      notificationLayout: NotificationLayout.Default,
+      showWhen: true,
+    ),
+    schedule: NotificationCalendar(
+        year: DateTime.now().year,
+
+        ///  specificDateTime.year,
+        month: DateTime.now().month,
+
+        /// specificDateTime.month,
+        day: DateTime.now().day,
+
+        /// specificDateTime.day,
         hour: timeOfDay.hour,
         minute: timeOfDay.minute,
         second: 0,
@@ -211,15 +250,23 @@ Future<void> scheduleSpecificVocelEventNotification(
     content: NotificationContent(
       id: createUniqueId(),
       channelKey: 'scheduled_channel',
-      title: "currentVocelEvent.eventTitle",
-      body: "currentVocelEvent.eventDescription",
+      title:
+          "${currentVocelEvent.eventTitle} (${Emojis.map_compass}: ${DateFormat('yyyy-MM-d HH:mm').format(currentVocelEvent.startTime.getDateTimeInUtc().toLocal())})",
+      body:
+          "${Emojis.office_round_pushpin}: ${currentVocelEvent.eventLocation} \n ${Emojis.office_calendar}: ${currentVocelEvent.eventDescription} \n",
       notificationLayout: NotificationLayout.Default,
       showWhen: true,
     ),
     schedule: NotificationCalendar(
-        year: specificDateTime.year,
-        month: specificDateTime.month,
-        day: specificDateTime.day,
+        year: DateTime.now().year,
+
+        ///  specificDateTime.year,
+        month: DateTime.now().month,
+
+        /// specificDateTime.month,
+        day: DateTime.now().day,
+
+        /// specificDateTime.day,
         hour: timeOfDay.hour,
         minute: timeOfDay.minute,
         second: 0,
