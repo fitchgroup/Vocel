@@ -8,11 +8,10 @@ import 'package:vocel/models/ModelProvider.dart';
 
 class ExistingChatList extends HookConsumerWidget {
   final String myInfo;
+  final String searching;
 
-  ExistingChatList({
-    Key? key,
-    required this.myInfo,
-  }) : super(key: key);
+  ExistingChatList({Key? key, required this.myInfo, required this.searching})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -94,11 +93,18 @@ class ExistingChatList extends HookConsumerWidget {
                         next.createdAt!.getDateTimeInUtc())
                 ? curr
                 : next);
-        return ExistingChattingCard(
-          myInfo: myInfo,
-          otherPersonName: otherPerson,
-          latestMessageContent: latestMessage.content,
-          messages: messageGroup,
+        bool visibilityCheck =
+            // searching a specific person
+            /// TODO: searching for specific chat, you may want to loop for every history
+            sortedKeys[index].toUpperCase().contains(searching.toUpperCase());
+        return Visibility(
+          visible: visibilityCheck,
+          child: ExistingChattingCard(
+            myInfo: myInfo,
+            otherPersonName: otherPerson,
+            latestMessageContent: latestMessage.content,
+            messages: messageGroup,
+          ),
         );
       },
     );
