@@ -16,7 +16,19 @@ class TripsDataStoreService {
     return Amplify.DataStore.observeQuery(
       Announcement.classType,
       sortBy: [Announcement.TRIPNAME.ascending()],
-    ).map((event) => event.items.toList()).handleError(
+    )
+        .map((event) => event.items
+            .where((element) =>
+
+                /// purge announcements after the event pass three months
+                element.createdAt == null
+                    ? true
+                    : element.createdAt!.getDateTimeInUtc().isAfter(DateTime(
+                        DateTime.now().year,
+                        DateTime.now().month - 3,
+                        DateTime.now().day)))
+            .toList())
+        .handleError(
       (error) {
         debugPrint('listenToTrips: A Stream error happened');
       },

@@ -57,14 +57,6 @@ class _EventCardState extends State<EventCard> {
                 ),
               ],
               image: widget.event.eventImageUrl != null
-                  //   CachedNetworkImage(
-                  //   cacheKey: widget.event.eventImageKey,
-                  //   imageUrl: widget.event.eventImageUrl!,
-                  //   width: double.maxFinite,
-                  //   height: 500,
-                  //   alignment: Alignment.topCenter,
-                  //   fit: BoxFit.fill,
-                  // )
                   ? DecorationImage(
                       image: CachedNetworkImageProvider(
                         widget.event.eventImageUrl!,
