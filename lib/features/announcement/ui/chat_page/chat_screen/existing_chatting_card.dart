@@ -6,15 +6,15 @@ import 'package:flutter/material.dart';
 class ExistingChattingCard extends StatelessWidget {
   final String otherPersonName;
   final String latestMessageContent;
-  final List<VocelMessage> messages;
   final String myInfo;
+  final DateTime time;
 
   const ExistingChattingCard({
     Key? key,
     required this.otherPersonName,
     required this.latestMessageContent,
-    required this.messages,
     required this.myInfo,
+    required this.time,
   }) : super(key: key);
 
   @override
@@ -35,9 +35,7 @@ class ExistingChattingCard extends StatelessWidget {
         overflow: TextOverflow.ellipsis,
       ),
       trailing: Text(
-        DateFormat('hh:mm a').format(
-            messages.last.updatedAt?.getDateTimeInUtc() ??
-                messages.last.createdAt!.getDateTimeInUtc()),
+        DateFormat('hh:mm a').format(time),
       ),
       onTap: () {
         Navigator.push(

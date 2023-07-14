@@ -1,6 +1,7 @@
 import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:amplify_storage_s3/amplify_storage_s3.dart';
+import 'package:vocel/amplifyconfiguration.dart';
 import 'package:vocel/common/repository/auth_repository.dart';
 import 'package:amplify_api/amplify_api.dart';
 import 'package:amplify_datastore/amplify_datastore.dart';
@@ -24,18 +25,20 @@ class configureAmplifySuccess extends AuthRepository {
           AmplifyAPI(
             modelProvider: ModelProvider.instance,
             // Optional config
-            subscriptionOptions: const GraphQLSubscriptionOptions(
-              retryOptions: RetryOptions(maxAttempts: 30),
-            ),
+            // subscriptionOptions: const GraphQLSubscriptionOptions(
+            //   retryOptions: RetryOptions(maxAttempts: 10),
+            // ),
           ),
           AmplifyStorageS3(),
           // notificationsPlugin,
         ]);
 
         const String amplifyConfig = String.fromEnvironment('VERSION');
-        await Amplify.configure(amplifyConfig);
+        await Amplify.configure(amplifyconfig);
+        return "Successfully configured";
+      } else {
+        return "Amplify is already configured";
       }
-      return "Successfully configured";
     } on Exception catch (e) {
       return 'Error configuring Amplify: $e\n';
     }
