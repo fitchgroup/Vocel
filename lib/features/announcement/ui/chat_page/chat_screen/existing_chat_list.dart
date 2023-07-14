@@ -100,11 +100,12 @@ class ExistingChatList extends HookConsumerWidget {
         return Visibility(
           visible: visibilityCheck,
           child: ExistingChattingCard(
-            myInfo: myInfo,
-            otherPersonName: otherPerson,
-            latestMessageContent: latestMessage.content,
-            messages: messageGroup,
-          ),
+              myInfo: myInfo,
+              otherPersonName: otherPerson,
+              latestMessageContent: latestMessage.content,
+              time: latestMessage.updatedAt == null
+                  ? latestMessage.createdAt!.getDateTimeInUtc().toLocal()
+                  : latestMessage.updatedAt!.getDateTimeInUtc().toLocal()),
         );
       },
     );
