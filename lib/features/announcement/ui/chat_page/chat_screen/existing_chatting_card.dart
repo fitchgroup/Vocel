@@ -37,7 +37,7 @@ class ExistingChattingCard extends StatelessWidget {
       trailing: Text(
         DateFormat('hh:mm a').format(
             messages.last.updatedAt?.getDateTimeInUtc() ??
-                messages.last.createdAt!.getDateTimeInUtc()),
+                messages.last.createdAt!.getDateTimeInUtc().toLocal()),
       ),
       onTap: () {
         Navigator.push(
