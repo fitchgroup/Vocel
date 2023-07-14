@@ -54,22 +54,30 @@ Future<List<VocelMessage?>> queryVocelMessageListItems() async {
   try {
     Map<String, String> stringMap = await getUserAttributes();
     String? userEmail = stringMap["email"];
-    QueryPredicate predicate;
-    if (userEmail != null) {
-      predicate = VocelMessage.SENDER.eq(userEmail) |
-          VocelMessage.RECEIVER.eq(userEmail);
-    } else {
-      predicate = QueryPredicate.all;
-    }
 
-    final request = ModelQueries.list(VocelMessage.classType, where: predicate);
-    final response = await Amplify.API.query(request: request).response;
+    final senderRequest = ModelQueries.list(VocelMessage.classType,
+        where: VocelMessage.SENDER.eq(userEmail));
+    final senderResponse =
+        await Amplify.API.query(request: senderRequest).response;
+    final senderMessages = senderResponse.data?.items;
 
-    final vocelMessages = response.data?.items;
-    if (vocelMessages == null) {
-      safePrint('errors: ${response.errors}');
+    final receiverRequest = ModelQueries.list(VocelMessage.classType,
+        where: VocelMessage.RECEIVER.eq(userEmail));
+    final receiverResponse =
+        await Amplify.API.query(request: receiverRequest).response;
+    final receiverMessages = receiverResponse.data?.items;
+
+    if (senderMessages == null || receiverMessages == null) {
+      safePrint('errors: ${senderResponse.errors}, ${receiverResponse.errors}');
       return const [];
     }
+
+    List<VocelMessage?> vocelMessages = [];
+    vocelMessages.addAll(senderMessages);
+    vocelMessages.addAll(receiverMessages);
+
+    mutationDebuggingPrint(vocelMessages.length.toString());
+
     return vocelMessages;
   } on ApiException catch (e) {
     safePrint('Query failed: $e');
