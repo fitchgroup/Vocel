@@ -126,6 +126,7 @@ class PostsDataStoreService {
       final newPost = oldPost.copyWith(likes: assign);
 
       await Amplify.DataStore.save(newPost);
+      await updatePost(newPost);
     } on Exception catch (error) {
       debugPrint(error.toString());
     }

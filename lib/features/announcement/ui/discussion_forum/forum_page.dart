@@ -198,9 +198,9 @@ class ForumPage extends HookConsumerWidget {
                     context: context,
                     builder: (BuildContext context) {
                       return AlertDialog(
-                        title: const Text("Delete Event"),
+                        title: const Text("Delete Post"),
                         content: const Text(
-                            "Are you sure you want to delete this event?"),
+                            "Are you sure you want to delete this Post?"),
                         actions: [
                           TextButton(
                             child: const Text("Cancel"),

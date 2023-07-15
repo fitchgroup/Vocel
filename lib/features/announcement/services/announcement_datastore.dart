@@ -1,6 +1,7 @@
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:vocel/features/announcement/mutation/announcement_mutation.dart';
 import 'package:vocel/models/Announcement.dart';
 import 'package:vocel/models/CommentAnnouncement.dart';
 
@@ -165,6 +166,7 @@ class TripsDataStoreService {
       final newAnnouncement = oldAnnouncement.copyWith(likes: assign);
 
       await Amplify.DataStore.save(newAnnouncement);
+      await updateAnnouncement(newAnnouncement);
     } on Exception catch (error) {
       debugPrint(error.toString());
     }

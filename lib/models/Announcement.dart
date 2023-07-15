@@ -217,7 +217,7 @@ class Announcement extends Model {
         description: description ?? this.description,
         isCompleted: isCompleted ?? this.isCompleted,
         isPinned: isPinned ?? this.isPinned,
-        likes: likes ?? this.likes,
+        likes: likes != null ? likes : this.likes,
         comments: comments ?? this.comments,
         createdAt: createdAt ??
             TemporalDateTime(TemporalDateTime.now().getDateTimeInUtc()));

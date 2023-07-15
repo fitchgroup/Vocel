@@ -194,7 +194,7 @@ class Post extends Model {
         postAuthor: postAuthor ?? this.postAuthor,
         postContent: postContent ?? this.postContent,
         postGroup: postGroup ?? this.postGroup,
-        likes: likes ?? this.likes,
+        likes: likes != null ? likes : this.likes,
         comments: comments ?? this.comments,
         createdAt: createdAt ??
             TemporalDateTime(TemporalDateTime.now().getDateTimeInUtc()));
