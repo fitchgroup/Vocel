@@ -196,7 +196,8 @@ class Post extends Model {
         postGroup: postGroup ?? this.postGroup,
         likes: likes ?? this.likes,
         comments: comments ?? this.comments,
-        createdAt: TemporalDateTime(TemporalDateTime.now().getDateTimeInUtc()));
+        createdAt: createdAt ??
+            TemporalDateTime(TemporalDateTime.now().getDateTimeInUtc()));
   }
 
   Post.fromJson(Map<String, dynamic> json)
