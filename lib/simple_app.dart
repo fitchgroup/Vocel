@@ -1,8 +1,4 @@
-import 'dart:async';
-
-import 'package:amplify_api/amplify_api.dart';
 import 'package:amplify_authenticator/amplify_authenticator.dart';
-import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -11,16 +7,13 @@ import 'package:vocel/LocalizedInputResolver.dart';
 import 'package:vocel/LocalizedMessageResolver.dart';
 import 'package:vocel/LocalizedTitleResolver.dart';
 import 'package:vocel/common/utils/language_constants.dart';
-import 'package:vocel/features/announcement/mutation/models_subscription.dart';
 import 'package:vocel/features/announcement/ui/drawer_list/bottom_navigation.dart';
-import 'package:vocel/models/Announcement.dart';
-import 'package:vocel/models/VocelEvent.dart';
 
 class MyApp extends StatefulWidget {
-  final bool isAmplifySuccessfullyConfigured;
-
   const MyApp({Key? key, required this.isAmplifySuccessfullyConfigured})
       : super(key: key);
+
+  final bool isAmplifySuccessfullyConfigured;
 
   @override
   State<MyApp> createState() => _MyAppState();
@@ -40,56 +33,10 @@ class _MyAppState extends State<MyApp> {
     });
   }
 
-  List<Announcement?> allAnnouncements = [];
-  List<VocelEvent?> allVocelEvents = [];
-  SubscriptionStatus prevSubscriptionStatus = SubscriptionStatus.disconnected;
-  StreamSubscription<GraphQLResponse<Announcement>>? subscription;
-  StreamSubscription<GraphQLResponse<VocelEvent>>? subscription2;
-
   @override
   void initState() {
-    /// ...
-
-// Init listeners
-    Amplify.Hub.listen(
-      HubChannel.Api,
-      (ApiHubEvent event) {
-        if (event is SubscriptionHubEvent) {
-          if (prevSubscriptionStatus == SubscriptionStatus.connecting &&
-              event.status == SubscriptionStatus.connected) {
-            // getAnnouncements(); // refetch todos
-            // getVocelEvents();
-          }
-          prevSubscriptionStatus = event.status;
-        }
-      },
-    );
-
+    /// Init listeners
     super.initState();
-  }
-
-  Future<void> subscribe() async {
-    // await unsubscribeModel();
-    // await subscribeModel();
-  }
-
-  Future<void> getAnnouncements() async {
-    try {
-      final request = ModelQueries.list(Announcement.classType);
-      final response = await Amplify.API.query(request: request).response;
-
-      final todos = response.data?.items ?? [];
-      if (response.errors.isNotEmpty) {
-        testDebuggingPrint('errors: ${response.errors}');
-      }
-
-      setState(() {
-        allAnnouncements = todos;
-      });
-    } on ApiException catch (e) {
-      testDebuggingPrint('Query failed: $e');
-      return;
-    }
   }
 
   void testDebuggingPrint(String shouldPrint) {
@@ -118,17 +65,6 @@ class _MyAppState extends State<MyApp> {
 
     super.didChangeDependencies();
     getLocale().then((locale) => setLocale(locale.languageCode));
-    // This condition ensures we only run our async operations once.
-
-    if (subscriptionVocelEvent == null) {
-      subscribeVocelEvent();
-    }
-    if (subscriptionPost == null) {
-      subscribePost();
-    }
-    if (subscriptionAnnouncement == null) {
-      subscribeAnnouncement();
-    }
   }
 
   @override
@@ -152,7 +88,9 @@ class _MyAppState extends State<MyApp> {
         ],
         locale: _local,
         builder: Authenticator.builder(),
-        home: AnnouncementsListPage(),
+        home: AnnouncementsListPage(
+            isAmplifySuccessfullyConfigured:
+                widget.isAmplifySuccessfullyConfigured),
       ),
     );
   }

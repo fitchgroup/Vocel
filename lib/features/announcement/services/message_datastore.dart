@@ -42,8 +42,8 @@ class MessagesDataStoreService {
       sortBy: [VocelMessage.CONTENT.ascending()],
     )
         .map((event) => event.items
-            .where((element) =>
-                element.createdAt!.getDateTimeInUtc().isBefore(DateTime.now()))
+            // .where((element) =>
+            //     element.createdAt!.getDateTimeInUtc().isBefore(DateTime.now()))
             .toList())
         .handleError(
       (error) {

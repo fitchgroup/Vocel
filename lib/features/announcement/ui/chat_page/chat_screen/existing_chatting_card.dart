@@ -6,16 +6,29 @@ import 'package:flutter/material.dart';
 class ExistingChattingCard extends StatelessWidget {
   final String otherPersonName;
   final String latestMessageContent;
-  final List<VocelMessage> messages;
   final String myInfo;
+  final DateTime time;
 
   const ExistingChattingCard({
     Key? key,
     required this.otherPersonName,
     required this.latestMessageContent,
-    required this.messages,
     required this.myInfo,
+    required this.time,
   }) : super(key: key);
+
+  String displayTime(DateTime time) {
+    if (time.year == DateTime.now().toLocal().year) {
+      if (time.month == DateTime.now().toLocal().month &&
+          time.day == DateTime.now().toLocal().day) {
+        return DateFormat('HH:mm').format(time);
+      } else {
+        return DateFormat("MM/dd").format(time);
+      }
+    } else {
+      return DateFormat("MMMM dd, yyyy").format(time);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -34,11 +47,7 @@ class ExistingChattingCard extends StatelessWidget {
         latestMessageContent,
         overflow: TextOverflow.ellipsis,
       ),
-      trailing: Text(
-        DateFormat('hh:mm a').format(
-            messages.last.updatedAt?.getDateTimeInUtc() ??
-                messages.last.createdAt!.getDateTimeInUtc()),
-      ),
+      trailing: Text(displayTime(time)),
       onTap: () {
         Navigator.push(
             context,

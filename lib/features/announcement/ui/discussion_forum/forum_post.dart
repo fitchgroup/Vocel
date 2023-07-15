@@ -148,26 +148,7 @@ class _ForumPostState extends State<ForumPost> {
                         padding: const EdgeInsets.all(3.0),
                         child: Text(
                           (() {
-                            if (widget.thisPost.updatedAt != null &&
-                                widget.thisPost.updatedAt is TemporalDateTime) {
-                              final updatedDate = (widget.thisPost.updatedAt
-                                      as TemporalDateTime)
-                                  .getDateTimeInUtc()
-                                  .toLocal();
-                              final now = DateTime.now().toUtc().toLocal();
-
-                              if (updatedDate.year == now.year &&
-                                  updatedDate.month == now.month &&
-                                  updatedDate.day == now.day) {
-                                // Format as hh:mm for today's date
-                                return DateFormat('HH: mm').format(updatedDate);
-                              } else {
-                                // Calculate the difference in days
-                                final difference =
-                                    now.difference(updatedDate).inDays;
-                                return '${difference.toString()} days ago';
-                              }
-                            } else if (widget.thisPost.createdAt != null &&
+                            if (widget.thisPost.createdAt != null &&
                                 widget.thisPost.createdAt is TemporalDateTime) {
                               final createdDate = (widget.thisPost.createdAt
                                       as TemporalDateTime)
@@ -184,6 +165,25 @@ class _ForumPostState extends State<ForumPost> {
                                 // Calculate the difference in days
                                 final difference =
                                     now.difference(createdDate).inDays;
+                                return '${difference.toString()} days ago';
+                              }
+                            } else if (widget.thisPost.updatedAt != null &&
+                                widget.thisPost.updatedAt is TemporalDateTime) {
+                              final updatedDate = (widget.thisPost.updatedAt
+                                      as TemporalDateTime)
+                                  .getDateTimeInUtc()
+                                  .toLocal();
+                              final now = DateTime.now().toUtc().toLocal();
+
+                              if (updatedDate.year == now.year &&
+                                  updatedDate.month == now.month &&
+                                  updatedDate.day == now.day) {
+                                // Format as hh:mm for today's date
+                                return DateFormat('HH: mm').format(updatedDate);
+                              } else {
+                                // Calculate the difference in days
+                                final difference =
+                                    now.difference(updatedDate).inDays;
                                 return '${difference.toString()} days ago';
                               }
                             } else {
