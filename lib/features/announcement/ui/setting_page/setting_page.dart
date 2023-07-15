@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:vocel/LocalizedButtonResolver.dart';
 import 'package:vocel/LocalizedMessageResolver.dart';
 import 'package:vocel/common/utils/colors.dart' as constants;
+import 'package:vocel/features/announcement/mutation/models_subscription.dart';
 import 'package:vocel/features/announcement/ui/setting_page/language_list.dart';
 
 class VocelSetting extends StatefulWidget {
@@ -13,7 +14,7 @@ class VocelSetting extends StatefulWidget {
   _VocelSetting createState() => _VocelSetting();
 }
 
-class _VocelSetting extends State<VocelSetting>{
+class _VocelSetting extends State<VocelSetting> {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -52,12 +53,14 @@ class _VocelSetting extends State<VocelSetting>{
               onTap: () async {
                 await Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const LanguageWidget()),
+                  MaterialPageRoute(
+                      builder: (context) => const LanguageWidget()),
                 );
               },
               child: Container(
                 margin: const EdgeInsets.fromLTRB(15, 15, 15, 0),
-                padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+                padding:
+                    const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(8),
@@ -78,7 +81,10 @@ class _VocelSetting extends State<VocelSetting>{
                         fontSize: 16,
                       ),
                     ),
-                    const Icon(Icons.arrow_forward_ios, size: 16,),
+                    const Icon(
+                      Icons.arrow_forward_ios,
+                      size: 16,
+                    ),
                   ],
                 ),
               ),
@@ -89,6 +95,14 @@ class _VocelSetting extends State<VocelSetting>{
                 // May enable apple account, facebook account... in the future
                 try {
                   await Amplify.Auth.signOut();
+                  subscriptionAnnouncement?.cancel();
+                  subscriptionPost?.cancel();
+                  subscriptionVocelEvent?.cancel();
+                  subscriptionVocelMessage?.cancel();
+                  subscriptionAnnouncement = null;
+                  subscriptionPost = null;
+                  subscriptionVocelEvent = null;
+                  subscriptionVocelMessage = null;
                 } on AuthException catch (e) {
                   if (kDebugMode) {
                     print(e.message);
@@ -97,7 +111,8 @@ class _VocelSetting extends State<VocelSetting>{
               },
               child: Container(
                 margin: const EdgeInsets.fromLTRB(15, 15, 15, 0),
-                padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+                padding:
+                    const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(8),
@@ -129,5 +144,3 @@ class _VocelSetting extends State<VocelSetting>{
     );
   }
 }
-
-
