@@ -40,15 +40,22 @@ class ModelProvider implements ModelProviderInterface {
   @override
   String version = "8aeb0ea4eb9fb491d9f3968dbd550e02";
   @override
-  List<ModelSchema> modelSchemas = [Announcement.schema, Comment.schema, CommentAnnouncement.schema, Post.schema, VocelEvent.schema, VocelMessage.schema];
+  List<ModelSchema> modelSchemas = [
+    Announcement.schema,
+    Comment.schema,
+    CommentAnnouncement.schema,
+    Post.schema,
+    VocelEvent.schema,
+    VocelMessage.schema
+  ];
   static final ModelProvider _instance = ModelProvider();
   @override
   List<ModelSchema> customTypeSchemas = [];
 
   static ModelProvider get instance => _instance;
-  
+
   ModelType getModelTypeByModelName(String modelName) {
-    switch(modelName) {
+    switch (modelName) {
       case "Announcement":
         return Announcement.classType;
       case "Comment":
@@ -62,7 +69,9 @@ class ModelProvider implements ModelProviderInterface {
       case "VocelMessage":
         return VocelMessage.classType;
       default:
-        throw Exception("Failed to find model in model provider for model name: " + modelName);
+        throw Exception(
+            "Failed to find model in model provider for model name: " +
+                modelName);
     }
   }
 }

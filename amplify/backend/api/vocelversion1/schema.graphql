@@ -100,7 +100,12 @@ enum ProfileRole {
 #    receiver: String! @auth(rules: [{ allow: owner, operations: [read, update, delete] }, { allow: public, operations: [read] }])
 #}
 
-type VocelMessage @model @auth(rules: [{ allow: owner }]) {
+type VocelMessage @model @auth(rules: [
+    { allow: owner, operations: [update, read, create, delete] },
+    { allow: groups, groups: ["Staffversion1"], operations: [create, update, delete, read] },
+    { allow: groups, groups: ["Bellversion1", "Eetcversion1", "Vcpaversion1"], operations: [create, delete, read, update] },
+    { allow: public, operations: [read] }
+]) {
     id: ID!
     content: String!
     messageImageUrl: String

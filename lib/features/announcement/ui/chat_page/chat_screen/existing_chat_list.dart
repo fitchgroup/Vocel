@@ -63,18 +63,14 @@ class ExistingChatList extends HookConsumerWidget {
       ///  The .. allows us to call sort directly on the newly created list, without needing to create an intermediate variable.
       ..sort((a, b) {
         DateTime? lastMessageTimeA = messageGroups[a]
-            ?.map((m) =>
-                m.updatedAt?.getDateTimeInUtc() ??
-                m.createdAt?.getDateTimeInUtc())
+            ?.map((m) => m.createdAt!.getDateTimeInUtc())
             .reduce((value, element) =>
-                value?.isAfter(element!) == true ? value : element);
+                value.isAfter(element) == true ? value : element);
 
         DateTime? lastMessageTimeB = messageGroups[b]
-            ?.map((m) =>
-                m.updatedAt?.getDateTimeInUtc() ??
-                m.createdAt?.getDateTimeInUtc())
+            ?.map((m) => m.createdAt!.getDateTimeInUtc())
             .reduce((value, element) =>
-                value?.isAfter(element!) == true ? value : element);
+                value.isAfter(element) == true ? value : element);
 
         return -lastMessageTimeA!.compareTo(lastMessageTimeB!);
       });
@@ -87,12 +83,12 @@ class ExistingChatList extends HookConsumerWidget {
         final key = sortedKeys[index];
         final messageGroup = messageGroups[key]!;
         final otherPerson = key;
-        final latestMessage = messageGroup.reduce((curr, next) =>
-            (curr.updatedAt ?? curr.createdAt)!.getDateTimeInUtc().isAfter(
-                    next.updatedAt?.getDateTimeInUtc() ??
-                        next.createdAt!.getDateTimeInUtc())
-                ? curr
-                : next);
+        final latestMessage = messageGroup.reduce((curr, next) => curr
+                .createdAt!
+                .getDateTimeInUtc()
+                .isAfter(next.createdAt!.getDateTimeInUtc())
+            ? curr
+            : next);
         bool visibilityCheck =
             // searching a specific person
             /// TODO: searching for specific chat, you may want to loop for every history
@@ -100,11 +96,12 @@ class ExistingChatList extends HookConsumerWidget {
         return Visibility(
           visible: visibilityCheck,
           child: ExistingChattingCard(
-            myInfo: myInfo,
-            otherPersonName: otherPerson,
-            latestMessageContent: latestMessage.content,
-            messages: messageGroup,
-          ),
+              myInfo: myInfo,
+              otherPersonName: otherPerson,
+              latestMessageContent: latestMessage.content,
+              time: latestMessage.createdAt == null
+                  ? latestMessage.updatedAt!.getDateTimeInUtc().toLocal()
+                  : latestMessage.createdAt!.getDateTimeInUtc().toLocal()),
         );
       },
     );
