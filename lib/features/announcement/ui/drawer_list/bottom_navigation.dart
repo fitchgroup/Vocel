@@ -335,6 +335,28 @@ class _AnnouncementsListPageState extends State<AnnouncementsListPage> {
     }
   }
 
+  String displayTitle(int number) {
+    String titleString;
+    switch (number) {
+      case 0:
+        titleString = "Vocel";
+        break;
+      case 1:
+        titleString = LocalizedButtonResolver().chats(context);
+        break;
+      case 2:
+        titleString = LocalizedButtonResolver().people(context);
+        break;
+      case 3:
+        titleString = LocalizedButtonResolver().calendar(context);
+        break;
+      default:
+        titleString = LocalizedButtonResolver().home(context);
+        break;
+    }
+    return titleString;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -353,7 +375,7 @@ class _AnnouncementsListPageState extends State<AnnouncementsListPage> {
           },
         ),
         centerTitle: true,
-        title: Text(AppLocalizations.of(context)!.vocelMobileApp),
+        title: Text(displayTitle(selectPageNumber)),
         backgroundColor: const Color(constants.primaryColorDark),
       ),
       body: widget.isAmplifySuccessfullyConfigured
@@ -366,10 +388,10 @@ class _AnnouncementsListPageState extends State<AnnouncementsListPage> {
       bottomNavigationBar: BottomNavigationBar(
         items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-              icon: const Icon(Icons.announcement),
+              icon: const Icon(Icons.home),
               label: const LocalizedButtonResolver().home(context)),
           BottomNavigationBarItem(
-              icon: const Icon(Icons.chat),
+              icon: const Icon(Icons.chat_rounded),
               label: const LocalizedButtonResolver().chats(context)),
           BottomNavigationBarItem(
               icon: const Icon(Icons.people),
