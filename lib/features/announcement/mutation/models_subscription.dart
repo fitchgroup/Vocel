@@ -1,8 +1,8 @@
 import 'dart:async';
 import 'package:amplify_api/amplify_api.dart';
 import 'package:amplify_flutter/amplify_flutter.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:vocel/common/utils/manage_user.dart';
 import 'package:vocel/common/utils/mutation_util.dart';
 import 'package:vocel/common/utils/notification_util.dart';
 import 'package:vocel/features/announcement/services/announcement_datastore.dart';
@@ -17,7 +17,7 @@ StreamSubscription<GraphQLResponse<Announcement>>? subscriptionAnnouncement;
 StreamSubscription<GraphQLResponse<Post>>? subscriptionPost;
 // StreamSubscription<GraphQLResponse<Comment>>? subscriptionComment;
 StreamSubscription<GraphQLResponse<VocelEvent>>? subscriptionVocelEvent;
-// StreamSubscription<GraphQLResponse<VocelMessage>>? subscriptionVocelMessage;
+StreamSubscription<GraphQLResponse<VocelMessage>>? subscriptionVocelMessage;
 
 void subscribeAnnouncement() {
   TripsDataStoreService announcementDataStoreService = TripsDataStoreService();
@@ -288,55 +288,70 @@ void subscribeVocelEvent() {
   );
 }
 
-// void subscribeVocelMessage() {
-//   MessagesDataStoreService vocelMessageDataStoreService =
-//       MessagesDataStoreService();
-//   final subscriptionRequest =
-//       ModelSubscriptions.onCreate(VocelMessage.classType);
-//   final subscriptionRequest2 =
-//       ModelSubscriptions.onDelete(VocelMessage.classType);
-//   final Stream<GraphQLResponse<VocelMessage>> operation = Amplify.API.subscribe(
-//     subscriptionRequest,
-//     onEstablished: () => mutationDebuggingPrint(
-//         'subscriptionVocelMessage on create established'),
-//   );
-//   final Stream<GraphQLResponse<VocelMessage>> operation2 =
-//       Amplify.API.subscribe(
-//     subscriptionRequest2,
-//     onEstablished: () => mutationDebuggingPrint(
-//         'subscriptionVocelMessage on delete established'),
-//   );
-//   subscriptionVocelMessage = operation.listen(
-//     (event) async {
-//       mutationDebuggingPrint(
-//           'subscriptionVocelMessage event data received: ${event.data}');
-//       try {
-//         if (event.data != null) {
-//           await vocelMessageDataStoreService.addMessage(event.data!);
-//         }
-//       } catch (e) {
-//         mutationDebuggingPrint('Error while adding vocel message: $e');
-//       }
-//     },
-//     onError: (Object e) =>
-//         mutationDebuggingPrint('Error in subscriptionVocelMessage stream: $e'),
-//   );
-//   subscriptionVocelMessage = operation2.listen(
-//     (event) async {
-//       mutationDebuggingPrint(
-//           'subscriptionVocelMessage event data received: ${event.data}');
-//       try {
-//         if (event.data != null) {
-//           await vocelMessageDataStoreService.deleteMessage(event.data!);
-//         }
-//       } catch (e) {
-//         mutationDebuggingPrint('Error while deleting vocel message: $e');
-//       }
-//     },
-//     onError: (Object e) =>
-//         mutationDebuggingPrint('Error in subscriptionVocelMessage stream: $e'),
-//   );
-// }
+void subscribeVocelMessage(String? userEmail) {
+  MessagesDataStoreService vocelMessageDataStoreService =
+      MessagesDataStoreService();
+  final subscriptionRequest =
+      ModelSubscriptions.onCreate(VocelMessage.classType);
+  final subscriptionRequest2 =
+      ModelSubscriptions.onDelete(VocelMessage.classType);
+  final Stream<GraphQLResponse<VocelMessage>> operation = Amplify.API.subscribe(
+    subscriptionRequest,
+    onEstablished: () => mutationDebuggingPrint(
+        'subscriptionVocelMessage on create established'),
+  );
+  final Stream<GraphQLResponse<VocelMessage>> operation2 =
+      Amplify.API.subscribe(
+    subscriptionRequest2,
+    onEstablished: () => mutationDebuggingPrint(
+        'subscriptionVocelMessage on delete established'),
+  );
+  subscriptionVocelMessage = operation.listen(
+    (event) async {
+      mutationDebuggingPrint(
+          'subscriptionVocelMessage event data received: ${event.data}, now the email is: $userEmail');
+      try {
+        if (event.data != null) {
+          await vocelMessageDataStoreService.addMessage(event.data!);
+          if (userEmail == null) {
+            Map<String, String> stringMap = await getUserAttributes();
+            userEmail = stringMap["email"];
+          }
+          if (event.data!.receiver == userEmail) {
+            NotificationSpecificDateTime result = NotificationSpecificDateTime(
+              specificDateTime:
+                  event.data!.createdAt!.getDateTimeInUtc().toLocal(),
+              timeOfDay: TimeOfDay(
+                hour: TimeOfDay.now().hour,
+                minute: TimeOfDay.now().minute,
+              ),
+            );
+            scheduleSpecificMessageNotification(result, event.data!);
+          }
+        }
+      } catch (e) {
+        mutationDebuggingPrint('Error while adding vocel message: $e');
+      }
+    },
+    onError: (Object e) =>
+        mutationDebuggingPrint('Error in subscriptionVocelMessage stream: $e'),
+  );
+  subscriptionVocelMessage = operation2.listen(
+    (event) async {
+      mutationDebuggingPrint(
+          'subscriptionVocelMessage event data received: ${event.data}');
+      try {
+        if (event.data != null) {
+          await vocelMessageDataStoreService.deleteMessage(event.data!);
+        }
+      } catch (e) {
+        mutationDebuggingPrint('Error while deleting vocel message: $e');
+      }
+    },
+    onError: (Object e) =>
+        mutationDebuggingPrint('Error in subscriptionVocelMessage stream: $e'),
+  );
+}
 
 // Future<void> subscribeModel() async {
 //   subscribeAnnouncement();

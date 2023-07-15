@@ -1,11 +1,10 @@
-import 'dart:io';
-
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:vocel/LocalizedButtonResolver.dart';
 import 'package:vocel/common/utils/colors.dart' as constants;
 import 'package:vocel/common/utils/manage_user.dart';
+import 'package:vocel/features/announcement/mutation/models_subscription.dart';
 import 'package:vocel/features/announcement/ui/calendar_page/calendar_hook.dart';
 import 'package:vocel/features/announcement/ui/discussion_forum/forum_page.dart';
 import 'package:vocel/features/announcement/ui/drawer_list/navigation_drawer.dart';
@@ -13,16 +12,17 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:vocel/features/announcement/ui/chat_page/chat_screen/chat_list.dart';
 import 'package:vocel/features/announcement/ui/home_page/home_page.dart';
 import 'package:vocel/features/announcement/ui/people_page/group_people_list.dart';
+import 'package:amplify_api/amplify_api.dart';
+
+import 'package:amplify_flutter/amplify_flutter.dart';
 
 class AnnouncementsListPage extends StatefulWidget {
   AnnouncementsListPage({
     super.key,
-    // required this.adminEdit,
-    // required this.userEmail,
+    required this.isAmplifySuccessfullyConfigured,
   });
 
-  // final adminEdit;
-  // final userEmail;
+  final isAmplifySuccessfullyConfigured;
 
   @override
   State<AnnouncementsListPage> createState() => _AnnouncementsListPageState(
@@ -39,6 +39,7 @@ class _AnnouncementsListPageState extends State<AnnouncementsListPage> {
   final Future<void> Function(String) removeUserGroup;
   final Future<Map<String, String>> Function() getUserAttributes;
   String? myName;
+  SubscriptionStatus prevSubscriptionStatus = SubscriptionStatus.disconnected;
 
   _AnnouncementsListPageState(this.fetchGroups, this.addUserGroup,
       this.removeUserGroup, this.getUserAttributes);
@@ -136,6 +137,16 @@ class _AnnouncementsListPageState extends State<AnnouncementsListPage> {
   void initState() {
     super.initState();
     initialize();
+    // Amplify.Hub.listen(
+    //   HubChannel.Api,
+    //   (ApiHubEvent event) {
+    //     if (event is SubscriptionHubEvent) {
+    //       if (prevSubscriptionStatus == SubscriptionStatus.connecting &&
+    //           event.status == SubscriptionStatus.connected) {}
+    //       prevSubscriptionStatus = event.status;
+    //     }
+    //   },
+    // );
     AwesomeNotifications().isNotificationAllowed().then((isAllowed) {
       if (!isAllowed) {
         showDialog(
@@ -150,9 +161,13 @@ class _AnnouncementsListPageState extends State<AnnouncementsListPage> {
                       ),
                       SizedBox(width: 8),
                       // Add some spacing between the icon and text
-                      Text(
-                        "Vocel app would like to send you notifications",
-                        style: TextStyle(fontSize: 16),
+                      Wrap(
+                        children: [
+                          Text(
+                            "Vocel app would like to send you notifications",
+                            style: TextStyle(fontSize: 16),
+                          ),
+                        ],
                       ),
                     ],
                   ),
@@ -205,8 +220,26 @@ class _AnnouncementsListPageState extends State<AnnouncementsListPage> {
     super.dispose();
   }
 
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // This condition ensures we only run our async operations once.
+    if (subscriptionVocelEvent == null) {
+      subscribeVocelEvent();
+    }
+    if (subscriptionPost == null) {
+      subscribePost();
+    }
+    if (subscriptionAnnouncement == null) {
+      subscribeAnnouncement();
+    }
+  }
+
   Future<void> initialize() async {
     await getUserStatus();
+    if (subscriptionVocelMessage == null) {
+      subscribeVocelMessage(userEmail!);
+    }
     setState(() {
       loading = false;
       if (adminEdit == true) {
@@ -323,7 +356,13 @@ class _AnnouncementsListPageState extends State<AnnouncementsListPage> {
         title: Text(AppLocalizations.of(context)!.vocelMobileApp),
         backgroundColor: const Color(constants.primaryColorDark),
       ),
-      body: selectPage(selectPageNumber),
+      body: widget.isAmplifySuccessfullyConfigured
+          ? selectPage(selectPageNumber)
+          : const Center(
+              child: Text(
+              'Tried to reconfigure Amplify; '
+              'this can occur when your app restarts on Android.',
+            )),
       bottomNavigationBar: BottomNavigationBar(
         items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(

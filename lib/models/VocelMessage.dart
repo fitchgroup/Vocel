@@ -21,7 +21,6 @@
 
 import 'package:amplify_core/amplify_core.dart';
 import 'package:flutter/foundation.dart';
-import 'package:intl/intl.dart';
 
 /** This is an auto generated class representing the VocelMessage type in your schema. */
 @immutable
@@ -268,11 +267,35 @@ class VocelMessage extends Model {
           identityClaim: "cognito:username",
           provider: AuthRuleProvider.USERPOOLS,
           operations: [
+            ModelOperation.UPDATE,
+            ModelOperation.READ,
+            ModelOperation.CREATE,
+            ModelOperation.DELETE
+          ]),
+      AuthRule(
+          authStrategy: AuthStrategy.GROUPS,
+          groupClaim: "cognito:groups",
+          groups: ["Staffversion1"],
+          provider: AuthRuleProvider.USERPOOLS,
+          operations: [
             ModelOperation.CREATE,
             ModelOperation.UPDATE,
             ModelOperation.DELETE,
             ModelOperation.READ
-          ])
+          ]),
+      AuthRule(
+          authStrategy: AuthStrategy.GROUPS,
+          groupClaim: "cognito:groups",
+          groups: ["Bellversion1", "Eetcversion1", "Vcpaversion1"],
+          provider: AuthRuleProvider.USERPOOLS,
+          operations: [
+            ModelOperation.CREATE,
+            ModelOperation.DELETE,
+            ModelOperation.READ,
+            ModelOperation.UPDATE
+          ]),
+      AuthRule(
+          authStrategy: AuthStrategy.PUBLIC, operations: [ModelOperation.READ])
     ];
 
     modelSchemaDefinition.addField(ModelFieldDefinition.id());
