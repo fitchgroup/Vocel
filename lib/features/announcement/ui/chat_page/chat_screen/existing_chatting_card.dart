@@ -17,6 +17,19 @@ class ExistingChattingCard extends StatelessWidget {
     required this.time,
   }) : super(key: key);
 
+  String displayTime(DateTime time) {
+    if (time.year == DateTime.now().toLocal().year) {
+      if (time.month == DateTime.now().toLocal().month &&
+          time.day == DateTime.now().toLocal().day) {
+        return DateFormat('HH:mm').format(time);
+      } else {
+        return DateFormat("MM/dd").format(time);
+      }
+    } else {
+      return DateFormat("MMMM dd, yyyy").format(time);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return ListTile(
@@ -34,9 +47,7 @@ class ExistingChattingCard extends StatelessWidget {
         latestMessageContent,
         overflow: TextOverflow.ellipsis,
       ),
-      trailing: Text(
-        DateFormat('hh:mm a').format(time),
-      ),
+      trailing: Text(displayTime(time)),
       onTap: () {
         Navigator.push(
             context,
