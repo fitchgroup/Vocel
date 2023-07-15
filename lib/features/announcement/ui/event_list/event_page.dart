@@ -109,7 +109,7 @@ class EventPage extends HookConsumerWidget {
       if (a.startTime.compareTo(b.startTime) == 0) {
         return a.eventTitle.compareTo(b.eventTitle);
       }
-      return (a.startTime.compareTo(b.startTime));
+      return -1 * (a.startTime.compareTo(b.startTime));
     });
     return Center(
       child: ListView.builder(
