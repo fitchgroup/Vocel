@@ -26,7 +26,7 @@ Future<void> deletePost(Post postDelete) async {
   mutationDebuggingPrint('Response: $response');
 }
 
-Future<void> updatePost(Post postUpdate) async {
+Future<void> mutationUpdatePost(Post postUpdate) async {
   final request = ModelMutations.update(postUpdate);
   final response = await Amplify.API.mutate(request: request).response;
   mutationDebuggingPrint('Response: $response');

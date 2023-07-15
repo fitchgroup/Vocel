@@ -15,42 +15,42 @@
     ],
     "conflictResolution": {
       "defaultResolutionStrategy": {
-        "type": "OPTIMISTIC_CONCURRENCY"
+        "type": "AUTOMERGE"
       },
       "perModelResolutionStrategy": [
         {
           "resolutionStrategy": {
-            "type": "OPTIMISTIC_CONCURRENCY"
+            "type": "AUTOMERGE"
           },
           "entityName": "Announcement"
         },
         {
           "resolutionStrategy": {
-            "type": "OPTIMISTIC_CONCURRENCY"
+            "type": "AUTOMERGE"
           },
           "entityName": "CommentAnnouncement"
         },
         {
           "resolutionStrategy": {
-            "type": "OPTIMISTIC_CONCURRENCY"
+            "type": "AUTOMERGE"
           },
           "entityName": "VocelEvent"
         },
         {
           "resolutionStrategy": {
-            "type": "OPTIMISTIC_CONCURRENCY"
+            "type": "AUTOMERGE"
           },
           "entityName": "VocelMessage"
         },
         {
           "resolutionStrategy": {
-            "type": "OPTIMISTIC_CONCURRENCY"
+            "type": "AUTOMERGE"
           },
           "entityName": "Post"
         },
         {
           "resolutionStrategy": {
-            "type": "OPTIMISTIC_CONCURRENCY"
+            "type": "AUTOMERGE"
           },
           "entityName": "Comment"
         }

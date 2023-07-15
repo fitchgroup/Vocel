@@ -125,7 +125,7 @@ type Post @model @auth(rules: [
     postAuthor: String! @auth(rules: [{ allow: owner, operations: [create, read, update, delete] }, { allow: public, operations: [read] }, { allow: groups, groups: ["Staffversion1"], operations: [create, update, delete, read] }, { allow: groups, groups: ["Bellversion1", "Eetcversion1", "Vcpaversion1"], operations: [create, delete, read] }])
     postContent: String! @auth(rules: [{ allow: owner, operations: [create, read, update, delete] }, { allow: public, operations: [read] }, { allow: groups, groups: ["Staffversion1"], operations: [create, update, delete, read] }, { allow: groups, groups: ["Bellversion1", "Eetcversion1", "Vcpaversion1"], operations: [create, delete, read] }])
     postGroup: ProfileRole!
-    likes: [String] @auth(rules: [{ allow: public, operations: [read, update] }, { allow: groups, groups: ["Staffversion1"], operations: [create, update, delete, read] }, { allow: groups, groups: ["Bellversion1", "Eetcversion1", "Vcpaversion1"], operations: [create, delete, read] }])
+    likes: [String] @auth(rules: [{ allow: public, operations: [read, update] }, { allow: groups, groups: ["Staffversion1"], operations: [create, update, delete, read] }, { allow: groups, groups: ["Bellversion1", "Eetcversion1", "Vcpaversion1"], operations: [create, delete, read, update] }])
     comments: [Comment] @hasMany
 }
 

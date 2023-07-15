@@ -1,6 +1,7 @@
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:vocel/features/announcement/mutation/post_mutation.dart';
 import 'package:vocel/models/Post.dart';
 import 'package:vocel/models/Comment.dart';
 
@@ -126,7 +127,7 @@ class PostsDataStoreService {
       final newPost = oldPost.copyWith(likes: assign);
 
       await Amplify.DataStore.save(newPost);
-      await updatePost(newPost);
+      await mutationUpdatePost(newPost);
     } on Exception catch (error) {
       debugPrint(error.toString());
     }
