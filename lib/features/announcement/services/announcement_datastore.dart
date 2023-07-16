@@ -1,6 +1,7 @@
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:vocel/features/announcement/mutation/announcement_mutation.dart';
 import 'package:vocel/models/Announcement.dart';
 import 'package:vocel/models/CommentAnnouncement.dart';
 
@@ -105,6 +106,7 @@ class TripsDataStoreService {
 
       final newTrip = oldTrip.copyWith(isPinned: assign);
 
+      await updateAnnouncement(newTrip);
       await Amplify.DataStore.save(newTrip);
     } on Exception catch (error) {
       debugPrint(error.toString());
@@ -126,6 +128,7 @@ class TripsDataStoreService {
       final newTrip = oldTrip.copyWith(isCompleted: assign);
 
       await Amplify.DataStore.save(newTrip);
+      await updateAnnouncement(newTrip);
     } on Exception catch (error) {
       debugPrint(error.toString());
     }
@@ -152,8 +155,8 @@ class TripsDataStoreService {
           ? List<String>.from(oldAnnouncement.likes!)
           : [];
 
-      if (oldAnnouncement.likes != null) {
-        if (oldAnnouncement.likes!.contains(editPerson)) {
+      if (assign != []) {
+        if (assign.contains(editPerson)) {
           assign.remove(editPerson);
         } else {
           assign.add(editPerson);
@@ -165,6 +168,7 @@ class TripsDataStoreService {
       final newAnnouncement = oldAnnouncement.copyWith(likes: assign);
 
       await Amplify.DataStore.save(newAnnouncement);
+      await updateAnnouncement(newAnnouncement);
     } on Exception catch (error) {
       debugPrint(error.toString());
     }

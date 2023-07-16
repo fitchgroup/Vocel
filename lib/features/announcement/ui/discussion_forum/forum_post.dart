@@ -82,8 +82,8 @@ class _ForumPostState extends State<ForumPost> {
         : [];
   }
 
-  void changingLikes() async {
-    final bool newLiked = !liked.value;
+  Future<void> changingLikes() async {
+    bool newLiked = !liked.value;
     liked.value = newLiked;
     if (newLiked) {
       likeList.add(widget.currentPerson);
@@ -98,6 +98,14 @@ class _ForumPostState extends State<ForumPost> {
           ? List<String>.from((widget.thisPost as Post).comments!)
           : [];
     });
+  }
+
+  Future<void> handleLike() async {
+    // First do the async operation
+    await changingLikes();
+    await widget.callbackLikes(widget.thisPost, widget.currentPerson);
+    // Then update the state
+    setState(() {});
   }
 
   @override
@@ -148,26 +156,7 @@ class _ForumPostState extends State<ForumPost> {
                         padding: const EdgeInsets.all(3.0),
                         child: Text(
                           (() {
-                            if (widget.thisPost.updatedAt != null &&
-                                widget.thisPost.updatedAt is TemporalDateTime) {
-                              final updatedDate = (widget.thisPost.updatedAt
-                                      as TemporalDateTime)
-                                  .getDateTimeInUtc()
-                                  .toLocal();
-                              final now = DateTime.now().toUtc().toLocal();
-
-                              if (updatedDate.year == now.year &&
-                                  updatedDate.month == now.month &&
-                                  updatedDate.day == now.day) {
-                                // Format as hh:mm for today's date
-                                return DateFormat('HH: mm').format(updatedDate);
-                              } else {
-                                // Calculate the difference in days
-                                final difference =
-                                    now.difference(updatedDate).inDays;
-                                return '${difference.toString()} days ago';
-                              }
-                            } else if (widget.thisPost.createdAt != null &&
+                            if (widget.thisPost.createdAt != null &&
                                 widget.thisPost.createdAt is TemporalDateTime) {
                               final createdDate = (widget.thisPost.createdAt
                                       as TemporalDateTime)
@@ -184,6 +173,25 @@ class _ForumPostState extends State<ForumPost> {
                                 // Calculate the difference in days
                                 final difference =
                                     now.difference(createdDate).inDays;
+                                return '${difference.toString()} days ago';
+                              }
+                            } else if (widget.thisPost.updatedAt != null &&
+                                widget.thisPost.updatedAt is TemporalDateTime) {
+                              final updatedDate = (widget.thisPost.updatedAt
+                                      as TemporalDateTime)
+                                  .getDateTimeInUtc()
+                                  .toLocal();
+                              final now = DateTime.now().toUtc().toLocal();
+
+                              if (updatedDate.year == now.year &&
+                                  updatedDate.month == now.month &&
+                                  updatedDate.day == now.day) {
+                                // Format as hh:mm for today's date
+                                return DateFormat('HH: mm').format(updatedDate);
+                              } else {
+                                // Calculate the difference in days
+                                final difference =
+                                    now.difference(updatedDate).inDays;
                                 return '${difference.toString()} days ago';
                               }
                             } else {
@@ -221,11 +229,7 @@ class _ForumPostState extends State<ForumPost> {
                   child: Row(
                     children: [
                       IconButton(
-                          onPressed: () async {
-                            changingLikes();
-                            await widget.callbackLikes(
-                                widget.thisPost, widget.currentPerson);
-                          },
+                          onPressed: handleLike,
                           icon: ValueListenableBuilder<bool>(
                             valueListenable: liked,
                             builder: (BuildContext context, bool value,

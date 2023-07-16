@@ -26,6 +26,12 @@ Future<void> deletePost(Post postDelete) async {
   mutationDebuggingPrint('Response: $response');
 }
 
+Future<void> mutationUpdatePost(Post postUpdate) async {
+  final request = ModelMutations.update(postUpdate);
+  final response = await Amplify.API.mutate(request: request).response;
+  mutationDebuggingPrint('Response: $response');
+}
+
 /// FETCH DATA
 
 Future<Post?> queryPostItem(Post queriedPost) async {

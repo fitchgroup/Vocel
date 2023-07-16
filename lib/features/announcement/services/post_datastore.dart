@@ -1,6 +1,7 @@
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:vocel/features/announcement/mutation/post_mutation.dart';
 import 'package:vocel/models/Post.dart';
 import 'package:vocel/models/Comment.dart';
 
@@ -113,8 +114,8 @@ class PostsDataStoreService {
       List<String> assign =
           oldPost.likes != null ? List<String>.from(oldPost.likes!) : [];
 
-      if (oldPost.likes != null) {
-        if (oldPost.likes!.contains(editPerson)) {
+      if (assign != []) {
+        if (assign.contains(editPerson)) {
           assign.remove(editPerson);
         } else {
           assign.add(editPerson);
@@ -126,6 +127,7 @@ class PostsDataStoreService {
       final newPost = oldPost.copyWith(likes: assign);
 
       await Amplify.DataStore.save(newPost);
+      await mutationUpdatePost(newPost);
     } on Exception catch (error) {
       debugPrint(error.toString());
     }
