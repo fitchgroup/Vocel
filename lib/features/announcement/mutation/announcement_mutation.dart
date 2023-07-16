@@ -36,7 +36,7 @@ Future<void> deleteAnnouncement(Announcement announcementDelete) async {
 Future<void> updateAnnouncement(Announcement announcementUpdate) async {
   final request = ModelMutations.update(announcementUpdate);
   final response = await Amplify.API.mutate(request: request).response;
-  mutationDebuggingPrint('Response: $response');
+  mutationDebuggingPrint('Update Response: $response');
 }
 
 /// FETCH DATA

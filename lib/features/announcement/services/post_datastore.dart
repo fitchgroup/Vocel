@@ -114,8 +114,8 @@ class PostsDataStoreService {
       List<String> assign =
           oldPost.likes != null ? List<String>.from(oldPost.likes!) : [];
 
-      if (oldPost.likes != null) {
-        if (oldPost.likes!.contains(editPerson)) {
+      if (assign != []) {
+        if (assign.contains(editPerson)) {
           assign.remove(editPerson);
         } else {
           assign.add(editPerson);

@@ -106,6 +106,7 @@ class TripsDataStoreService {
 
       final newTrip = oldTrip.copyWith(isPinned: assign);
 
+      await updateAnnouncement(newTrip);
       await Amplify.DataStore.save(newTrip);
     } on Exception catch (error) {
       debugPrint(error.toString());
@@ -127,6 +128,7 @@ class TripsDataStoreService {
       final newTrip = oldTrip.copyWith(isCompleted: assign);
 
       await Amplify.DataStore.save(newTrip);
+      await updateAnnouncement(newTrip);
     } on Exception catch (error) {
       debugPrint(error.toString());
     }
@@ -153,8 +155,8 @@ class TripsDataStoreService {
           ? List<String>.from(oldAnnouncement.likes!)
           : [];
 
-      if (oldAnnouncement.likes != null) {
-        if (oldAnnouncement.likes!.contains(editPerson)) {
+      if (assign != []) {
+        if (assign.contains(editPerson)) {
           assign.remove(editPerson);
         } else {
           assign.add(editPerson);

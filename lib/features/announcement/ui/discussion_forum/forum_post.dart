@@ -82,8 +82,8 @@ class _ForumPostState extends State<ForumPost> {
         : [];
   }
 
-  void changingLikes() async {
-    final bool newLiked = !liked.value;
+  Future<void> changingLikes() async {
+    bool newLiked = !liked.value;
     liked.value = newLiked;
     if (newLiked) {
       likeList.add(widget.currentPerson);
@@ -98,6 +98,14 @@ class _ForumPostState extends State<ForumPost> {
           ? List<String>.from((widget.thisPost as Post).comments!)
           : [];
     });
+  }
+
+  Future<void> handleLike() async {
+    // First do the async operation
+    await changingLikes();
+    await widget.callbackLikes(widget.thisPost, widget.currentPerson);
+    // Then update the state
+    setState(() {});
   }
 
   @override
@@ -221,11 +229,7 @@ class _ForumPostState extends State<ForumPost> {
                   child: Row(
                     children: [
                       IconButton(
-                          onPressed: () async {
-                            changingLikes();
-                            await widget.callbackLikes(
-                                widget.thisPost, widget.currentPerson);
-                          },
+                          onPressed: handleLike,
                           icon: ValueListenableBuilder<bool>(
                             valueListenable: liked,
                             builder: (BuildContext context, bool value,
