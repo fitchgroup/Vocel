@@ -67,14 +67,15 @@ class _AnnouncementCardState extends State<AnnouncementCard> {
         : [];
   }
 
-  void changingLikes() async {
-    final bool newLiked = !liked.value;
+  Future<void> changingLikes() async {
+    bool newLiked = !liked.value;
     liked.value = newLiked;
     if (newLiked) {
       likeList.add(widget.currentPerson);
     } else {
       likeList.remove(widget.currentPerson);
     }
+    // Add your async operations here and await them
   }
 
   void changingComments() {
@@ -83,6 +84,14 @@ class _AnnouncementCardState extends State<AnnouncementCard> {
           ? List<String>.from(
               (widget.thisAnnouncement as Announcement).comments!)
           : [];
+    });
+  }
+
+  Future<void> handleLike() async {
+    await changingLikes();
+    await widget.callbackLikes(widget.thisAnnouncement, widget.currentPerson);
+    setState(() {
+      showing = false;
     });
   }
 
@@ -222,15 +231,7 @@ class _AnnouncementCardState extends State<AnnouncementCard> {
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
                           IconButton(
-                            onPressed: () {
-                              setState(() async {
-                                changingLikes();
-                                await widget.callbackLikes(
-                                    widget.thisAnnouncement,
-                                    widget.currentPerson);
-                                showing = false;
-                              });
-                            },
+                            onPressed: handleLike,
                             icon: ValueListenableBuilder<bool>(
                               valueListenable: liked,
                               builder: (BuildContext context, bool value,
@@ -285,61 +286,65 @@ class _AnnouncementCardState extends State<AnnouncementCard> {
           Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              Wrap(
-                alignment: WrapAlignment.start,
-                children: [
-                  const SizedBox(height: 16),
-                  RichText(
-                    text: TextSpan(
-                      children: [
-                        const TextSpan(
-                          text: 'Liked by ',
-                          style: TextStyle(
-                            color: Colors.black54,
-                            fontWeight: FontWeight.normal,
-                            fontSize: 16,
-                          ),
-                        ),
-                        if (likeList.length <= 3)
-                          TextSpan(
-                            text: likeList.join(", "),
-                            style: const TextStyle(
-                              color: Colors.black87,
-                              fontWeight: FontWeight.w500,
-                              fontSize: 16,
-                            ),
-                          ),
-                        if (likeList.length > 3)
-                          TextSpan(
-                            text: likeList.sublist(0, 3).join(", "),
-                            style: const TextStyle(
-                              color: Colors.black87,
-                              fontWeight: FontWeight.w500,
-                              fontSize: 16,
-                            ),
-                          ),
-                        if (likeList.length > 3)
+              Expanded(
+                // Expanded added here
+                child: Wrap(
+                  alignment: WrapAlignment.start,
+                  children: [
+                    const SizedBox(height: 16),
+                    Text.rich(
+                      // Use Text.rich instead of RichText
+                      TextSpan(
+                        children: [
                           const TextSpan(
-                            text: ' and',
+                            text: 'Liked by ',
                             style: TextStyle(
                               color: Colors.black54,
                               fontWeight: FontWeight.normal,
                               fontSize: 16,
                             ),
                           ),
-                        if (likeList.length > 3)
-                          TextSpan(
-                            text: ' ${likeList.length - 3} others',
-                            style: const TextStyle(
-                              color: Colors.black87,
-                              fontWeight: FontWeight.w500,
-                              fontSize: 16,
+                          if (likeList.length <= 3)
+                            TextSpan(
+                              text: likeList.join(", "),
+                              style: const TextStyle(
+                                color: Colors.black87,
+                                fontWeight: FontWeight.w500,
+                                fontSize: 16,
+                              ),
                             ),
-                          )
-                      ],
+                          if (likeList.length > 3)
+                            TextSpan(
+                              text: likeList.sublist(0, 3).join(", "),
+                              style: const TextStyle(
+                                color: Colors.black87,
+                                fontWeight: FontWeight.w500,
+                                fontSize: 16,
+                              ),
+                            ),
+                          if (likeList.length > 3)
+                            const TextSpan(
+                              text: ' and',
+                              style: TextStyle(
+                                color: Colors.black54,
+                                fontWeight: FontWeight.normal,
+                                fontSize: 16,
+                              ),
+                            ),
+                          if (likeList.length > 3)
+                            TextSpan(
+                              text: ' ${likeList.length - 3} others',
+                              style: const TextStyle(
+                                color: Colors.black87,
+                                fontWeight: FontWeight.w500,
+                                fontSize: 16,
+                              ),
+                            )
+                        ],
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ],
           ),

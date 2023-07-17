@@ -275,6 +275,38 @@ Future<void> scheduleSpecificVocelEventNotification(
   );
 }
 
+Future<void> scheduleSpecificMessageNotification(
+    NotificationSpecificDateTime notificationSchedule,
+    VocelMessage currentVocelMessage) async {
+  DateTime specificDateTime = notificationSchedule.specificDateTime;
+  TimeOfDay timeOfDay = notificationSchedule.timeOfDay;
+
+  await AwesomeNotifications().createNotification(
+    content: NotificationContent(
+      id: createUniqueId(),
+      channelKey: 'scheduled_channel',
+      title: currentVocelMessage.sender,
+      body: "${currentVocelMessage.content} \n",
+      notificationLayout: NotificationLayout.Default,
+      showWhen: true,
+    ),
+    schedule: NotificationCalendar(
+        year: DateTime.now().year,
+
+        ///  specificDateTime.year,
+        month: DateTime.now().month,
+
+        /// specificDateTime.month,
+        day: DateTime.now().day,
+
+        /// specificDateTime.day,
+        hour: timeOfDay.hour,
+        minute: timeOfDay.minute,
+        millisecond: 0,
+        repeats: false),
+  );
+}
+
 Future<void> scheduleVocelNotification(
     NotificationSpecificTime notificationSchedule,
     {String? possibleId}) async {
