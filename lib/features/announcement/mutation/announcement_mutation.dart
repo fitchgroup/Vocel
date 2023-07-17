@@ -33,6 +33,12 @@ Future<void> deleteAnnouncement(Announcement announcementDelete) async {
   safePrint('Response: $response');
 }
 
+Future<void> updateAnnouncement(Announcement announcementUpdate) async {
+  final request = ModelMutations.update(announcementUpdate);
+  final response = await Amplify.API.mutate(request: request).response;
+  mutationDebuggingPrint('Update Response: $response');
+}
+
 /// FETCH DATA
 
 Future<Announcement?> queryAnnouncementItem(

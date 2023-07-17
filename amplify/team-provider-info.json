@@ -24,7 +24,8 @@
         "AdminQueriesf35eea9e": {
           "deploymentBucketName": "amplify-vocelversion1-vocelenv-120358-deployment",
           "s3Key": "amplify-builds/AdminQueriesf35eea9e-754e6f6f6865456d7576-build.zip"
-        }
+        },
+        "vocelversion10392777d": {}
       },
       "hosting": {
         "amplifyhosting": {
@@ -34,6 +35,35 @@
       },
       "storage": {
         "s37a5481e1": {}
+      }
+    }
+  },
+  "versionone": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-vocelversion1-versionone-114116-authRole",
+      "UnauthRoleArn": "arn:aws:iam::528051559496:role/amplify-vocelversion1-versionone-114116-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::528051559496:role/amplify-vocelversion1-versionone-114116-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-vocelversion1-versionone-114116-deployment",
+      "UnauthRoleName": "amplify-vocelversion1-versionone-114116-unauthRole",
+      "StackName": "amplify-vocelversion1-versionone-114116",
+      "StackId": "arn:aws:cloudformation:us-east-1:528051559496:stack/amplify-vocelversion1-versionone-114116/168d2e30-219c-11ee-a904-126dfe52feaf",
+      "AmplifyAppId": "d6jsmzq1iiyc6"
+    },
+    "categories": {
+      "auth": {
+        "vocelversion10392777d": {},
+        "userPoolGroups": {}
+      },
+      "function": {
+        "AdminQueriesf35eea9e": {},
+        "vocelversion10392777d": {}
+      },
+      "hosting": {
+        "amplifyhosting": {
+          "appId": "d6jsmzq1iiyc6",
+          "type": "manual"
+        }
       }
     }
   }

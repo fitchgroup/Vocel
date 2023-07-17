@@ -159,15 +159,17 @@ class HomeAnnouncementFeed extends HookConsumerWidget {
         } else {
           DateTime? comparedTimeFromA;
           DateTime? comparedTimeFromB;
-          if (a.updatedAt != null) {
-            comparedTimeFromA = a.updatedAt!.getDateTimeInUtc();
-          } else if (a.createdAt != null) {
+          // if (a.updatedAt != null) {
+          //   comparedTimeFromA = a.updatedAt!.getDateTimeInUtc();
+          // }
+          if (a.createdAt != null) {
             comparedTimeFromA = a.createdAt!.getDateTimeInUtc();
           }
 
-          if (b.updatedAt != null) {
-            comparedTimeFromB = b.updatedAt!.getDateTimeInUtc();
-          } else if (b.createdAt != null) {
+          // if (b.updatedAt != null) {
+          //   comparedTimeFromB = b.updatedAt!.getDateTimeInUtc();
+          // }
+          if (b.createdAt != null) {
             comparedTimeFromB = b.createdAt!.getDateTimeInUtc();
           }
 
