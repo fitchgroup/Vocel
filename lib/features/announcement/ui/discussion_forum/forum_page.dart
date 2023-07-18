@@ -109,7 +109,9 @@ class ForumPage extends HookConsumerWidget {
                                               .split("version1")[0]
                                               .toUpperCase() ||
                                       thisEvent.postGroup.name ==
-                                          ProfileRole.STAFF.name))
+                                          ProfileRole.STAFF.name ||
+                                      thisEvent.postGroup.name ==
+                                          ProfileRole.ALL.name))
                               .toList(),
                           context,
                           ref),

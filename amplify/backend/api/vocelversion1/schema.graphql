@@ -33,6 +33,7 @@
 type Announcement @model @auth(rules: [
     { allow: owner, operations: [update, read, create, delete] },
     { allow: groups, groups: ["Staffversion1"], operations: [create, update, delete, read] },
+    { allow: groups, groups: ["Bellversion1", "Eetcversion1", "Vcpaversion1"], operations: [read] },
     { allow: public, operations: [read] }
 ])
 {
@@ -41,6 +42,7 @@ type Announcement @model @auth(rules: [
     description: String!
     #    startDate: AWSDate!
     #    endDate: AWSDate!
+    announcementGroup: ProfileRole!
     isCompleted: Boolean!
     isPinned: Boolean!
     likes: [String]

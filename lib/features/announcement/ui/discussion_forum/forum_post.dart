@@ -1,7 +1,9 @@
 import 'package:amplify_core/src/types/temporal/temporal_datetime.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:intl/intl.dart';
+import 'package:vocel/common/utils/manage_user.dart';
 import 'package:vocel/features/announcement/ui/discussion_forum/add_comment_bottonsheet.dart';
 import 'package:vocel/features/announcement/ui/discussion_forum/forum_comment.dart';
 import 'package:vocel/models/ModelProvider.dart';
@@ -29,6 +31,8 @@ class _ForumPostState extends State<ForumPost> {
   late ValueNotifier<bool> liked;
   late List<String> likeList;
   late List<String> commentList;
+  String? avatarKey;
+  String? avatarUrl;
 
   Future<bool> checkProfileImageExists() async {
     try {
@@ -36,6 +40,25 @@ class _ForumPostState extends State<ForumPost> {
       return true;
     } catch (_) {
       return false;
+    }
+  }
+
+  Future<void> getCurrentUserAttribute(String currentUser) async {
+    Map<String, dynamic> jsonMap =
+        await getCustomUserAttribute(username: currentUser);
+
+    for (var element in jsonMap["UserAttributes"]) {
+      // print(element['Value']);
+      if (element['Name'] == 'custom:avatarUrl') {
+        setState(() {
+          avatarUrl = element['Value'];
+        });
+      }
+      if (element['Name'] == 'custom:avatarKey') {
+        setState(() {
+          avatarKey = element['Value'];
+        });
+      }
     }
   }
 
@@ -80,6 +103,13 @@ class _ForumPostState extends State<ForumPost> {
     commentList = (widget.thisPost as Post).comments != null
         ? List<String>.from((widget.thisPost as Post).comments!)
         : [];
+  }
+
+  @override
+  void didChangeDependencies() {
+    // TODO: implement didChangeDependencies
+    super.didChangeDependencies();
+    getCurrentUserAttribute(widget.thisPost.postAuthor);
   }
 
   Future<void> changingLikes() async {
@@ -136,7 +166,13 @@ class _ForumPostState extends State<ForumPost> {
               children: [
                 CircleAvatar(
                   radius: 20,
-                  backgroundImage: profileImage,
+                  backgroundImage: (avatarUrl != "" && avatarUrl != null
+                          ? CachedNetworkImageProvider(
+                              avatarUrl!,
+                              cacheKey: avatarKey,
+                            )
+                          : const AssetImage('images/vocel_logo.png'))
+                      as ImageProvider<Object>,
                 ),
                 const SizedBox(width: 8),
                 Expanded(
