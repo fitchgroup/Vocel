@@ -74,7 +74,7 @@ class _VocelNavigationDrawerState extends State<VocelNavigationDrawer> {
               Container(
                   color: const Color(constants.primaryColorDark),
                   child: VocelAvator(context, widget.userEmail,
-                      widget.avatarKey, widget.avatarUrl)),
+                      widget.avatarKey ?? "", widget.avatarUrl ?? "")),
               const SizedBox(
                 height: 6,
               ),
@@ -232,10 +232,10 @@ Widget VocelAvator(BuildContext context, String? userEmail, String? avatarKey,
                 clipBehavior: Clip.antiAlias,
                 decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    image: avatarUrl != ""
+                    image: avatarUrl != "" && avatarUrl != null
                         ? DecorationImage(
                             image: CachedNetworkImageProvider(
-                              avatarUrl!,
+                              avatarUrl,
                               cacheKey: avatarKey,
                             ),
                             fit: BoxFit.cover,
