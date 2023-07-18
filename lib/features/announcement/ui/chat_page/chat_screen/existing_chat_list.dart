@@ -87,7 +87,17 @@ class ExistingChatList extends HookConsumerWidget {
           child: Text('Error Here'),
         ),
         loading: () => const Center(
-          child: Text('Loading Message'),
+          child: Padding(
+            padding: EdgeInsets.symmetric(vertical: 20),
+            child: Text(
+              'Loading Message...',
+              style: TextStyle(
+                fontFamily: "Pangolin",
+                fontWeight: FontWeight.w300,
+                color: Color(constants.primaryDarkTeal),
+              ),
+            ),
+          ),
         ),
       ),
     ));
