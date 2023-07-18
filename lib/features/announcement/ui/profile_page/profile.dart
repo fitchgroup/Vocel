@@ -1,5 +1,3 @@
-import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
-import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:vocel/LocalizedButtonResolver.dart';
@@ -11,8 +9,15 @@ import 'package:vocel/features/announcement/ui/profile_page/edit_profile.dart';
 class VocelProfile extends StatefulWidget {
   final String? myName;
   final String? userEmail;
+  final String? avatarKey;
+  final String? avatarUrl;
 
-  const VocelProfile({Key? key, required this.userEmail, required this.myName})
+  const VocelProfile(
+      {Key? key,
+      required this.userEmail,
+      required this.myName,
+      required this.avatarKey,
+      required this.avatarUrl})
       : super(key: key);
 
   @override
@@ -20,19 +25,19 @@ class VocelProfile extends StatefulWidget {
 }
 
 class _VocelProfileState extends State<VocelProfile> {
-  late String? theEmail;
-  late String? theName;
+  late String? theEmailBackup;
+  late String? theNameBackup;
 
   /// Get it from parent;
-  late String? avatarKey = "";
-  late String? avatarUrl = "";
+  late String? avatarKeyBackUp = "";
+  late String? avatarUrlBackup = "";
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    theEmail = widget.userEmail;
-    theName = widget.myName;
+    theEmailBackup = widget.userEmail;
+    theNameBackup = widget.myName;
     getUserAttributesFromBackend().then((value) => null);
   }
 
@@ -41,15 +46,15 @@ class _VocelProfileState extends State<VocelProfile> {
     for (var entry in stringMap.entries) {
       if (entry.key == "custom:name") {
         setState(() {
-          theName = entry.value;
+          theNameBackup = entry.value;
         });
       } else if (entry.key == "custom:avatarkey") {
         setState(() {
-          avatarKey = entry.value;
+          avatarKeyBackUp = entry.value;
         });
       } else if (entry.key == "custom:avatarurl") {
         setState(() {
-          avatarUrl = entry.value;
+          avatarUrlBackup = entry.value;
         });
       } else {
         continue;
@@ -66,11 +71,11 @@ class _VocelProfileState extends State<VocelProfile> {
 
   @override
   Widget build(BuildContext context) {
-    final signInTiles = [
-      'username & password',
-      'Face ID',
-      'Delete digital profile'
-    ];
+    // final signInTiles = [
+    //   'username & password',
+    //   'Face ID',
+    //   'Delete digital profile'
+    // ];
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
@@ -179,13 +184,13 @@ class _VocelProfileState extends State<VocelProfile> {
                                               /// TODO: apply this to all the avatar
                                               decoration: BoxDecoration(
                                                   shape: BoxShape.circle,
-                                                  image: avatarUrl != "" &&
-                                                          false
+                                                  image: widget.avatarUrl != ""
                                                       ? DecorationImage(
                                                           image:
                                                               CachedNetworkImageProvider(
-                                                            avatarUrl!,
-                                                            cacheKey: avatarKey,
+                                                            widget.avatarUrl!,
+                                                            cacheKey: widget
+                                                                .avatarKey,
                                                           ),
                                                           fit: BoxFit.cover,
                                                         )
@@ -259,7 +264,7 @@ class _VocelProfileState extends State<VocelProfile> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Text(
-                                    theName ?? "User $theEmail",
+                                    widget.myName ?? "User ${widget.userEmail}",
                                     style: TextStyle(
                                         color: Colors.grey[100],
                                         fontWeight: FontWeight.w800,
@@ -279,7 +284,7 @@ class _VocelProfileState extends State<VocelProfile> {
                                   padding: const EdgeInsetsDirectional.fromSTEB(
                                       4, 8, 0, 0),
                                   child: Text(
-                                    "Email: ${theEmail ?? "..."}",
+                                    "Email: ${widget.userEmail ?? "..."}",
                                     style: TextStyle(
                                         color: Colors.grey[200],
                                         fontStyle: FontStyle.italic,

@@ -419,6 +419,12 @@ Future<List<Map<String, String>>> getUserAttrInTheMap(
         case 'custom:region':
           outputMap['region'] = attributeValue;
           break;
+        case 'custom:avatarKey':
+          outputMap['avatarKey'] = attributeValue;
+          break;
+        case 'custom:avatarUrl':
+          outputMap['avatarUrl'] = attributeValue;
+          break;
       }
     }
 

@@ -8,9 +8,14 @@ import 'package:vocel/features/announcement/ui/chat_page/chat_screen/chat_search
 import 'package:vocel/features/announcement/ui/chat_page/chat_screen/existing_chat_list.dart';
 
 class ChatList extends StatefulWidget {
-  const ChatList({Key? key, required this.myInfo}) : super(key: key);
+  const ChatList({
+    Key? key,
+    required this.myInfo,
+    required this.futureResult,
+  }) : super(key: key);
 
   final myInfo;
+  final futureResult;
 
   @override
   State<ChatList> createState() => _ChatListState();
@@ -128,7 +133,9 @@ class _ChatListState extends State<ChatList> {
         Expanded(
             child: ExistingChatList(
           myInfo: widget.myInfo,
+          futureResult: widget.futureResult,
           searching: searching,
+          indicator: false,
         ))
       ],
     );

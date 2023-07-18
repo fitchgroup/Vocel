@@ -1,6 +1,5 @@
 import 'package:intl/intl.dart';
 import 'package:vocel/features/announcement/ui/chat_page/chat_list/chat_box.dart';
-import 'package:vocel/models/ModelProvider.dart';
 import 'package:flutter/material.dart';
 
 class ExistingChattingCard extends StatelessWidget {
