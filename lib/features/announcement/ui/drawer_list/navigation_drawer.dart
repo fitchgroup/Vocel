@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:vocel/common/utils/colors.dart' as constants;
 import 'package:vocel/common/utils/manage_user.dart';
@@ -11,12 +12,16 @@ class VocelNavigationDrawer extends StatefulWidget {
   final String? userEmail;
   final bool showEdit;
   final groupOfUser;
+  final String? avatarKey;
+  final String? avatarUrl;
 
   const VocelNavigationDrawer(
       {super.key,
       this.userEmail,
       required this.showEdit,
-      required this.groupOfUser});
+      required this.groupOfUser,
+      this.avatarKey,
+      this.avatarUrl});
 
   @override
   State<VocelNavigationDrawer> createState() => _VocelNavigationDrawerState();
@@ -25,6 +30,8 @@ class VocelNavigationDrawer extends StatefulWidget {
 class _VocelNavigationDrawerState extends State<VocelNavigationDrawer> {
   String? userEmail;
   String? myName;
+  String? avatarKey;
+  String? avatarUrl;
 
   @override
   void initState() {
@@ -39,6 +46,14 @@ class _VocelNavigationDrawerState extends State<VocelNavigationDrawer> {
       if (entry.key == "custom:name") {
         setState(() {
           myName = entry.value;
+        });
+      } else if (entry.key == "custom:avatarkey") {
+        setState(() {
+          avatarKey = entry.value;
+        });
+      } else if (entry.key == "custom:avatarurl") {
+        setState(() {
+          avatarUrl = entry.value;
         });
       } else {
         continue;
@@ -58,7 +73,8 @@ class _VocelNavigationDrawerState extends State<VocelNavigationDrawer> {
             children: [
               Container(
                   color: const Color(constants.primaryColorDark),
-                  child: VocelAvator(context, widget.userEmail)),
+                  child: VocelAvator(context, widget.userEmail,
+                      widget.avatarKey, widget.avatarUrl)),
               const SizedBox(
                 height: 6,
               ),
@@ -66,7 +82,11 @@ class _VocelNavigationDrawerState extends State<VocelNavigationDrawer> {
                   name: const LocalizedButtonResolver().profile(context),
                   leadingIcon: Icons.account_circle,
                   onPressedFunction: () => itemPressed(context,
-                      index: 0, userEmail: widget.userEmail, myName: myName)),
+                      index: 0,
+                      userEmail: widget.userEmail,
+                      myName: myName,
+                      avatarKey: avatarKey,
+                      avatarUrl: avatarUrl)),
               const SizedBox(
                 height: 6,
               ),
@@ -126,15 +146,20 @@ itemPressed(BuildContext context,
     String? userEmail,
     bool? showEdit,
     String? myName,
-    String? groupOfUser}) {
+    String? groupOfUser,
+    String? avatarKey,
+    String? avatarUrl}) {
   Navigator.pop(context);
   switch (index) {
     case 0:
       Navigator.push(
           context,
           MaterialPageRoute(
-              builder: (context) =>
-                  VocelProfile(userEmail: userEmail, myName: myName),
+              builder: (context) => VocelProfile(
+                  userEmail: userEmail,
+                  myName: myName,
+                  avatarKey: avatarKey,
+                  avatarUrl: avatarUrl),
               settings: const RouteSettings(arguments: "settings page")));
       break;
     case 1:
@@ -183,7 +208,8 @@ itemPressed(BuildContext context,
   }
 }
 
-Widget VocelAvator(BuildContext context, String? userEmail) {
+Widget VocelAvator(BuildContext context, String? userEmail, String? avatarKey,
+    String? avatarUrl) {
   return Padding(
     padding: const EdgeInsetsDirectional.fromSTEB(20, 50, 0, 10),
     child: Column(
@@ -195,12 +221,31 @@ Widget VocelAvator(BuildContext context, String? userEmail) {
           child: Align(
             alignment: Alignment.centerLeft,
             child: Container(
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: Colors.grey.shade300,
+              ),
+              padding: const EdgeInsets.all(3.0),
+              child: Container(
                 width: 100,
                 height: 100,
                 clipBehavior: Clip.antiAlias,
-                decoration: const BoxDecoration(shape: BoxShape.circle),
+                decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    image: avatarUrl != ""
+                        ? DecorationImage(
+                            image: CachedNetworkImageProvider(
+                              avatarUrl!,
+                              cacheKey: avatarKey,
+                            ),
+                            fit: BoxFit.cover,
+                          )
+                        : const DecorationImage(
+                            image: AssetImage('images/vocel_logo.png'),
+                            fit: BoxFit.cover)),
                 // decoration: const Bo,
-                child: Image.asset("images/vocel_logo.png")),
+              ),
+            ),
           ),
         ),
         const SizedBox(
@@ -208,8 +253,14 @@ Widget VocelAvator(BuildContext context, String? userEmail) {
         ),
         Row(
           children: [
-            Text(userEmail ?? const LocalizedButtonResolver().email(context),
-                style: const TextStyle(fontSize: 20, color: Colors.white)),
+            Wrap(
+              children: [
+                Text(
+                  userEmail ?? const LocalizedButtonResolver().email(context),
+                  style: const TextStyle(fontSize: 20, color: Colors.white),
+                ),
+              ],
+            )
           ],
         )
       ],
