@@ -26,49 +26,80 @@ class ExistingChatList extends HookConsumerWidget {
         ref.watch(messageListStreamProvider);
 
     return Scaffold(
-        body: FutureBuilder<List<Map<String, String>>>(
-      future: futureResult,
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.done) {
-          if (snapshot.hasError) {
-            return Text('Error: ${snapshot.error}');
-          } else {
-            return SingleChildScrollView(
-              child: messageHistory.when(
-                data: (thisMessages) => thisMessages.isEmpty
-                    ? const Center(
-                        child: Text("No Messages"),
-                      )
-                    : buildMessages(
-                        thisMessages
-                            .whereType<VocelMessage>()
-                            .where((message) =>
-                                message.sender == myInfo ||
-                                message.receiver == myInfo)
-                            .toList(),
-                        context,
-                        ref,
-                        snapshot
-                            .data! // Assuming buildMessages takes List<Map<String, String>> as input
-                        ),
-                error: (e, st) => const Center(
-                  child: Text('Error Here'),
-                ),
-                loading: () => const Center(
-                  child: Text('Loading Message'),
-                ),
+        body:
+            //     FutureBuilder<List<Map<String, String>>>(
+            //   future: futureResult,
+            //   builder: (context, snapshot) {
+            //     if (snapshot.connectionState == ConnectionState.done) {
+            //       if (snapshot.hasError) {
+            //         return Text('Error: ${snapshot.error}');
+            //       } else {
+            //         return SingleChildScrollView(
+            //           child: messageHistory.when(
+            //             data: (thisMessages) => thisMessages.isEmpty
+            //                 ? const Center(
+            //                     child: Text("No Messages"),
+            //                   )
+            //                 : buildMessages(
+            //                     thisMessages
+            //                         .whereType<VocelMessage>()
+            //                         .where((message) =>
+            //                             message.sender == myInfo ||
+            //                             message.receiver == myInfo)
+            //                         .toList(),
+            //                     context,
+            //                     ref,
+            //                     snapshot
+            //                         .data! // Assuming buildMessages takes List<Map<String, String>> as input
+            //                     ),
+            //             error: (e, st) => const Center(
+            //               child: Text('Error Here'),
+            //             ),
+            //             loading: () => const Center(
+            //               child: Text('Loading Message'),
+            //             ),
+            //           ),
+            //         );
+            //       }
+            //     } else {
+            //       return CircularProgressIndicator();
+            //     }
+            //   },
+            // )
+            SingleChildScrollView(
+      child: messageHistory.when(
+        data: (thisMessages) => thisMessages.isEmpty
+            ? const Center(
+                child: Text("No Messages"),
+              )
+            : buildMessages(
+                thisMessages
+                    .whereType<VocelMessage>()
+                    .where((message) =>
+                        message.sender == myInfo || message.receiver == myInfo)
+                    .toList(),
+                context,
+                ref,
+                // snapshot
+                //     .data! // Assuming buildMessages takes List<Map<String, String>> as input
               ),
-            );
-          }
-        } else {
-          return CircularProgressIndicator();
-        }
-      },
+        error: (e, st) => const Center(
+          child: Text('Error Here'),
+        ),
+        loading: () => const Center(
+          child: Text('Loading Message'),
+        ),
+      ),
     ));
   }
 
-  ListView buildMessages(List<VocelMessage> messages, BuildContext context,
-      WidgetRef ref, List<Map<String, String>> list) {
+  ListView buildMessages(
+      List<VocelMessage> messages, BuildContext context, WidgetRef ref
+      // , List<Map<String, String>> userList
+      ) {
+    // print("#" * 200);
+    // print(userList.toString());
+    // print("#" * 200);
     Map<String, List<VocelMessage>> messageGroups = {};
     for (var message in messages) {
       var otherPerson =
@@ -78,6 +109,9 @@ class ExistingChatList extends HookConsumerWidget {
       }
       messageGroups[otherPerson]?.add(message);
     }
+    // Map<String, Map<String, String>> result = {
+    //   for (var item in userList) item['email'] as String: item
+    // };
 
     // Sorting message groups
     List<String> sortedKeys = messageGroups.keys.toList()
@@ -120,6 +154,8 @@ class ExistingChatList extends HookConsumerWidget {
           child: ExistingChattingCard(
               myInfo: myInfo,
               otherPersonName: otherPerson,
+              // avatarKey: result[otherPerson]!["avatarKey"] ?? "",
+              // avatarUrl: result[otherPerson]!["avatarUrl"] ?? "",
               latestMessageContent: latestMessage.content,
               time: latestMessage.createdAt == null
                   ? latestMessage.updatedAt!.getDateTimeInUtc().toLocal()

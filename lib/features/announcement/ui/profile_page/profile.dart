@@ -25,48 +25,48 @@ class VocelProfile extends StatefulWidget {
 }
 
 class _VocelProfileState extends State<VocelProfile> {
-  late String? theEmailBackup;
-  late String? theNameBackup;
+  // late String? theEmailBackup;
+  // late String? theNameBackup;
 
-  /// Get it from parent;
-  late String? avatarKeyBackUp = "";
-  late String? avatarUrlBackup = "";
+  // /// Get it from parent;
+  // late String? avatarKeyBackUp = "";
+  // late String? avatarUrlBackup = "";
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    theEmailBackup = widget.userEmail;
-    theNameBackup = widget.myName;
-    getUserAttributesFromBackend().then((value) => null);
+    // theEmailBackup = widget.userEmail;
+    // theNameBackup = widget.myName;
+    // getUserAttributesFromBackend().then((value) => null);
   }
 
-  Future<void> getUserAttributesFromBackend() async {
-    Map<String, String> stringMap = await getUserAttributes();
-    for (var entry in stringMap.entries) {
-      if (entry.key == "custom:name") {
-        setState(() {
-          theNameBackup = entry.value;
-        });
-      } else if (entry.key == "custom:avatarkey") {
-        setState(() {
-          avatarKeyBackUp = entry.value;
-        });
-      } else if (entry.key == "custom:avatarurl") {
-        setState(() {
-          avatarUrlBackup = entry.value;
-        });
-      } else {
-        continue;
-      }
-    }
-  }
+  // Future<void> getUserAttributesFromBackend() async {
+  //   Map<String, String> stringMap = await getUserAttributes();
+  //   for (var entry in stringMap.entries) {
+  //     if (entry.key == "custom:name") {
+  //       setState(() {
+  //         theNameBackup = entry.value;
+  //       });
+  //     } else if (entry.key == "custom:avatarkey") {
+  //       setState(() {
+  //         avatarKeyBackUp = entry.value;
+  //       });
+  //     } else if (entry.key == "custom:avatarurl") {
+  //       setState(() {
+  //         avatarUrlBackup = entry.value;
+  //       });
+  //     } else {
+  //       continue;
+  //     }
+  //   }
+  // }
 
   @override
   void didChangeDependencies() {
     // TODO: implement didChangeDependencies
     super.didChangeDependencies();
-    getUserAttributesFromBackend().then((value) => null);
+    // getUserAttributesFromBackend().then((value) => null);
   }
 
   @override

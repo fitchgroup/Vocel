@@ -221,23 +221,30 @@ Widget VocelAvator(BuildContext context, String? userEmail, String? avatarKey,
           child: Align(
             alignment: Alignment.centerLeft,
             child: Container(
-              width: 100,
-              height: 100,
-              clipBehavior: Clip.antiAlias,
               decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  image: avatarUrl != ""
-                      ? DecorationImage(
-                          image: CachedNetworkImageProvider(
-                            avatarUrl!,
-                            cacheKey: avatarKey,
-                          ),
-                          fit: BoxFit.cover,
-                        )
-                      : const DecorationImage(
-                          image: AssetImage('images/vocel_logo.png'),
-                          fit: BoxFit.cover)),
-              // decoration: const Bo,
+                shape: BoxShape.circle,
+                color: Colors.grey.shade300,
+              ),
+              padding: const EdgeInsets.all(3.0),
+              child: Container(
+                width: 100,
+                height: 100,
+                clipBehavior: Clip.antiAlias,
+                decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    image: avatarUrl != ""
+                        ? DecorationImage(
+                            image: CachedNetworkImageProvider(
+                              avatarUrl!,
+                              cacheKey: avatarKey,
+                            ),
+                            fit: BoxFit.cover,
+                          )
+                        : const DecorationImage(
+                            image: AssetImage('images/vocel_logo.png'),
+                            fit: BoxFit.cover)),
+                // decoration: const Bo,
+              ),
             ),
           ),
         ),
@@ -246,8 +253,14 @@ Widget VocelAvator(BuildContext context, String? userEmail, String? avatarKey,
         ),
         Row(
           children: [
-            Text(userEmail ?? const LocalizedButtonResolver().email(context),
-                style: const TextStyle(fontSize: 20, color: Colors.white)),
+            Wrap(
+              children: [
+                Text(
+                  userEmail ?? const LocalizedButtonResolver().email(context),
+                  style: const TextStyle(fontSize: 20, color: Colors.white),
+                ),
+              ],
+            )
           ],
         )
       ],
