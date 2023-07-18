@@ -1,4 +1,4 @@
-import 'package:amplify_flutter/amplify_flutter.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:vocel/common/utils/colors.dart' as constants;
@@ -121,7 +121,9 @@ class _PeopleListState extends State<PeopleList> {
                                         dataList[index]["region"] ?? "",
                                         dataList[index]["aboutMe"] ?? "",
                                         dataList[index]["VocelGroup"] ??
-                                            "Unassigned"),
+                                            "Unassigned",
+                                        dataList[index]["avatarKey"] ?? "",
+                                        dataList[index]["avatarUrl"] ?? ""),
                                   ),
                                 ),
                                 Visibility(
@@ -219,29 +221,44 @@ Widget peopleBackgroundContainer() {
   );
 }
 
-Widget peopleInkwell(BuildContext context, String myInfo, String theirEmail,
-    String theirName, String theirRegion, String theirAboutMe, String title) {
+Widget peopleInkwell(
+    BuildContext context,
+    String myInfo,
+    String theirEmail,
+    String theirName,
+    String theirRegion,
+    String theirAboutMe,
+    String title,
+    String avatarKey,
+    String avatarUrl) {
   return InkWell(
     onTap: () {
       Navigator.push(
           context,
           MaterialPageRoute(
               builder: (context) => FriendProfile(
-                  name: theirName,
-                  region: theirRegion,
-                  email: theirEmail,
-                  title: title,
-                  aboutMe: theirAboutMe,
-                  myInfo: myInfo),
+                    name: theirName,
+                    region: theirRegion,
+                    email: theirEmail,
+                    title: title,
+                    aboutMe: theirAboutMe,
+                    myInfo: myInfo,
+                    avatarKey: avatarKey,
+                    avatarUrl: avatarUrl,
+                  ),
               settings: const RouteSettings(arguments: "")));
       // debuggingPrint("$myInfo is sending message to $theirEmail");
     },
     child: ListTile(
-      leading: const CircleAvatar(
-        // Specify your avatar properties here
+      leading: CircleAvatar(
         radius: 18,
-        backgroundImage: AssetImage(
-            'images/vocel_logo.png'), // Replace with your avatar image
+        backgroundImage: (avatarUrl != ""
+                ? CachedNetworkImageProvider(
+                    avatarUrl,
+                    cacheKey: avatarKey,
+                  )
+                : const AssetImage('images/vocel_logo.png'))
+            as ImageProvider<Object>,
       ),
       title: Text(
         theirEmail,

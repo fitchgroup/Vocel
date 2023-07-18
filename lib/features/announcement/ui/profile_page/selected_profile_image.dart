@@ -108,9 +108,9 @@ class ProfilePic extends HookConsumerWidget {
     String myAvatarUrl = "";
 
     for (var entry in stringMap.entries) {
-      if (entry.key == "custom:avatarKey") {
+      if (entry.key == "custom:avatarkey") {
         myAvatarKey = entry.value;
-      } else if (entry.key == "custom:avatarUrl") {
+      } else if (entry.key == "custom:avatarurl") {
         myAvatarUrl = entry.value;
       } else {
         continue;
@@ -123,8 +123,8 @@ class ProfilePic extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     // Get avatarKey and avatarUrl state.
-    final avatarKey = useState<String?>("");
-    final avatarUrl = useState<String?>("");
+    final avatarKey = useValueNotifier<String?>("");
+    final avatarUrl = useValueNotifier<String?>("");
 
     useEffect(() {
       // The function getUserAttributesFromBackend is invoked within this async function
@@ -138,26 +138,6 @@ class ProfilePic extends HookConsumerWidget {
 
       return () {}; // The clean-up function to run when the widget is unmounted or updated
     }, const []); // The second argument are dependencies. It's an empty list, so the effect will run once on mount.
-
-    Widget displayImage;
-    if (avatarKey.value != "" && avatarUrl.value != "") {
-      displayImage = Image(
-        image: CachedNetworkImageProvider(
-          avatarUrl.value!,
-          cacheKey: avatarKey.value,
-        ),
-        fit: BoxFit.cover,
-        height: double.parse(profileHeight) * 1.5,
-        width: double.parse(profileHeight) * 1.5,
-      );
-    } else {
-      displayImage = Image(
-        fit: BoxFit.cover,
-        height: double.parse(profileHeight) * 1.5,
-        width: double.parse(profileHeight) * 1.5,
-        image: AssetImage('images/vocel_logo.png'),
-      );
-    }
 
     return ClipOval(
       child: Container(
@@ -175,7 +155,37 @@ class ProfilePic extends HookConsumerWidget {
               avatarUrl: avatarUrl,
             ).then((value) => Navigator.of(context, rootNavigator: true).pop());
           },
-          child: displayImage,
+          child: ValueListenableBuilder<String?>(
+            valueListenable: avatarKey,
+            builder: (context, key, child) {
+              return ValueListenableBuilder<String?>(
+                valueListenable: avatarUrl,
+                builder: (context, url, child) {
+                  Widget displayImage;
+                  if ((key != "" && key != null) &&
+                      (url != "" && url != null)) {
+                    displayImage = Image(
+                      image: CachedNetworkImageProvider(
+                        url,
+                        cacheKey: key,
+                      ),
+                      fit: BoxFit.cover,
+                      height: double.parse(profileHeight) * 1.5,
+                      width: double.parse(profileHeight) * 1.5,
+                    );
+                  } else {
+                    displayImage = Image(
+                      fit: BoxFit.cover,
+                      height: double.parse(profileHeight) * 1.5,
+                      width: double.parse(profileHeight) * 1.5,
+                      image: AssetImage('images/vocel_logo.png'),
+                    );
+                  }
+                  return displayImage;
+                },
+              );
+            },
+          ),
         ),
       ),
     );

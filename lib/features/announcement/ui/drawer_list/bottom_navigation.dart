@@ -52,6 +52,8 @@ class _AnnouncementsListPageState extends State<AnnouncementsListPage> {
   bool adminEdit = false;
   String groupEdit = "";
   String? userEmail;
+  String? avatarKey;
+  String? avatarUrl;
 
   Future<void> getUserStatus() async {
     Map<String, String> stringMap = await getUserAttributes();
@@ -70,6 +72,14 @@ class _AnnouncementsListPageState extends State<AnnouncementsListPage> {
       if (entry.key == "custom:name") {
         setState(() {
           myName = entry.value;
+        });
+      } else if (entry.key == "custom:avatarkey") {
+        setState(() {
+          avatarKey = entry.value;
+        });
+      } else if (entry.key == "custom:avatarurl") {
+        setState(() {
+          avatarUrl = entry.value;
         });
       } else {
         continue;
@@ -302,6 +312,7 @@ class _AnnouncementsListPageState extends State<AnnouncementsListPage> {
         return Center(
           child: ChatList(
             myInfo: userEmail,
+            futureResult: futureResult,
           ),
         );
       case 2:
@@ -361,7 +372,11 @@ class _AnnouncementsListPageState extends State<AnnouncementsListPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       drawer: VocelNavigationDrawer(
-          userEmail: userEmail, showEdit: adminEdit, groupOfUser: groupEdit),
+          userEmail: userEmail,
+          showEdit: adminEdit,
+          groupOfUser: groupEdit,
+          avatarKey: avatarKey,
+          avatarUrl: avatarUrl),
       appBar: AppBar(
         leading: Builder(
           builder: (BuildContext context) {
