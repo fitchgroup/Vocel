@@ -52,6 +52,8 @@ class _AnnouncementsListPageState extends State<AnnouncementsListPage> {
   bool adminEdit = false;
   String groupEdit = "";
   String? userEmail;
+  String? avatarKey;
+  String? avatarUrl;
 
   Future<void> getUserStatus() async {
     Map<String, String> stringMap = await getUserAttributes();
@@ -70,6 +72,14 @@ class _AnnouncementsListPageState extends State<AnnouncementsListPage> {
       if (entry.key == "custom:name") {
         setState(() {
           myName = entry.value;
+        });
+      } else if (entry.key == "custom:avatarkey") {
+        setState(() {
+          avatarKey = entry.value;
+        });
+      } else if (entry.key == "custom:avatarurl") {
+        setState(() {
+          avatarUrl = entry.value;
         });
       } else {
         continue;
@@ -199,6 +209,10 @@ class _AnnouncementsListPageState extends State<AnnouncementsListPage> {
                 ));
       }
     });
+    // // AwesomeNotifications().createdStream.listen((notification) {
+    // //   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+    // //       content: Text('Notification Created on ${notification.channelKey}')));
+    // // });
     // AwesomeNotifications().actionStream.listen((notification) {
     //   if (notification.channelKey == "basic_channel" && Platform.isIOS) {
     //     AwesomeNotifications().getGlobalBadgeCounter().then(
@@ -265,6 +279,22 @@ class _AnnouncementsListPageState extends State<AnnouncementsListPage> {
   String switching = "Announcement";
 
   Widget selectPage(int pageNumber) {
+    // ElevatedButton(
+    //   onPressed: () async {
+    //     createVocelNotification();
+    //     // NotificationSpecificTime? result = await pickSchedule(context);
+    //     // if (result != null) {
+    //     //   // Handle the selected schedule
+    //     //   print('Selected day of the week: ${result.dayOfTheWeek}');
+    //     //   print('Selected time of the day: ${result.timeOfDay}');
+    //     //   scheduleVocelNotification(result);
+    //     // } else {
+    //     //   // Handle cancellation or no time selected
+    //     //   print('No schedule selected.');
+    //     // }
+    //   },
+    //   child: const Text('Pick Schedule'),
+    // ),
     switch (pageNumber) {
       case 0:
         return switching == "Announcement"
@@ -302,6 +332,7 @@ class _AnnouncementsListPageState extends State<AnnouncementsListPage> {
         return Center(
           child: ChatList(
             myInfo: userEmail,
+            // futureResult: futureResult,
           ),
         );
       case 2:
@@ -361,7 +392,11 @@ class _AnnouncementsListPageState extends State<AnnouncementsListPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       drawer: VocelNavigationDrawer(
-          userEmail: userEmail, showEdit: adminEdit, groupOfUser: groupEdit),
+          userEmail: userEmail,
+          showEdit: adminEdit,
+          groupOfUser: groupEdit,
+          avatarKey: avatarKey,
+          avatarUrl: avatarUrl),
       appBar: AppBar(
         leading: Builder(
           builder: (BuildContext context) {

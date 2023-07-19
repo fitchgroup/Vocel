@@ -458,51 +458,51 @@ class CalendarEventWidget extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          Wrap(
+            alignment: WrapAlignment.spaceBetween,
             children: [
               Text(
                 '${Emojis.office_calendar} $title',
                 style: const TextStyle(
-                  fontSize: 24,
+                  fontSize: 22,
                   fontWeight: FontWeight.bold,
                   fontFamily: 'Pangolin',
                 ),
               ),
               Text(
                 '    👥 Visible to: ${eventGroup.name}',
-                style: const TextStyle(fontSize: 18, fontFamily: 'Pangolin'),
+                style: const TextStyle(fontSize: 14, fontFamily: 'Pangolin'),
               ),
             ],
           ),
           const SizedBox(height: 10),
           RichText(
             text: TextSpan(
-              style: const TextStyle(fontSize: 18),
+              style: const TextStyle(fontSize: 16),
               children: [
                 const TextSpan(
                   text: 'Description: ',
                   style: TextStyle(
                       fontWeight: FontWeight.bold,
-                      fontSize: 20,
+                      fontSize: 18,
                       color: Colors.black54,
                       fontFamily: 'Pangolin'),
                 ),
                 TextSpan(
                   text: description,
-                  style: TextStyle(fontSize: 18, color: Colors.black54),
+                  style: TextStyle(fontSize: 16, color: Colors.black54),
                 ),
               ],
             ),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: 13),
           Row(
             children: [
               const Icon(Icons.access_time),
               const SizedBox(width: 5),
               Text(
-                '${startTime.hour}:${startTime.minute} - ${endTime.hour}:${endTime.minute}',
-                style: const TextStyle(fontSize: 18, fontFamily: 'Pangolin'),
+                '${startTime.month}/${startTime.day}: ${startTime.hour}:${startTime.minute} - ${endTime.hour}:${endTime.minute}',
+                style: const TextStyle(fontSize: 16, fontFamily: 'Pangolin'),
               ),
             ],
           ),
@@ -513,7 +513,7 @@ class CalendarEventWidget extends StatelessWidget {
               const SizedBox(width: 5),
               Text(
                 location,
-                style: const TextStyle(fontSize: 18, fontFamily: 'Pangolin'),
+                style: const TextStyle(fontSize: 16, fontFamily: 'Pangolin'),
               ),
             ],
           ),

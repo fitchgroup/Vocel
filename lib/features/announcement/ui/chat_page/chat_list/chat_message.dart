@@ -57,7 +57,7 @@ class _ChatCardState extends State<ChatCard> {
                         ? DateFormat('MM-d HH:mm').format(
                             widget.messageTime!.getDateTimeInUtc().toLocal())
                         : "",
-                    style: TextStyle(color: Colors.grey),
+                    style: const TextStyle(color: Colors.grey),
                   ),
                 ),
               ],
@@ -81,7 +81,7 @@ class _ChatCardState extends State<ChatCard> {
                         ? DateFormat('MM-d HH:mm').format(
                             widget.messageTime!.getDateTimeInUtc().toLocal())
                         : "",
-                    style: TextStyle(color: Colors.grey),
+                    style: const TextStyle(color: Colors.grey),
                   ),
                 ),
               ],
@@ -116,7 +116,7 @@ class ReceivedMessageWidget extends StatelessWidget {
           ),
           decoration: BoxDecoration(
             color: Colors.grey.shade300,
-            borderRadius: BorderRadius.only(
+            borderRadius: const BorderRadius.only(
               topLeft: Radius.circular(20.0),
               topRight: Radius.circular(20.0),
               bottomLeft: Radius.circular(5.0),
