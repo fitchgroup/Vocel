@@ -1,4 +1,4 @@
-import 'package:amplify_flutter/amplify_flutter.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:vocel/common/utils/colors.dart' as constants;
@@ -53,8 +53,16 @@ class _PeopleListState extends State<PeopleList> {
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return const Center(
-                          child: CircularProgressIndicator(
-                            color: Colors.blueGrey,
+                          child: Padding(
+                            padding: EdgeInsets.symmetric(vertical: 20),
+                            child: Text(
+                              'Rendering Friend List...',
+                              style: TextStyle(
+                                fontFamily: "Pangolin",
+                                fontWeight: FontWeight.w300,
+                                color: Color(constants.primaryDarkTeal),
+                              ),
+                            ),
                           ),
                         );
                       } else if (snapshot.hasError) {
@@ -121,7 +129,9 @@ class _PeopleListState extends State<PeopleList> {
                                         dataList[index]["region"] ?? "",
                                         dataList[index]["aboutMe"] ?? "",
                                         dataList[index]["VocelGroup"] ??
-                                            "Unassigned"),
+                                            "Unassigned",
+                                        dataList[index]["avatarKey"] ?? "",
+                                        dataList[index]["avatarUrl"] ?? ""),
                                   ),
                                 ),
                                 Visibility(
@@ -138,55 +148,6 @@ class _PeopleListState extends State<PeopleList> {
               ],
             )
           : const SpinKitFadingCircle(color: Color(constants.primaryDarkTeal)),
-    );
-  }
-}
-
-class GroupTextWidget extends StatelessWidget {
-  final String text;
-
-  const GroupTextWidget({
-    super.key,
-    required this.text,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.grey[200],
-        borderRadius: BorderRadius.circular(8),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.blueGrey[200]!.withOpacity(0.6),
-            spreadRadius: 1,
-            blurRadius: 30,
-            offset: const Offset(0, 2),
-          ),
-        ],
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.max,
-        children: [
-          Expanded(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Text(
-                  text,
-                  style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 25,
-                    color: Colors.black87,
-                    letterSpacing: 2,
-                    fontFamily: "Ysabeau",
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
     );
   }
 }
@@ -219,29 +180,44 @@ Widget peopleBackgroundContainer() {
   );
 }
 
-Widget peopleInkwell(BuildContext context, String myInfo, String theirEmail,
-    String theirName, String theirRegion, String theirAboutMe, String title) {
+Widget peopleInkwell(
+    BuildContext context,
+    String myInfo,
+    String theirEmail,
+    String theirName,
+    String theirRegion,
+    String theirAboutMe,
+    String title,
+    String avatarKey,
+    String avatarUrl) {
   return InkWell(
     onTap: () {
       Navigator.push(
           context,
           MaterialPageRoute(
               builder: (context) => FriendProfile(
-                  name: theirName,
-                  region: theirRegion,
-                  email: theirEmail,
-                  title: title,
-                  aboutMe: theirAboutMe,
-                  myInfo: myInfo),
+                    name: theirName,
+                    region: theirRegion,
+                    email: theirEmail,
+                    title: title,
+                    aboutMe: theirAboutMe,
+                    myInfo: myInfo,
+                    avatarKey: avatarKey,
+                    avatarUrl: avatarUrl,
+                  ),
               settings: const RouteSettings(arguments: "")));
       // debuggingPrint("$myInfo is sending message to $theirEmail");
     },
     child: ListTile(
-      leading: const CircleAvatar(
-        // Specify your avatar properties here
+      leading: CircleAvatar(
         radius: 18,
-        backgroundImage: AssetImage(
-            'images/vocel_logo.png'), // Replace with your avatar image
+        backgroundImage: (avatarUrl != ""
+                ? CachedNetworkImageProvider(
+                    avatarUrl,
+                    cacheKey: avatarKey,
+                  )
+                : const AssetImage('images/vocel_logo.png'))
+            as ImageProvider<Object>,
       ),
       title: Text(
         theirEmail,

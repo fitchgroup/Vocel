@@ -13,6 +13,7 @@ import 'package:vocel/features/announcement/ui/home_page/add_announcement_bottom
 import 'package:vocel/features/announcement/ui/home_page/announcement_card_item.dart';
 import 'package:vocel/features/announcement/ui/home_page/home_navigation_bar.dart';
 import 'package:vocel/models/Announcement.dart';
+import 'package:vocel/models/ModelProvider.dart';
 
 class HomeAnnouncementFeed extends HookConsumerWidget {
   final bool showEdit;
@@ -127,7 +128,27 @@ class HomeAnnouncementFeed extends HookConsumerWidget {
                         // keep the non-null Trip objects. Finally, we call toList() to convert
                         // the filtered iterable into a List<Trip>.
                         buildAnnouncements(
-                            announcement.whereType<Announcement>().toList(),
+                            announcement
+                                .whereType<Announcement>()
+                                .where((thisAnnouncement) => groupOfUser
+                                            .toString()
+                                            .split("version1")[0]
+                                            .toUpperCase() ==
+                                        ProfileRole.STAFF.name
+                                    ? true
+                                    : (thisAnnouncement
+                                                .announcementGroup.name ==
+                                            groupOfUser
+                                                .toString()
+                                                .split("version1")[0]
+                                                .toUpperCase() ||
+                                        thisAnnouncement
+                                                .announcementGroup.name ==
+                                            ProfileRole.STAFF.name ||
+                                        thisAnnouncement
+                                                .announcementGroup.name ==
+                                            ProfileRole.ALL.name))
+                                .toList(),
                             context,
                             ref),
                     error: (e, st) => const Center(

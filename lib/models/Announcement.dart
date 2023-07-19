@@ -31,6 +31,7 @@ class Announcement extends Model {
   final String id;
   final String? _tripName;
   final String? _description;
+  final ProfileRole? _announcementGroup;
   final bool? _isCompleted;
   final bool? _isPinned;
   final List<String>? _likes;
@@ -66,6 +67,19 @@ class Announcement extends Model {
   String get description {
     try {
       return _description!;
+    } catch (e) {
+      throw new AmplifyCodeGenModelException(
+          AmplifyExceptionMessages
+              .codeGenRequiredFieldForceCastExceptionMessage,
+          recoverySuggestion: AmplifyExceptionMessages
+              .codeGenRequiredFieldForceCastRecoverySuggestion,
+          underlyingException: e.toString());
+    }
+  }
+
+  ProfileRole get announcementGroup {
+    try {
+      return _announcementGroup!;
     } catch (e) {
       throw new AmplifyCodeGenModelException(
           AmplifyExceptionMessages
@@ -122,6 +136,7 @@ class Announcement extends Model {
       {required this.id,
       required tripName,
       required description,
+      required announcementGroup,
       required isCompleted,
       required isPinned,
       likes,
@@ -130,6 +145,7 @@ class Announcement extends Model {
       updatedAt})
       : _tripName = tripName,
         _description = description,
+        _announcementGroup = announcementGroup,
         _isCompleted = isCompleted,
         _isPinned = isPinned,
         _likes = likes,
@@ -141,6 +157,7 @@ class Announcement extends Model {
       {String? id,
       required String tripName,
       required String description,
+      required ProfileRole announcementGroup,
       required bool isCompleted,
       required bool isPinned,
       List<String>? likes,
@@ -149,6 +166,7 @@ class Announcement extends Model {
         id: id == null ? UUID.getUUID() : id,
         tripName: tripName,
         description: description,
+        announcementGroup: announcementGroup,
         isCompleted: isCompleted,
         isPinned: isPinned,
         likes: likes != null ? List<String>.unmodifiable(likes) : likes,
@@ -169,6 +187,7 @@ class Announcement extends Model {
         id == other.id &&
         _tripName == other._tripName &&
         _description == other._description &&
+        _announcementGroup == other._announcementGroup &&
         _isCompleted == other._isCompleted &&
         _isPinned == other._isPinned &&
         DeepCollectionEquality().equals(_likes, other._likes) &&
@@ -186,6 +205,11 @@ class Announcement extends Model {
     buffer.write("id=" + "$id" + ", ");
     buffer.write("tripName=" + "$_tripName" + ", ");
     buffer.write("description=" + "$_description" + ", ");
+    buffer.write("announcementGroup=" +
+        (_announcementGroup != null
+            ? enumToString(_announcementGroup)!
+            : "null") +
+        ", ");
     buffer.write("isCompleted=" +
         (_isCompleted != null ? _isCompleted!.toString() : "null") +
         ", ");
@@ -207,6 +231,7 @@ class Announcement extends Model {
   Announcement copyWith(
       {String? tripName,
       String? description,
+      ProfileRole? announcementGroup,
       bool? isCompleted,
       bool? isPinned,
       List<String>? likes,
@@ -215,18 +240,20 @@ class Announcement extends Model {
         id: id,
         tripName: tripName ?? this.tripName,
         description: description ?? this.description,
+        announcementGroup: announcementGroup ?? this.announcementGroup,
         isCompleted: isCompleted ?? this.isCompleted,
         isPinned: isPinned ?? this.isPinned,
-        likes: likes != null ? likes : this.likes,
+        likes: likes ?? this.likes,
         comments: comments ?? this.comments,
-        createdAt: createdAt ??
-            TemporalDateTime(TemporalDateTime.now().getDateTimeInUtc()));
+        createdAt: TemporalDateTime(TemporalDateTime.now().getDateTimeInUtc()));
   }
 
   Announcement.fromJson(Map<String, dynamic> json)
       : id = json['id'],
         _tripName = json['tripName'],
         _description = json['description'],
+        _announcementGroup = enumFromString<ProfileRole>(
+            json['announcementGroup'], ProfileRole.values),
         _isCompleted = json['isCompleted'],
         _isPinned = json['isPinned'],
         _likes = json['likes']?.cast<String>(),
@@ -248,6 +275,7 @@ class Announcement extends Model {
         'id': id,
         'tripName': _tripName,
         'description': _description,
+        'announcementGroup': enumToString(_announcementGroup),
         'isCompleted': _isCompleted,
         'isPinned': _isPinned,
         'likes': _likes,
@@ -261,6 +289,7 @@ class Announcement extends Model {
         'id': id,
         'tripName': _tripName,
         'description': _description,
+        'announcementGroup': _announcementGroup,
         'isCompleted': _isCompleted,
         'isPinned': _isPinned,
         'likes': _likes,
@@ -274,6 +303,8 @@ class Announcement extends Model {
   static final QueryField ID = QueryField(fieldName: "id");
   static final QueryField TRIPNAME = QueryField(fieldName: "tripName");
   static final QueryField DESCRIPTION = QueryField(fieldName: "description");
+  static final QueryField ANNOUNCEMENTGROUP =
+      QueryField(fieldName: "announcementGroup");
   static final QueryField ISCOMPLETED = QueryField(fieldName: "isCompleted");
   static final QueryField ISPINNED = QueryField(fieldName: "isPinned");
   static final QueryField LIKES = QueryField(fieldName: "likes");
@@ -310,6 +341,12 @@ class Announcement extends Model {
             ModelOperation.READ
           ]),
       AuthRule(
+          authStrategy: AuthStrategy.GROUPS,
+          groupClaim: "cognito:groups",
+          groups: ["Bellversion1", "Eetcversion1", "Vcpaversion1"],
+          provider: AuthRuleProvider.USERPOOLS,
+          operations: [ModelOperation.READ]),
+      AuthRule(
           authStrategy: AuthStrategy.PUBLIC, operations: [ModelOperation.READ])
     ];
 
@@ -324,6 +361,11 @@ class Announcement extends Model {
         key: Announcement.DESCRIPTION,
         isRequired: true,
         ofType: ModelFieldType(ModelFieldTypeEnum.string)));
+
+    modelSchemaDefinition.addField(ModelFieldDefinition.field(
+        key: Announcement.ANNOUNCEMENTGROUP,
+        isRequired: true,
+        ofType: ModelFieldType(ModelFieldTypeEnum.enumeration)));
 
     modelSchemaDefinition.addField(ModelFieldDefinition.field(
         key: Announcement.ISCOMPLETED,
