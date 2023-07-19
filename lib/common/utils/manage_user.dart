@@ -471,6 +471,8 @@ Future<List<Map<String, String>>> getUserAttrInTheMap(
         case 'custom:avatarUrl':
           outputMap['avatarUrl'] = attributeValue;
           break;
+        default:
+          break;
       }
     }
 

@@ -332,7 +332,6 @@ class _AnnouncementsListPageState extends State<AnnouncementsListPage> {
         return Center(
           child: ChatList(
             myInfo: userEmail,
-            // futureResult: futureResult,
           ),
         );
       case 2:
