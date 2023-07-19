@@ -184,7 +184,10 @@ class _VocelProfileState extends State<VocelProfile> {
                                               /// TODO: apply this to all the avatar
                                               decoration: BoxDecoration(
                                                   shape: BoxShape.circle,
-                                                  image: widget.avatarUrl != ""
+                                                  image: widget.avatarUrl !=
+                                                              "" &&
+                                                          widget.avatarUrl !=
+                                                              null
                                                       ? DecorationImage(
                                                           image:
                                                               CachedNetworkImageProvider(
