@@ -209,6 +209,10 @@ class _AnnouncementsListPageState extends State<AnnouncementsListPage> {
                 ));
       }
     });
+    // // AwesomeNotifications().createdStream.listen((notification) {
+    // //   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+    // //       content: Text('Notification Created on ${notification.channelKey}')));
+    // // });
     // AwesomeNotifications().actionStream.listen((notification) {
     //   if (notification.channelKey == "basic_channel" && Platform.isIOS) {
     //     AwesomeNotifications().getGlobalBadgeCounter().then(
@@ -275,6 +279,22 @@ class _AnnouncementsListPageState extends State<AnnouncementsListPage> {
   String switching = "Announcement";
 
   Widget selectPage(int pageNumber) {
+    // ElevatedButton(
+    //   onPressed: () async {
+    //     createVocelNotification();
+    //     // NotificationSpecificTime? result = await pickSchedule(context);
+    //     // if (result != null) {
+    //     //   // Handle the selected schedule
+    //     //   print('Selected day of the week: ${result.dayOfTheWeek}');
+    //     //   print('Selected time of the day: ${result.timeOfDay}');
+    //     //   scheduleVocelNotification(result);
+    //     // } else {
+    //     //   // Handle cancellation or no time selected
+    //     //   print('No schedule selected.');
+    //     // }
+    //   },
+    //   child: const Text('Pick Schedule'),
+    // ),
     switch (pageNumber) {
       case 0:
         return switching == "Announcement"
@@ -312,7 +332,7 @@ class _AnnouncementsListPageState extends State<AnnouncementsListPage> {
         return Center(
           child: ChatList(
             myInfo: userEmail,
-            futureResult: futureResult,
+            // futureResult: futureResult,
           ),
         );
       case 2:

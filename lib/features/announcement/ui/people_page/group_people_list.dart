@@ -53,8 +53,16 @@ class _PeopleListState extends State<PeopleList> {
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return const Center(
-                          child: CircularProgressIndicator(
-                            color: Colors.blueGrey,
+                          child: Padding(
+                            padding: EdgeInsets.symmetric(vertical: 20),
+                            child: Text(
+                              'Rendering Friend List...',
+                              style: TextStyle(
+                                fontFamily: "Pangolin",
+                                fontWeight: FontWeight.w300,
+                                color: Color(constants.primaryDarkTeal),
+                              ),
+                            ),
                           ),
                         );
                       } else if (snapshot.hasError) {
@@ -140,55 +148,6 @@ class _PeopleListState extends State<PeopleList> {
               ],
             )
           : const SpinKitFadingCircle(color: Color(constants.primaryDarkTeal)),
-    );
-  }
-}
-
-class GroupTextWidget extends StatelessWidget {
-  final String text;
-
-  const GroupTextWidget({
-    super.key,
-    required this.text,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.grey[200],
-        borderRadius: BorderRadius.circular(8),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.blueGrey[200]!.withOpacity(0.6),
-            spreadRadius: 1,
-            blurRadius: 30,
-            offset: const Offset(0, 2),
-          ),
-        ],
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.max,
-        children: [
-          Expanded(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Text(
-                  text,
-                  style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 25,
-                    color: Colors.black87,
-                    letterSpacing: 2,
-                    fontFamily: "Ysabeau",
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
     );
   }
 }

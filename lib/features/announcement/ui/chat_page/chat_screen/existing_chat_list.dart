@@ -9,14 +9,15 @@ import 'package:vocel/models/ModelProvider.dart';
 class ExistingChatList extends HookConsumerWidget {
   final String myInfo;
   final String searching;
-  final futureResult;
+
+  // final futureResult;
   final indicator;
 
   ExistingChatList({
     Key? key,
     required this.myInfo,
     required this.searching,
-    required this.futureResult,
+    // required this.futureResult,
     required this.indicator,
   }) : super(key: key);
 
