@@ -184,23 +184,28 @@ class _VocelProfileState extends State<VocelProfile> {
                                               /// TODO: apply this to all the avatar
                                               decoration: BoxDecoration(
                                                   shape: BoxShape.circle,
-                                                  image: widget.avatarUrl !=
-                                                              "" &&
-                                                          widget.avatarUrl !=
-                                                              null
-                                                      ? DecorationImage(
-                                                          image:
-                                                              CachedNetworkImageProvider(
-                                                            widget.avatarUrl!,
-                                                            cacheKey: widget
-                                                                .avatarKey,
-                                                          ),
-                                                          fit: BoxFit.cover,
-                                                        )
-                                                      : const DecorationImage(
-                                                          image: AssetImage(
-                                                              'images/vocel_logo.png'),
-                                                          fit: BoxFit.cover)),
+                                                  image:
+                                                      // make sure it will not cause error
+                                                      widget.avatarUrl != "" &&
+                                                              widget.avatarUrl !=
+                                                                  null &&
+                                                              widget.avatarUrl !=
+                                                                  null
+                                                          ? DecorationImage(
+                                                              image:
+                                                                  CachedNetworkImageProvider(
+                                                                widget
+                                                                    .avatarUrl!,
+                                                                cacheKey: widget
+                                                                    .avatarKey,
+                                                              ),
+                                                              fit: BoxFit.cover,
+                                                            )
+                                                          : const DecorationImage(
+                                                              image: AssetImage(
+                                                                  'images/vocel_logo.png'),
+                                                              fit: BoxFit
+                                                                  .cover)),
                                             ),
                                           ),
                                         ),
