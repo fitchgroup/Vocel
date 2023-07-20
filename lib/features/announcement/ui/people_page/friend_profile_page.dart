@@ -1,4 +1,4 @@
-import 'package:flutter/foundation.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:vocel/LocalizedMessageResolver.dart';
 import 'package:vocel/common/utils/colors.dart' as constants;
@@ -11,15 +11,18 @@ class FriendProfile extends StatefulWidget {
   final String aboutMe;
   final String title;
   final String myInfo;
+  final String avatarKey;
+  final String avatarUrl;
 
-  FriendProfile({
-    required this.name,
-    required this.email,
-    required this.region,
-    required this.aboutMe,
-    required this.title,
-    required this.myInfo,
-  });
+  FriendProfile(
+      {required this.name,
+      required this.email,
+      required this.region,
+      required this.aboutMe,
+      required this.title,
+      required this.myInfo,
+      required this.avatarKey,
+      required this.avatarUrl});
 
   @override
   _FriendProfileState createState() => _FriendProfileState();
@@ -124,12 +127,34 @@ class _FriendProfileState extends State<FriendProfile> {
                         ),
                       ],
                     ),
-                    child: ClipOval(
-                      child: Image(
-                        height: MediaQuery.of(context).size.width * 0.35,
-                        width: MediaQuery.of(context).size.width * 0.35,
-                        fit: BoxFit.cover,
-                        image: const AssetImage('images/vocel_logo.png'),
+                    child: Container(
+                      width: MediaQuery.of(context).size.width * 0.35,
+                      height: MediaQuery.of(context).size.width * 0.35,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: Colors.grey.shade200,
+                      ),
+                      padding: const EdgeInsets.all(5.0),
+                      // Adjust this value for border thickness
+                      child: Container(
+                        width: 160,
+                        height: 160,
+                        clipBehavior: Clip.antiAlias,
+
+                        /// TODO: apply this to all the avatar
+                        decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            image: widget.avatarUrl != ""
+                                ? DecorationImage(
+                                    image: CachedNetworkImageProvider(
+                                      widget.avatarUrl,
+                                      cacheKey: widget.avatarKey,
+                                    ),
+                                    fit: BoxFit.cover,
+                                  )
+                                : const DecorationImage(
+                                    image: AssetImage('images/vocel_logo.png'),
+                                    fit: BoxFit.cover)),
                       ),
                     ),
                   ),
