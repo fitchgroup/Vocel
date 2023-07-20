@@ -458,20 +458,37 @@ class CalendarEventWidget extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Wrap(
-            alignment: WrapAlignment.spaceBetween,
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
-                '${Emojis.office_calendar} $title',
-                style: const TextStyle(
-                  fontSize: 22,
-                  fontWeight: FontWeight.bold,
-                  fontFamily: 'Pangolin',
+              Expanded(
+                flex: 7,
+                child: Wrap(
+                  alignment: WrapAlignment.start,
+                  children: [
+                    Text(
+                      '📢 $title',
+                      style: const TextStyle(
+                        fontSize: 22,
+                        fontWeight: FontWeight.bold,
+                        fontFamily: 'Pangolin',
+                      ),
+                    ),
+                  ],
                 ),
               ),
-              Text(
-                '    👥 Visible to: ${eventGroup.name}',
-                style: const TextStyle(fontSize: 14, fontFamily: 'Pangolin'),
+              Expanded(
+                flex: 4,
+                child: Wrap(
+                  alignment: WrapAlignment.end,
+                  children: [
+                    Text(
+                      '👥 Visible to: ${eventGroup.name}',
+                      style:
+                          const TextStyle(fontSize: 12, fontFamily: 'Pangolin'),
+                    ),
+                  ],
+                ),
               ),
             ],
           ),
