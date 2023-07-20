@@ -84,6 +84,51 @@ Future<void> addVocelUserAttribute(
   }
 }
 
+Future<Map<String, dynamic>> getCustomUserAttribute({String? username}) async {
+  Map<String, String> stringMap = await getUserAttributes();
+  String? userName = stringMap['email'];
+  if (username != null) {
+    userName = username;
+  }
+  Map<String, dynamic> jsonMap = {};
+  try {
+    const path = '/getUser';
+    final Map<String, String> bodyList = {
+      "username": userName!,
+    };
+    // v1
+    final session = await Amplify.Auth.getPlugin(
+      AmplifyAuthCognito.pluginKey,
+    ).fetchAuthSession();
+    final accessToken = session.userPoolTokensResult.value.accessToken.toJson();
+
+    final myInit = <String, dynamic>{
+      "queryParameters": bodyList, // Convert bodyBytes to Uint8List
+      "path": path,
+      "headers": {
+        'Content-Type': 'application/json',
+        'Authorization': accessToken,
+      },
+    };
+
+    /// sent get request
+    var responseData = await Amplify.API
+        .get(
+          myInit["path"],
+          headers: myInit["headers"],
+          queryParameters: myInit["queryParameters"],
+        )
+        .response;
+
+    jsonMap = jsonDecode(responseData.decodeBody());
+    return jsonMap;
+  } catch (e) {
+    // Attribute update failed
+    debuggingPrint("$e \n ${"*" * 20} getCustomUserAttribute Fail ${"=" * 20}");
+  }
+  return jsonMap;
+}
+
 Future<void> addUserGroup(String desireGroup, {String? email}) async {
   Map<String, String> stringMap = await getUserAttributes();
   String? userName = stringMap['email'];
@@ -113,12 +158,13 @@ Future<void> addUserGroup(String desireGroup, {String? email}) async {
       },
     };
 
-    // Make API call using myInit options
-    Amplify.API.post(
-      myInit["path"],
-      headers: myInit["headers"],
-      body: myInit["body"],
-    );
+    var responseData = await Amplify.API
+        .get(
+          myInit["path"],
+          headers: myInit["headers"],
+          queryParameters: myInit["queryParameters"],
+        )
+        .response;
   } catch (e) {
     debuggingPrint("$e \n ${"*" * 20} addUserGroup Fail ${"=" * 20}");
   }
@@ -418,6 +464,14 @@ Future<List<Map<String, String>>> getUserAttrInTheMap(
           break;
         case 'custom:region':
           outputMap['region'] = attributeValue;
+          break;
+        case 'custom:avatarKey':
+          outputMap['avatarKey'] = attributeValue;
+          break;
+        case 'custom:avatarUrl':
+          outputMap['avatarUrl'] = attributeValue;
+          break;
+        default:
           break;
       }
     }
