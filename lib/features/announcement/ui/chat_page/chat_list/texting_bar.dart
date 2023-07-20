@@ -9,13 +9,20 @@ class TextingBar extends HookConsumerWidget {
   final senderInfo;
   final receiverInfo;
 
-  TextingBar({super.key, required this.senderInfo, required this.receiverInfo});
+  TextingBar({
+    super.key,
+    required this.senderInfo,
+    required this.receiverInfo,
+  });
 
   final formGlobalKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final contentController = useTextEditingController();
+    // final focusNode = useState(FocusNode());
+    // final hasFocus = useState(false);
+    final changing = useState(false);
 
     void _handleFileSelection() async {
       // final result = await FilePicker.platform.pickFiles(
@@ -95,17 +102,28 @@ class TextingBar extends HookConsumerWidget {
           ),
         ),
       );
+
+      // Request focus when attachment is pressed
+      // focusNode.value.requestFocus();
     }
+
+    // useEffect(() {
+    //   // Print the focus state after the widget rebuilds
+    //   WidgetsBinding.instance!.addPostFrameCallback((_) {
+    //     print('Focus State: ${focusNode.value.hasFocus}');
+    //   });
+    // }, [focusNode]);
 
     return Form(
       key: formGlobalKey,
       child: Container(
         color: Colors.grey.shade100,
         padding: EdgeInsets.only(
-            top: 15,
-            left: 20,
-            right: 20,
-            bottom: MediaQuery.of(context).viewInsets.bottom + 15),
+          top: 15,
+          left: 20,
+          right: 20,
+          bottom: MediaQuery.of(context).viewInsets.bottom + 15,
+        ),
         width: double.infinity,
         child: Row(
           mainAxisSize: MainAxisSize.min,
@@ -124,6 +142,7 @@ class TextingBar extends HookConsumerWidget {
             ),
             Expanded(
               child: TextFormField(
+                // focusNode: focusNode.value,
                 decoration: InputDecoration(
                   hintText: "Message...",
                   enabledBorder: UnderlineInputBorder(
@@ -138,7 +157,15 @@ class TextingBar extends HookConsumerWidget {
                   ),
                 ),
                 controller: contentController,
-                keyboardType: TextInputType.name,
+                keyboardType: TextInputType.text,
+                onTap: () {
+                  // if (!focusNode.value.hasFocus)
+                  //   focusNode.value.requestFocus();
+                  // else
+                  //   focusNode.value.unfocus();
+                  changing.value = !changing.value;
+                  print(changing.value);
+                },
                 validator: (value) {
                   if (value != null && value.isNotEmpty) {
                     return null;
@@ -146,14 +173,12 @@ class TextingBar extends HookConsumerWidget {
                     return 'You forgot to input messages ${Emojis.smile_winking_face}...';
                   }
                 },
-                autofocus: true,
                 autocorrect: false,
+                autofocus: changing.value,
                 textInputAction: TextInputAction.done,
               ),
             ),
-            const SizedBox(
-              height: 15,
-            ),
+            const SizedBox(height: 15),
             IconButton(
               icon: const Icon(
                 Icons.send,
@@ -167,14 +192,18 @@ class TextingBar extends HookConsumerWidget {
                 }
                 if (currentState.validate()) {
                   ref.read(messagesListControllerProvider).add(
-                      messageContent: contentController.text,
-                      messageSender: senderInfo,
-                      messageReceiver: receiverInfo);
+                        messageContent: contentController.text,
+                        messageSender: senderInfo,
+                        messageReceiver: receiverInfo,
+                      );
                   print(senderInfo);
                   print(receiverInfo);
                   print('&' * 100);
                 }
                 contentController.clear();
+                // Dismiss the keyboard and unfocus the field
+                // focusNode.value.unfocus();
+                changing.value = false;
               },
             ),
           ],

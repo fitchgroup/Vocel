@@ -92,7 +92,9 @@ class EventPage extends HookConsumerWidget {
                                       .split("version1")[0]
                                       .toUpperCase() ||
                               thisEvent.eventGroup.name ==
-                                  ProfileRole.STAFF.name))
+                                  ProfileRole.STAFF.name ||
+                              thisEvent.eventGroup.name ==
+                                  ProfileRole.ALL.name))
                       .toList(),
                   ref),
           error: (e, st) => const Center(
