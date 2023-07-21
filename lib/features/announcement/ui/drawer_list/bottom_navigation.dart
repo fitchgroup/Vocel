@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -171,13 +173,16 @@ class _AnnouncementsListPageState extends State<AnnouncementsListPage> {
                       ),
                       SizedBox(width: 8),
                       // Add some spacing between the icon and text
-                      Wrap(
-                        children: [
-                          Text(
-                            "Vocel app would like to send you notifications",
-                            style: TextStyle(fontSize: 16),
-                          ),
-                        ],
+                      Expanded(
+                        // Add this
+                        child: Wrap(
+                          children: [
+                            Text(
+                              "Vocel app would like to send you notifications",
+                              style: TextStyle(fontSize: 16),
+                            ),
+                          ],
+                        ),
                       ),
                     ],
                   ),
@@ -213,18 +218,18 @@ class _AnnouncementsListPageState extends State<AnnouncementsListPage> {
     // //   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
     // //       content: Text('Notification Created on ${notification.channelKey}')));
     // // });
-    // AwesomeNotifications().actionStream.listen((notification) {
-    //   if (notification.channelKey == "basic_channel" && Platform.isIOS) {
-    //     AwesomeNotifications().getGlobalBadgeCounter().then(
-    //           (value) =>
-    //               AwesomeNotifications().setGlobalBadgeCounter(value - 1),
-    //         );
-    //   }
-    //   Navigator.pushAndRemoveUntil(
-    //       context,
-    //       MaterialPageRoute(builder: (_) => const CalendarHook()),
-    //       (route) => route.isFirst);
-    // });
+    AwesomeNotifications().actionStream.listen((notification) {
+      if (notification.channelKey == "basic_channel" && Platform.isIOS) {
+        AwesomeNotifications().getGlobalBadgeCounter().then(
+              (value) =>
+                  AwesomeNotifications().setGlobalBadgeCounter(value - 1),
+            );
+      }
+      Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(builder: (_) => const CalendarHook()),
+          (route) => route.isFirst);
+    });
   }
 
   @override
@@ -372,16 +377,16 @@ class _AnnouncementsListPageState extends State<AnnouncementsListPage> {
         titleString = "Vocel";
         break;
       case 1:
-        titleString = LocalizedButtonResolver().chats(context);
+        titleString = const LocalizedButtonResolver().chats(context);
         break;
       case 2:
-        titleString = LocalizedButtonResolver().people(context);
+        titleString = const LocalizedButtonResolver().people(context);
         break;
       case 3:
-        titleString = LocalizedButtonResolver().calendar(context);
+        titleString = const LocalizedButtonResolver().calendar(context);
         break;
       default:
-        titleString = LocalizedButtonResolver().home(context);
+        titleString = const LocalizedButtonResolver().home(context);
         break;
     }
     return titleString;
