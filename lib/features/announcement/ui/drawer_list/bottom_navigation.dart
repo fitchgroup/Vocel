@@ -219,7 +219,9 @@ class _AnnouncementsListPageState extends State<AnnouncementsListPage> {
     // //       content: Text('Notification Created on ${notification.channelKey}')));
     // // });
     AwesomeNotifications().actionStream.listen((notification) {
-      if (notification.channelKey == "basic_channel" && Platform.isIOS) {
+      if ((notification.channelKey == "basic_channel" ||
+              notification.channelKey == "scheduled_channel") &&
+          Platform.isIOS) {
         AwesomeNotifications().getGlobalBadgeCounter().then(
               (value) =>
                   AwesomeNotifications().setGlobalBadgeCounter(value - 1),
