@@ -8,12 +8,13 @@ import 'package:vocel/features/announcement/controller/message_list_controller.d
 class TextingBar extends HookConsumerWidget {
   final senderInfo;
   final receiverInfo;
+  final ValueNotifier<bool> changing;
 
-  TextingBar({
-    super.key,
-    required this.senderInfo,
-    required this.receiverInfo,
-  });
+  TextingBar(
+      {super.key,
+      required this.senderInfo,
+      required this.receiverInfo,
+      required this.changing});
 
   final formGlobalKey = GlobalKey<FormState>();
 
@@ -22,7 +23,6 @@ class TextingBar extends HookConsumerWidget {
     final contentController = useTextEditingController();
     // final focusNode = useState(FocusNode());
     // final hasFocus = useState(false);
-    final changing = useState(false);
 
     void _handleFileSelection() async {
       // final result = await FilePicker.platform.pickFiles(
@@ -203,7 +203,7 @@ class TextingBar extends HookConsumerWidget {
                 contentController.clear();
                 // Dismiss the keyboard and unfocus the field
                 // focusNode.value.unfocus();
-                changing.value = false;
+                // changing.value = false;
               },
             ),
           ],
