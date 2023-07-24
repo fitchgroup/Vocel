@@ -130,6 +130,8 @@ class _AnnouncementsListPageState extends State<AnnouncementsListPage> {
     setState(() {
       loading = false;
     });
+
+    /// TODO: update the local data first and then change the backend data, make the local rendering faster
     List<Map<String, String>> allUserList = await _getUserAttrInTheMap("");
     setState(() {
       futureResult = Future<List<Map<String, String>>>.value(allUserList);
@@ -346,6 +348,7 @@ class _AnnouncementsListPageState extends State<AnnouncementsListPage> {
           child: PeopleList(
               userEmail: userEmail,
               showEdit: adminEdit,
+              groupOfUser: groupEdit,
               loading: loading,
               futureResult: futureResult,
               callback: settingGroupStates),
