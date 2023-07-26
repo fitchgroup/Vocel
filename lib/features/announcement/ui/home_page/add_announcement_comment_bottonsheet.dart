@@ -69,7 +69,7 @@ class AddAnnouncementCommentBottomSheet extends HookConsumerWidget {
                       ),
                     ),
                     controller: contentController,
-                    keyboardType: TextInputType.name,
+                    keyboardType: TextInputType.text,
                     validator: (value) {
                       if (value != null && value.isNotEmpty) {
                         return null;

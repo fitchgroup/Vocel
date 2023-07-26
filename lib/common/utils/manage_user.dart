@@ -159,10 +159,10 @@ Future<void> addUserGroup(String desireGroup, {String? email}) async {
     };
 
     var responseData = await Amplify.API
-        .get(
+        .post(
           myInit["path"],
           headers: myInit["headers"],
-          queryParameters: myInit["queryParameters"],
+          body: myInit["body"],
         )
         .response;
   } catch (e) {
@@ -211,7 +211,9 @@ Future<void> removeUserGroup(String originalGroup, {String? email}) async {
 
 Future<void> changeUsersGroups(
     String originalGroup, String desireGroup, String userEmail) async {
-  removeUserGroup(originalGroup, email: userEmail);
+  if (originalGroup != "Unassigned") {
+    removeUserGroup(originalGroup, email: userEmail);
+  }
   addUserGroup(desireGroup, email: userEmail);
 }
 

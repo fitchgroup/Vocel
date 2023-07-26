@@ -40,6 +40,7 @@ class ChatPage extends HookConsumerWidget {
     }, [messageHistory]);
 
     // FocusScopeNode currentFocus = FocusScope.of(context);
+    final changing = useState(false);
 
     return Scaffold(
       appBar: AppBar(
@@ -132,6 +133,7 @@ class ChatPage extends HookConsumerWidget {
                   // print("@@" * 100);
                   // print(currentFocus.hasFocus);
                   // print("@@" * 100);
+                  changing.value = false;
                 },
                 child: messageHistory.when(
                   data: (thisMessages) => thisMessages.isEmpty
@@ -170,9 +172,7 @@ class ChatPage extends HookConsumerWidget {
             ),
           ),
           TextingBar(
-            senderInfo: myInfo,
-            receiverInfo: theirInfo,
-          ),
+              senderInfo: myInfo, receiverInfo: theirInfo, changing: changing),
         ],
       ),
     );

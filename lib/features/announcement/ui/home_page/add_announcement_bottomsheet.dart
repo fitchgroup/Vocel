@@ -129,7 +129,7 @@ class AddTripBottomSheet extends HookConsumerWidget {
                 ),
               ),
               controller: announcementNameController,
-              keyboardType: TextInputType.name,
+              keyboardType: TextInputType.text,
               validator: (value) {
                 const validationError = 'Enter a valid Announcement title';
                 if (value == null || value.isEmpty) {
@@ -146,7 +146,7 @@ class AddTripBottomSheet extends HookConsumerWidget {
               height: 15,
             ),
             TextFormField(
-              keyboardType: TextInputType.name,
+              keyboardType: TextInputType.text,
               controller: descriptionController,
               decoration: const InputDecoration(
                 hintText: "Announcement Description",
