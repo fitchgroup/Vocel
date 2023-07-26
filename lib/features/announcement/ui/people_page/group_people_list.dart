@@ -13,12 +13,14 @@ class PeopleList extends StatefulWidget {
       this.userEmail,
       required this.loading,
       required this.futureResult,
-      required this.callback});
+      required this.callback,
+      required this.groupOfUser});
 
   final showEdit;
   final userEmail;
   final loading;
   final futureResult;
+  final groupOfUser;
   final callback;
 
   @override
@@ -37,117 +39,140 @@ class _PeopleListState extends State<PeopleList> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: widget.loading
-          ? Column(
-              children: [
-                UserSearchBar(
-                  onClickController: (String value) {
-                    setState(() {
-                      searching = value;
-                    });
-                  },
-                ),
-                Expanded(
-                  child: FutureBuilder<List<Map<String, String>>>(
-                    future: widget.futureResult,
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return const Center(
-                          child: Padding(
-                            padding: EdgeInsets.symmetric(vertical: 20),
-                            child: Text(
-                              'Rendering Friend List...',
-                              style: TextStyle(
-                                fontFamily: "Pangolin",
-                                fontWeight: FontWeight.w300,
-                                color: Color(constants.primaryDarkTeal),
-                              ),
-                            ),
-                          ),
-                        );
-                      } else if (snapshot.hasError) {
-                        /// TODO: change the implementation if error raised in fetching data
-                        return Text('Error: ${snapshot.error}');
-                      } else {
-                        List<Map<String, String>> dataList =
-                            snapshot.data ?? [];
-
-                        /// TODO: SORT THE LIST BASED ON EMAIL, MAY CHANGE IN THE FUTURE
-                        dataList
-                            .sort((a, b) => a["email"]!.compareTo(b["email"]!));
-                        return ListView.builder(
-                          itemCount: dataList.length,
-                          itemBuilder: (context, index) {
-                            bool visibilityCheck = dataList[index]["email"]!
-                                    .toUpperCase()
-                                    .contains(searching.toUpperCase()) ||
-                                (dataList[index]["VocelGroup"] == null
-                                    ? false
-                                    : dataList[index]["VocelGroup"]!
-                                        .split("version1")[0]
-                                        .toUpperCase()
-                                        .contains(searching.toUpperCase()));
-                            return Column(
-                              children: [
-                                Visibility(
-                                  visible: visibilityCheck,
-                                  child: Dismissible(
-                                    key: Key(index.toString()),
-                                    direction: widget.showEdit
-                                        ? DismissDirection.endToStart
-                                        : DismissDirection.none,
-                                    confirmDismiss: (direction) async {
-                                      if (direction ==
-                                              DismissDirection.endToStart &&
-                                          widget.showEdit) {
-                                        // Show confirmation dialog for delete action
-                                        return await showDialog(
-                                          context: context,
-                                          builder: (BuildContext context) {
-                                            return ChangeGroupDialog(
-                                              currentGroup: dataList[index]
-                                                      ["VocelGroup"] ??
-                                                  "Unassigned",
-                                              currentUserEmail: dataList[index]
-                                                      ["email"] ??
-                                                  "...",
-                                              onGroupChanged: () async {
-                                                widget.callback();
-                                              },
-                                            );
-                                          },
-                                        );
-                                      }
-                                      return null;
-                                    },
-                                    background: peopleBackgroundContainer(),
-                                    child: peopleInkwell(
-                                        context,
-                                        widget.userEmail,
-                                        dataList[index]["email"] ?? "",
-                                        dataList[index]["name"] ?? "",
-                                        dataList[index]["region"] ?? "",
-                                        dataList[index]["aboutMe"] ?? "",
-                                        dataList[index]["VocelGroup"] ??
-                                            "Unassigned",
-                                        dataList[index]["avatarKey"] ?? "",
-                                        dataList[index]["avatarUrl"] ?? ""),
+      body: widget.groupOfUser == "" || widget.groupOfUser == "Unassigned"
+          ? const Center(
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Center(
+                      child: Text(
+                        'Wait to be assigned...',
+                        style: TextStyle(
+                          fontFamily: "Pangolin",
+                          fontWeight: FontWeight.w300,
+                          fontSize: 20,
+                          color: Color(constants.primaryDarkTeal),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            )
+          : widget.loading
+              ? Column(
+                  children: [
+                    UserSearchBar(
+                      onClickController: (String value) {
+                        setState(() {
+                          searching = value;
+                        });
+                      },
+                    ),
+                    Expanded(
+                      child: FutureBuilder<List<Map<String, String>>>(
+                        future: widget.futureResult,
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return const Center(
+                              child: Padding(
+                                padding: EdgeInsets.symmetric(vertical: 20),
+                                child: Text(
+                                  'Rendering Friend List...',
+                                  style: TextStyle(
+                                    fontFamily: "Pangolin",
+                                    fontWeight: FontWeight.w300,
+                                    color: Color(constants.primaryDarkTeal),
                                   ),
                                 ),
-                                Visibility(
-                                    visible: visibilityCheck,
-                                    child: peopleListDivider()),
-                              ],
+                              ),
                             );
-                          },
-                        );
-                      }
-                    },
-                  ),
-                ),
-              ],
-            )
-          : const SpinKitFadingCircle(color: Color(constants.primaryDarkTeal)),
+                          } else if (snapshot.hasError) {
+                            /// TODO: change the implementation if error raised in fetching data
+                            return Text('Error: ${snapshot.error}');
+                          } else {
+                            List<Map<String, String>> dataList =
+                                snapshot.data ?? [];
+
+                            /// TODO: SORT THE LIST BASED ON EMAIL, MAY CHANGE IN THE FUTURE
+                            dataList.sort(
+                                (a, b) => a["email"]!.compareTo(b["email"]!));
+                            return ListView.builder(
+                              itemCount: dataList.length,
+                              itemBuilder: (context, index) {
+                                bool visibilityCheck = dataList[index]["email"]!
+                                        .toUpperCase()
+                                        .contains(searching.toUpperCase()) ||
+                                    (dataList[index]["VocelGroup"] == null
+                                        ? false
+                                        : dataList[index]["VocelGroup"]!
+                                            .split("version1")[0]
+                                            .toUpperCase()
+                                            .contains(searching.toUpperCase()));
+                                return Column(
+                                  children: [
+                                    Visibility(
+                                      visible: visibilityCheck,
+                                      child: Dismissible(
+                                        key: Key(index.toString()),
+                                        direction: widget.showEdit
+                                            ? DismissDirection.endToStart
+                                            : DismissDirection.none,
+                                        confirmDismiss: (direction) async {
+                                          if (direction ==
+                                                  DismissDirection.endToStart &&
+                                              widget.showEdit) {
+                                            // Show confirmation dialog for delete action
+                                            return await showDialog(
+                                              context: context,
+                                              builder: (BuildContext context) {
+                                                return ChangeGroupDialog(
+                                                  currentGroup: dataList[index]
+                                                          ["VocelGroup"] ??
+                                                      "Unassigned",
+                                                  currentUserEmail:
+                                                      dataList[index]
+                                                              ["email"] ??
+                                                          "...",
+                                                  onGroupChanged: () async {
+                                                    widget.callback();
+                                                  },
+                                                );
+                                              },
+                                            );
+                                          }
+                                          return null;
+                                        },
+                                        background: peopleBackgroundContainer(),
+                                        child: peopleInkwell(
+                                            context,
+                                            widget.userEmail,
+                                            dataList[index]["email"] ?? "",
+                                            dataList[index]["name"] ?? "",
+                                            dataList[index]["region"] ?? "",
+                                            dataList[index]["aboutMe"] ?? "",
+                                            dataList[index]["VocelGroup"] ??
+                                                "Unassigned",
+                                            dataList[index]["avatarKey"] ?? "",
+                                            dataList[index]["avatarUrl"] ?? ""),
+                                      ),
+                                    ),
+                                    Visibility(
+                                        visible: visibilityCheck,
+                                        child: peopleListDivider()),
+                                  ],
+                                );
+                              },
+                            );
+                          }
+                        },
+                      ),
+                    ),
+                  ],
+                )
+              : const SpinKitFadingCircle(
+                  color: Color(constants.primaryDarkTeal)),
     );
   }
 }
