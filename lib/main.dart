@@ -12,7 +12,7 @@ import 'package:get_it/get_it.dart';
 import 'package:vocel/models/ModelProvider.dart';
 import 'package:vocel/simple_app.dart'; // <--- Update import to reflect your project
 import 'package:amplify_api/amplify_api.dart';
-import 'amplifyconfiguration.dart';
+// import 'amplifyconfiguration.dart';
 
 final getIt = GetIt.instance;
 
@@ -40,8 +40,8 @@ Future<String> _configureApp() async {
         // notificationsPlugin,
       ]);
 
-      // const String amplifyConfig = String.fromEnvironment('VERSION');
-      await Amplify.configure(amplifyconfig);
+      const String amplifyConfig = String.fromEnvironment('VERSION');
+      await Amplify.configure(amplifyConfig);
       return "Successfully configured";
     } else {
       return "Amplify is already configured";
